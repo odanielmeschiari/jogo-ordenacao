@@ -201,10 +201,10 @@ ul.cs-list{position:fixed;z-index:9000;list-style:none;padding:6px;border-radius
 .gr div{height:12px;border-radius:6px;background:var(--well)}.gr i{display:block;height:100%;border-radius:6px;background:linear-gradient(90deg,var(--t3),var(--t1))}
 #resumo.larga{width:min(540px,92%)}
 /* ===== Aparência ===== */
-#ap{position:fixed;z-index:8000;width:min(380px,calc(100vw - 24px));max-height:calc(100% - 24px);overflow:auto;padding:18px 20px 20px;border-radius:16px;
+#ap,#sp{position:fixed;z-index:8000;width:min(380px,calc(100vw - 24px));max-height:calc(100% - 24px);overflow:auto;padding:18px 20px 20px;border-radius:16px;
  background:linear-gradient(160deg,rgba(var(--dk),.97),rgba(var(--dk2),.98));border:1px solid rgba(var(--ln),.3);box-shadow:0 24px 60px rgba(0,0,0,.6);color:var(--h)}
-#ap h3{font-size:20px;color:var(--h)}
-#ap .grp{margin:14px 0 8px}
+#ap h3,#sp h3,#aj h3{font-size:20px;color:var(--h)}
+#ap .grp,#sp .grp{margin:14px 0 8px}
 .temas{display:grid;grid-template-columns:repeat(3,1fr);gap:6px}
 button.sw{display:flex;flex-direction:column;align-items:center;gap:5px;padding:8px 4px;font-size:13px;font-weight:400;background:none;box-shadow:none;color:var(--x2);border-radius:12px}
 button.sw:active{transform:none;box-shadow:none}
@@ -215,6 +215,31 @@ button.wl{position:relative;height:64px;padding:0;border-radius:10px;overflow:hi
 button.wl:active{transform:none;box-shadow:0 0 0 2px rgba(var(--ln),.3)}
 button.wl span{position:absolute;left:0;right:0;bottom:0;padding:2px 3px;font-size:11px;line-height:1.2;background:rgba(0,0,0,.62);color:#fff;text-align:center}
 button.wl.on{box-shadow:0 0 0 3px var(--h)}
+/* ===== Faixa do intervalo restante (busca) ===== */
+.faixa{position:absolute;border-radius:16px;pointer-events:none;background:var(--alvo);box-shadow:inset 0 0 0 3px var(--alvoln),0 0 22px var(--alvo);
+ transition:left .25s ease,top .25s ease,width .25s ease,height .25s ease,opacity .2s}
+@media (prefers-reduced-motion:reduce){.faixa{transition:none}}
+/* ===== Som ===== */
+.srow{display:flex;gap:8px;margin-top:6px;align-items:stretch}.srow .seg{flex:1}.srow .seg label{flex:1;display:block}
+.srow button{font-size:14px;padding:0 14px}
+#spLista.mudo .seg span{opacity:.55}
+/* ===== Ajuda ===== */
+#aj{position:fixed;inset:0;z-index:8500;display:grid;place-items:center;padding:14px;background:rgba(var(--dk2),.72);backdrop-filter:blur(8px)}
+#aj .painel{position:relative;width:min(860px,100%);padding:24px 28px;color:var(--h)}
+#aj button.fecha{position:absolute;top:12px;right:12px;width:34px;height:34px;padding:0;border-radius:50%;font-size:15px}
+#aj h1{font-size:28px;padding-right:40px}
+#aj h2{font-size:18px;color:var(--h);margin:20px 0 8px}
+#aj ul{list-style:none;padding:0;display:grid;gap:7px;font-size:15px;line-height:1.4;color:var(--x4)}
+#aj p.nota{margin-top:10px;font-size:14px;color:var(--x3);line-height:1.5}
+.sq{display:inline-block;width:18px;height:18px;border-radius:5px;vertical-align:-3px;margin-right:8px;background:var(--c);box-shadow:0 0 8px var(--c)}
+.sq.f{background:var(--well);box-shadow:inset 0 0 0 2px var(--alvoln);opacity:.9}
+.sq.d{background:var(--t2);opacity:.3;box-shadow:none}
+.tbl{overflow-x:auto;border-radius:10px;background:var(--well)}
+#aj table{border-collapse:collapse;width:100%;font-size:14px;min-width:560px}
+#aj th,#aj td{padding:7px 10px;text-align:left;vertical-align:top;border-bottom:1px solid rgba(var(--ln),.15);color:var(--x4)}
+#aj th{color:var(--h);font-weight:700}
+#aj td:first-child{color:var(--h);font-weight:700;white-space:nowrap}
+#aj td.o{white-space:nowrap;font-variant-numeric:tabular-nums}
 </style>
 </head>
 <body>
@@ -227,6 +252,7 @@ button.wl.on{box-shadow:0 0 0 3px var(--h)}
    <button class="sec aba" data-t="p2">Gerador automático</button>
    <button class="sec btnSom" style="margin-left:auto"></button>
    <button class="sec btnAp" aria-haspopup="dialog">Aparência</button>
+   <button class="sec btnAj" aria-haspopup="dialog">Ajuda</button>
   </div>
   <div class="grp" style="margin-top:12px">Sentido da ordenação</div>
   <div class="seg">
@@ -297,6 +323,8 @@ button.wl.on{box-shadow:0 0 0 3px var(--h)}
     <div class="grp">Quem participa (mínimo 2)</div>
     <div class="seg" id="tornLista"></div>
     <div class="seg" style="margin-top:8px"><label><input type="checkbox" id="tzera" checked><span>Zerar o ranking antes de começar</span></label></div>
+    <div class="grp">Rodadas (1 a 10): cada rodada usa uma lista nova e o ranking mostra a média</div>
+    <input id="trod" class="peq" type="number" inputmode="numeric" min="1" max="10" value="1" aria-label="Número de rodadas">
     <div id="tAviso" class="aviso" role="alert" hidden>Marque pelo menos dois algoritmos para competir.</div>
    </div>
    <div id="gAlvoBox" hidden>
@@ -323,6 +351,7 @@ button.wl.on{box-shadow:0 0 0 3px var(--h)}
   <span id="cont"></span>
   <button class="sec btnSom"></button>
   <button class="sec btnAp" aria-haspopup="dialog">Aparência</button>
+   <button class="sec btnAj" aria-haspopup="dialog">Ajuda</button>
   <span id="titulo"></span>
  </div>
  <div id="alvoGrande" hidden><span>Encontre o valor</span><b id="alvoNum"></b><small id="ultima"></small></div>
@@ -354,6 +383,21 @@ button.wl.on{box-shadow:0 0 0 3px var(--h)}
  </aside>
 </section>
 
+<div id="sp" role="dialog" aria-label="Som" hidden>
+ <h3>Som</h3>
+ <div class="seg" style="margin-top:12px"><label><input type="checkbox" id="somMestre"><span>Som ligado</span></label></div>
+ <div class="grp">Efeitos que você quer ouvir (▶ para testar)</div>
+ <div id="spLista"></div>
+</div>
+
+<div id="aj" hidden>
+ <div class="painel" role="dialog" aria-label="Ajuda">
+  <button class="fecha" id="ajx" aria-label="Fechar ajuda">✕</button>
+  <h1>Ajuda</h1>
+  <div id="ajCorpo"></div>
+ </div>
+</div>
+
 <div id="ap" role="dialog" aria-label="Aparência" hidden>
  <h3>Aparência</h3>
  <div class="grp">Cor do tema</div><div class="temas" id="apTemas"></div>
@@ -363,8 +407,8 @@ button.wl.on{box-shadow:0 0 0 3px var(--h)}
 <script>
 const MAX=20,MAXG=1000,PASSO_MS=1,$=s=>document.querySelector(s),mesa=$('#mesa');
 let DIG=2,mov=0,comps=0,valores=[],pecas=[],vagasEl=[],idxEl=[],cfg=null,G={},z=10,jaOrd=false,auto=null,DIR=1;
-const NOMES={bolha:'Bubble sort',selecao:'Selection sort',insercao:'Insertion sort',quick:'Quick sort',merge:'Merge sort',heap:'Heap sort',shell:'Shell sort'};
-const BUSCAS={linear:'Busca linear',binaria:'Busca binária',ternaria:'Busca ternária',interp:'Busca por interpolação',salto:'Busca por salto (jump)',expo:'Busca exponencial'};
+const NOMES={bolha:'Bubble sort',selecao:'Selection sort',insercao:'Insertion sort',quick:'Quick sort',merge:'Merge sort',heap:'Heap sort',shell:'Shell sort',contagem:'Counting sort',radix:'Radix sort'};
+const BUSCAS={linear:'Busca linear',binaria:'Busca binária',ternaria:'Busca ternária',interp:'Busca por interpolação',salto:'Busca por salto (jump)',expo:'Busca exponencial',fib:'Busca de Fibonacci'};
 const NOME={...NOMES,...BUSCAS};
 const embaralha=a=>{for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]]}return a};
 const radio=n=>document.querySelector(`input[name=${n}]:checked`).value;
@@ -372,25 +416,55 @@ const dirAtual=()=>radio('dir')==='desc'?-1:1;
 const nomeDir=()=>DIR>0?'crescente':'decrescente';
 
 /* ===== Som (sintetizado, sem arquivos) ===== */
-let AC=null,som=true,ultSom=0,RUI=null;
+const EFEITOS=[['mover','Peças arrastadas à mão (madeira)'],['moverAuto','Peças se movendo no gerador automático (madeira)'],['virar','Virar peça na busca'],['nota','Tom das comparações (agudo = valor maior)'],
+ ['contagem','Contagem regressiva'],['vitoria','Sucesso (ordenado / encontrado)'],['erro','Erro (valor ausente)']];
+let AC=null,BUS=null,som=true,sons={},ultSom=0,RUI=null;
+EFEITOS.forEach(([k])=>sons[k]=k!=='moverAuto');
 try{som=localStorage.getItem('mesa-som')!=='0'}catch(e){}
+try{Object.assign(sons,JSON.parse(localStorage.getItem('mesa-sons')||'{}'))}catch(e){}
+const on=k=>som&&sons[k]!==false;
 function audio(){if(!AC){try{AC=new(window.AudioContext||window.webkitAudioContext)()}catch(e){return null}}if(AC.state==='suspended')AC.resume();return AC}
-function toc(f=170,g=1){ // batida de madeira: estalo de ruído + corpo oco
- if(!som)return;const a=audio();if(!a)return;const t=a.currentTime;if(t-ultSom<.015)return;ultSom=t;
- if(!RUI){RUI=a.createBuffer(1,Math.floor(a.sampleRate*.04),a.sampleRate);const d=RUI.getChannelData(0);for(let i=0;i<d.length;i++)d[i]=(Math.random()*2-1)*(1-i/d.length)}
- const o=a.createOscillator(),gn=a.createGain(),bp=a.createBiquadFilter(),ns=a.createBufferSource(),g2=a.createGain();
- o.type='triangle';o.frequency.setValueAtTime(f*1.8,t);o.frequency.exponentialRampToValueAtTime(f,t+.05);
- gn.gain.setValueAtTime(0,t);gn.gain.linearRampToValueAtTime(.45*g,t+.003);gn.gain.exponentialRampToValueAtTime(.001,t+.12);
- bp.type='bandpass';bp.frequency.value=f*4;bp.Q.value=.9;ns.buffer=RUI;g2.gain.value=.35*g;
- o.connect(gn);gn.connect(a.destination);ns.connect(bp);bp.connect(g2);g2.connect(a.destination);o.start(t);o.stop(t+.14);ns.start(t);
+function saida(a){ // filtro suave + compressor, para muitas batidas seguidas não estourarem
+ if(!BUS){const lp=a.createBiquadFilter(),cp=a.createDynamicsCompressor(),g=a.createGain();lp.type='lowpass';lp.frequency.value=7000;g.gain.value=.9;
+  lp.connect(cp);cp.connect(g);g.connect(a.destination);BUS=lp}
+ return BUS;
+}
+function bloco(f,g=1,o={}){ // batida de madeira: estalo seco + corpo com parciais inarmônicos e decaimento muito curto
+ const a=audio();if(!a)return;const t=a.currentTime;if(t-ultSom<.012)return;ultSom=t;
+ const out=saida(a),br=o.br||1,dec=o.dec||.075;f*=1+(Math.random()-.5)*.07;
+ if(!RUI){RUI=a.createBuffer(1,Math.floor(a.sampleRate*.02),a.sampleRate);const d=RUI.getChannelData(0);for(let i=0;i<d.length;i++)d[i]=(Math.random()*2-1)*Math.pow(1-i/d.length,3)}
+ const ns=a.createBufferSource(),bp=a.createBiquadFilter(),gc=a.createGain();
+ ns.buffer=RUI;bp.type='bandpass';bp.frequency.value=2200*br;bp.Q.value=.8;gc.gain.value=.5*g;ns.connect(bp);bp.connect(gc);gc.connect(out);ns.start(t);
+ [[1,1,1],[2.4,.5,.55],[4.3,.22,.3]].forEach(([r,k,d])=>{
+  const os=a.createOscillator(),gn=a.createGain(),fr=f*r,fim=t+dec*d;
+  os.type='sine';os.frequency.setValueAtTime(fr*1.04,t);os.frequency.exponentialRampToValueAtTime(fr,t+.012);
+  gn.gain.setValueAtTime(0,t);gn.gain.linearRampToValueAtTime(.55*g*k,t+.0015);gn.gain.exponentialRampToValueAtTime(.0008,fim);
+  os.connect(gn);gn.connect(out);os.start(t);os.stop(fim+.02)});
 }
 function tom(f,d=.12,g=.2,atraso=0,tipo='sine'){
  if(!som)return;const a=audio();if(!a)return;const t=a.currentTime+atraso,o=a.createOscillator(),gn=a.createGain();
  o.type=tipo;o.frequency.value=f;gn.gain.setValueAtTime(0,t);gn.gain.linearRampToValueAtTime(g,t+.01);gn.gain.exponentialRampToValueAtTime(.001,t+d);
- o.connect(gn);gn.connect(a.destination);o.start(t);o.stop(t+d+.02);
+ o.connect(gn);gn.connect(saida(a));o.start(t);o.stop(t+d+.02);
 }
-const nota=v=>tom(200+Math.min(1,v/(G.vmax||1))*900,.07,.16,0,'triangle'); // tom mais agudo para valores maiores
-function fanfarra(ok){if(ok)[523,659,784,1047].forEach((f,i)=>tom(f,.25,.18,i*.09,'triangle'));else{tom(196,.3,.2,0,'sawtooth');tom(147,.45,.2,.2,'sawtooth')}}
+const sMover=(f=170,g=1,k='mover')=>{if(on(k))bloco(f*2.4,g)};
+const sVirar=()=>{if(on('virar'))bloco(1150,.75,{br:1.7,dec:.05})};
+const tomValor=r=>tom(200+r*900,.07,.16,0,'triangle'); // r de 0 a 1: valor maior, tom mais agudo
+const nota=v=>{if(on('nota'))tomValor(Math.min(1,v/(G.vmax||1)))};
+const sContagem=go=>{if(on('contagem'))tom(go?988:660,go?.35:.14,.16)};
+function fanfarra(ok){
+ if(ok){if(on('vitoria'))[523,659,784,1047].forEach((f,i)=>tom(f,.25,.18,i*.09,'triangle'))}
+ else if(on('erro')){tom(196,.3,.2,0,'sawtooth');tom(147,.45,.2,.2,'sawtooth')}
+}
+function forca(k,fn){const a=sons[k],m=som;sons[k]=true;som=true;try{fn()}finally{sons[k]=a;som=m}} // toca mesmo se o efeito estiver desligado (teste)
+function testa(k){
+ const em=(ms,fn)=>setTimeout(()=>forca(k,fn),ms);
+ if(k==='mover'||k==='moverAuto')[150,190,230,170].forEach((f,i)=>em(i*140,()=>sMover(f,1,k)));
+ else if(k==='virar'){em(0,sVirar);em(260,sVirar)}
+ else if(k==='nota')[.1,.4,.7,1].forEach((r,i)=>em(i*130,()=>tomValor(r)));
+ else if(k==='contagem'){[0,700,1400].forEach(ms=>em(ms,()=>sContagem(false)));em(2100,()=>sContagem(true))}
+ else if(k==='vitoria')em(0,()=>fanfarra(true));
+ else if(k==='erro')em(0,()=>fanfarra(false));
+}
 
 /* ===== Aparência (tema + papel de parede) ===== */
 const WALLS=[['mogno','Mogno'],['lousa','Lousa verde'],['folhas','Tábuas e folhas'],['vermelho','Feltro vermelho'],['azul','Tábuas azuis'],
@@ -417,16 +491,16 @@ function montaAp(){
   b.onclick=()=>{visual.wall=id;salvaVisual();aplicaWall();marcaAp()};W.appendChild(b)});
  marcaAp();
 }
-function abreAp(btn){
- const ap=$('#ap');
+function abreAp(btn,ap=$('#ap')){
+ (ap.id==='ap'?$('#sp'):$('#ap')).hidden=true;
  if(!ap.hidden){ap.hidden=true;return}
  ap.hidden=false;const r=btn.getBoundingClientRect(),w=ap.offsetWidth;
  ap.style.left=Math.max(12,Math.min(innerWidth-w-12,r.right-w))+'px';
  ap.style.top=Math.max(12,Math.min(r.bottom+8,innerHeight-ap.offsetHeight-12))+'px';
 }
 document.querySelectorAll('.btnAp').forEach(b=>b.addEventListener('click',e=>{e.stopPropagation();abreAp(b)}));
-document.addEventListener('click',e=>{if(!$('#ap').hidden&&!$('#ap').contains(e.target))$('#ap').hidden=true});
-document.addEventListener('keydown',e=>{if(e.key==='Escape')$('#ap').hidden=true});
+document.addEventListener('click',e=>{['#ap','#sp'].forEach(q=>{const x=$(q);if(!x.hidden&&!x.contains(e.target))x.hidden=true})});
+document.addEventListener('keydown',e=>{if(e.key==='Escape'){$('#ap').hidden=true;$('#sp').hidden=true}});
 document.addEventListener('DOMContentLoaded',()=>{montaAp();aplicaWall()});
 
 /* ===== Gerenciador ===== */
@@ -496,8 +570,8 @@ function atualizaGer(){
  $('#gEmbBox').hidden=!(busca&&!torn&&$('#algo').value==='linear');
  $('#btnGerar').textContent=torn?'Iniciar competição':busca?'Gerar e buscar':'Gerar e ordenar';
  let t;
- if(torn)t='Todos os algoritmos recebem exatamente a mesma lista'+(busca?' e o mesmo valor a buscar':'')+'. Eles rodam um depois do outro e cada resultado é salvo no ranking. O tempo da competição é simulado (cada passo vale 1 ms) para que mudar a velocidade não altere o resultado. Dá para acelerar, pausar e avançar passo a passo.';
- else if(busca)t='Laranja: peça que acabou de ser virada. Peças apagadas já foram descartadas pelo algoritmo. Só a busca linear funciona em lista embaralhada; as demais precisam da lista ordenada, então ela é gerada já ordenada no sentido escolhido. Se o valor informado não estiver na lista gerada, a busca termina avisando que ele não está presente.';
+ if(torn)t='Todos os algoritmos recebem exatamente a mesma lista'+(busca?' e o mesmo valor a buscar':'')+'. Eles rodam um depois do outro e cada resultado é salvo no ranking. O tempo da competição é simulado (cada passo vale 1 ms) para que mudar a velocidade não altere o resultado. Dá para acelerar, pausar e avançar passo a passo. Com várias rodadas, cada uma usa uma lista nova e o ranking mostra a média.';
+ else if(busca)t='Laranja: peça que acabou de ser virada. Peças apagadas já foram descartadas; a faixa iluminada marca o intervalo que ainda resta. Só a busca linear funciona em lista embaralhada; as demais precisam da lista ordenada, então ela é gerada já ordenada no sentido escolhido. Se o valor informado não estiver na lista gerada, a busca termina avisando que ele não está presente.';
  else t=(radio('gvis')==='linhas'?'Cada linha tem altura proporcional ao valor (uma linha 10 é o dobro de uma linha 5). ':'')+'Laranja: peças sendo comparadas. Azul: pivô do Quick sort. Dá para pausar, avançar passo a passo e mudar a velocidade durante a animação. Com muitas peças, aumente a velocidade.';
  $('#legGer').textContent=t;
 }
@@ -529,14 +603,14 @@ $('#btnGerar').onclick=()=>{
  const at=$('#galvo').value.trim();
  const g={n,tipo:busca?'buscar':'ordenar',forma:busca?'emb':radio('gforma'),emb:busca&&!torn&&algos[0]==='linear'&&$('#gemb').checked,alvo:busca&&at!==''&&!isNaN(+at)?parseInt(at,10):''};
  const c={...novoConjunto(g),busca,algo:algos[0],gerA:g,barras:!busca&&radio('gvis')==='linhas'};
- if(torn){c.comp=true;c.zera=$('#tzera').checked;c.torneio={lista:algos,i:0,play:true,fim:false,regs:[],tm:null}}
+ if(torn){c.comp=true;c.zera=$('#tzera').checked;c.torneio={lista:algos,i:0,r:0,rod:Math.max(1,Math.min(10,parseInt($('#trod').value)||1)),play:true,fim:false,regs:[],map:{},acc:{},tm:null}}
  inicia(c);
 };
 function inicia(c){setTimeout(atividade,0);c.dir=dirAtual();DIR=c.dir;
  if(c.comp&&c.zera){ranking=ranking.filter(r=>r.tipo!==(c.busca?'buscar':'ordenar'));guarda()}
  cfg=c;mostra('sandbox');montaMesa()}
 function mostra(id){document.querySelectorAll('.tela').forEach(t=>t.classList.toggle('ativa',t.id===id))}
-$('#btnVoltar').onclick=()=>{stopAuto();cancelaComp();$('#ap').hidden=true;mostra('gerenciador')};
+$('#btnVoltar').onclick=()=>{stopAuto();cancelaComp();$('#ap').hidden=true;$('#sp').hidden=true;mostra('gerenciador')};
 $('#btnReiniciar').onclick=()=>montaMesa();
 
 /* ===== Mesa ===== */
@@ -557,12 +631,23 @@ const vaga=i=>({x:G.x0+(i%G.cols)*G.step,y:G.rowY+Math.floor(i/G.cols)*G.step});
 const rect=p=>p.slot!==null?(cfg.barras?{x:G.x0+p.slot*G.step,y:G.base-p.h}:vaga(p.slot)):{x:p.fx*G.W,y:p.fy*G.H};
 const ANIM_FIM={pisca:'ok',giro:'gira',piscaR:'nao',assenta:'assenta'};
 
+let faixas=[],faixaR=null;
+function faixa(lo,hi){ // destaca o intervalo restante da busca (uma faixa por linha de peças)
+ if(lo==null||hi<lo){faixas.forEach(f=>f.style.opacity=0);return}
+ const pad=Math.max(4,Math.round(G.size*.12)),r0=Math.floor(lo/G.cols),r1=Math.floor(hi/G.cols),need=r1-r0+1;
+ while(faixas.length<need){const d=document.createElement('div');d.className='faixa';d.style.opacity=0;mesa.insertBefore(d,pecas[0].el);faixas.push(d)}
+ faixas.forEach((d,k)=>{
+  if(k>=need){d.style.opacity=0;return}
+  const r=r0+k,x=Math.max(lo,r*G.cols),y=Math.min(hi,(r+1)*G.cols-1),va=vaga(x),vb=vaga(y);
+  Object.assign(d.style,{left:(va.x-pad)+'px',top:(va.y-pad)+'px',width:(vb.x-va.x+G.size+2*pad)+'px',height:(G.size+2*pad)+'px',opacity:1})});
+}
 function montaMesa(manter){
- stopAuto();cancelaComp();mesa.innerHTML='';pecas=[];vagasEl=[];idxEl=[];$('#msg').classList.remove('on','err');$('#flash').classList.remove('on');
+ stopAuto();cancelaComp();mesa.innerHTML='';faixas=[];faixaR=null;pecas=[];vagasEl=[];idxEl=[];$('#msg').classList.remove('on','err');$('#flash').classList.remove('on');
  DIR=cfg.dir;mesa.classList.toggle('barras',!!cfg.barras);
  if(cfg.gera)sorteia(cfg.gera);
  const T=cfg.torneio;
- if(T&&!manter){T.i=0;T.fim=false;T.play=true;T.regs=[];cfg.algo=T.lista[0];
+ if(!manter)velManual=false;
+ if(T&&!manter){T.i=0;T.r=0;T.map={};T.acc={};T.fim=false;T.play=true;T.regs=[];cfg.algo=T.lista[0];
   if(cfg.zera){ranking=ranking.filter(r=>r.tipo!==tipoAtual());guarda()}}
  mov=0;comps=0;$('#resumo').hidden=true;$('#sandbox').classList.toggle('comp',!!cfg.comp);$('#rank').hidden=!cfg.comp;
  const n=cfg.vals.length;DIG=Math.max(2,...cfg.vals.map(v=>v.length));medidas(n);
@@ -580,7 +665,7 @@ function montaMesa(manter){
  $('#btnProx').textContent=T?'Repetir com novos valores':'Próximo competidor';
  if(T){
   $('#btnProx').hidden=true;$('#cron').textContent='0,00 s';
-  $('#cNome').textContent=`${NOME[cfg.algo]} (${T.i+1}/${T.lista.length})`;renderRank();
+  $('#cNome').textContent=`${NOME[cfg.algo]} (${T.i+1}/${T.lista.length})`+(T.rod>1?` · rodada ${T.r+1}/${T.rod}`:'');renderRank();
   iniciaAuto(!!manter);
  }else if(cfg.algo)iniciaAuto();
  barra();
@@ -598,6 +683,7 @@ function desenha(){
   s.width=G.size+'px';s.height=(cfg.barras?p.h:G.size)+'px';
   s.fontSize=cfg.barras?((G.size>=22&&p.h>=28)?Math.min(G.size*.5,20):0)+'px':(G.size<13?0:G.size*Math.min(.42,.95/DIG))+'px';
   s.left=r.x+'px';s.top=r.y+'px'});
+ if(faixaR&&!cfg.barras)faixa(faixaR[0],faixaR[1]);
 }
 window.addEventListener('resize',()=>{if($('#sandbox').classList.contains('ativa')&&pecas.length)desenha()});
 function contador(){$('#cont').textContent=(cfg.busca?'Viradas: ':'Movimentos: ')+mov+(cfg.algo?' · Comparações: '+comps:'')}
@@ -648,7 +734,7 @@ function livre(p,x,y){x=Math.min(Math.max(0,x),G.W-G.size);y=Math.min(Math.max(0
 function alvoPerto(cx,cy){let b=null,bd=G.size*.9;
  for(let i=0;i<pecas.length;i++){const v=vaga(i),d=Math.hypot(cx-v.x-G.size/2,cy-v.y-G.size/2);if(d<bd){bd=d;b=i}}return b}
 function vira(p){p.el.classList.remove('gira');void p.el.offsetWidth;p.el.classList.add('gira');
- setTimeout(()=>{p.virada=!p.virada;p.el.classList.toggle('virada',p.virada);toc(230,.7);
+ setTimeout(()=>{p.virada=!p.virada;p.el.classList.toggle('virada',p.virada);sVirar();
   if(!p.virada){mov++;contador();$('#ultima').textContent='Última virada: '+p.val}
   verificaBusca()},180)}
 
@@ -663,7 +749,7 @@ function ligaArraste(p){
   if(!down)return;
   if(!drag){
    if(Math.hypot(e.clientX-sx,e.clientY-sy)<6||(cfg.busca&&p.virada))return;
-   drag=true;toc(120,.5);p.slot=null;p.el.classList.add('arrasta');p.el.style.zIndex=++z;
+   drag=true;sMover(120,.5);p.slot=null;p.el.classList.add('arrasta');p.el.style.zIndex=++z;
   }
   const m=mesa.getBoundingClientRect(),x=e.clientX-m.left-ox,y=e.clientY-m.top-oy;
   p.el.style.left=x+'px';p.el.style.top=y+'px';
@@ -680,7 +766,7 @@ function ligaArraste(p){
    if(o){if(origem!==null)o.slot=origem;else livre(o,ini.x,ini.y)}
    p.slot=a;
   }else livre(p,x,y);
-  resolve(p);desenha();toc(170,1);p.el.classList.remove('assenta');void p.el.offsetWidth;p.el.classList.add('assenta');verifica();
+  resolve(p);desenha();sMover(170,1);p.el.classList.remove('assenta');void p.el.offsetWidth;p.el.classList.add('assenta');verifica();
  };
  p.el.addEventListener('pointerup',fim);p.el.addEventListener('pointercancel',fim);
 }
@@ -697,12 +783,27 @@ function* alg(nome,vals,a){ // cada yield: [destaques, pivô, posições alterad
   if(m!==i){sw(i,m);yield[[i,m],-1,[i,m]]}}
  if(nome==='insercao')for(let i=1;i<n;i++)for(let j=i;j>0;j--){yield[[j-1,j]];if(gt(a[j-1],a[j])){sw(j-1,j);yield[[j-1,j],-1,[j-1,j]]}else break}
  if(nome==='shell')for(let gp=n>>1;gp>0;gp>>=1)for(let i=gp;i<n;i++)for(let j=i;j>=gp;j-=gp){yield[[j-gp,j]];if(gt(a[j-gp],a[j])){sw(j-gp,j);yield[[j-gp,j],-1,[j-gp,j]]}else break}
+ if(nome==='contagem'||nome==='radix'){ // não comparam valores: leem, contam e posicionam
+  const vs=Array.from({length:n},(_,i)=>v(i)),mn=Math.min(...vs),mx=Math.max(...vs),where=a.map((_,i)=>i);
+  const coloca=function*(out){ // leva cada peça ao lugar definido em out (a posição k recebe out[k])
+   for(let k=0;k<n;k++){const s=where[out[k]];
+    if(s===k){yield[[k],-1,[],0,1];continue}
+    sw(k,s);where[a[k]]=k;where[a[s]]=s;yield[[k,s],-1,[k,s]]}};
+  const ordena=function*(chave,K){ // ordenação estável por contagem; chave(peça) devolve de 0 a K-1
+   const cnt=new Array(K).fill(0),atual=a.slice();
+   for(let i=0;i<n;i++){yield[[i],-1,[],0,1];cnt[chave(a[i])]++}
+   for(let k=1;k<K;k++)cnt[k]+=cnt[k-1];
+   const out=new Array(n);for(let i=n-1;i>=0;i--)out[--cnt[chave(atual[i])]]=atual[i];
+   yield*coloca(out)};
+  if(nome==='contagem')yield*ordena(p=>DIR>0?v(p)-mn:mx-v(p),mx-mn+1);
+  else for(let e=1;;e*=10){yield*ordena(p=>{const d=Math.floor((v(p)-mn)/e)%10;return DIR>0?d:9-d},10);if(e*10>mx-mn)break}
+ }
  if(nome==='quick'){const q=function*(lo,hi){if(lo>=hi)return;const pv=v(a[hi]);let i=lo;
   for(let j=lo;j<hi;j++){yield[[j],hi];if(DIR*(v(a[j])-pv)<0){if(i!==j){sw(i,j);yield[[i,j],hi,[i,j]]}i++}}
   if(i!==hi){sw(i,hi);yield[[i],i,[i,hi]]}yield*q(lo,i-1);yield*q(i+1,hi)};yield*q(0,n-1)}
  if(nome==='merge'){const m=function*(lo,hi){if(hi<=lo)return;const mid=(lo+hi)>>1;yield*m(lo,mid);yield*m(mid+1,hi);
-  const r=rg(lo,hi),old=a.slice(lo,hi+1),L=old.slice(0,mid+1-lo),R=old.slice(mid+1-lo);yield[r];let i=0,j=0,k=lo;
-  while(i<L.length||j<R.length)a[k++]=(j>=R.length||(i<L.length&&DIR*(v(L[i])-v(R[j]))<=0))?L[i++]:R[j++];let mv=0;for(let q=lo;q<=hi;q++)if(a[q]!==old[q-lo])mv++;yield[r,-1,r,mv]};yield*m(0,n-1)}
+  const r=rg(lo,hi),old=a.slice(lo,hi+1),L=old.slice(0,mid+1-lo),R=old.slice(mid+1-lo);yield[r,-1,[],0,1];let i=0,j=0,k=lo,cm=0;
+  while(i<L.length||j<R.length){if(i<L.length&&j<R.length)cm++;a[k++]=(j>=R.length||(i<L.length&&DIR*(v(L[i])-v(R[j]))<=0))?L[i++]:R[j++]}let mv=0;for(let q=lo;q<=hi;q++)if(a[q]!==old[q-lo])mv++;yield[r,-1,r,mv,0,cm]};yield*m(0,n-1)}
  if(nome==='heap'){const sift=function*(i,e){for(;;){const l=2*i+1,r=l+1;let m=i;
    if(l<e&&gt(a[l],a[m]))m=l;if(r<e&&gt(a[r],a[m]))m=r;yield[[i,m]];if(m===i)break;sw(i,m);yield[[i,m],-1,[i,m]];i=m}};
   for(let i=(n>>1)-1;i>=0;i--)yield*sift(i,n);for(let e=n-1;e>0;e--){sw(0,e);yield[[0,e],-1,[0,e]];yield*sift(0,e)}}
@@ -748,6 +849,18 @@ function* buscaGen(nome,vals,alvo){ // cada yield: [peça lida, início do inter
    prev=step;step+=m;if(prev>=n)return -1;
   }
  }
+ if(nome==='fib'){
+  let f2=0,f1=1,f=1;while(f<n){f2=f1;f1=f;f=f1+f2}
+  let off=-1;
+  while(f>1){
+   if(off+1>=n)break;
+   const i=Math.min(off+f2,n-1),x=yield*ler(i,off+1,Math.min(n-1,off+f)),k=c(x);
+   if(k<0){f=f1;f1=f2;f2=f-f1;off=i}
+   else if(k>0){f=f2;f1=f1-f2;f2=f-f1}
+   else return i;
+  }
+  if(f1&&off+1<n){const x=yield*ler(off+1,off+1,off+1);if(x===t)return off+1}
+ }
  if(nome==='expo'){
   const x0=yield*ler(0,0,n-1);if(x0===t)return 0;
   let i=1;
@@ -761,30 +874,39 @@ function* buscaGen(nome,vals,alvo){ // cada yield: [peça lida, início do inter
 /* ===== Execução automática ===== */
 const ATRASOS=[1000,700,500,350,250,170,110,70,40,20,16,16,16,16],LOTE=[1,1,1,1,1,1,1,1,1,1,3,10,50,250];
 const posiciona=p=>{const r=rect(p);p.el.style.left=r.x+'px';p.el.style.top=r.y+'px'};
+let velManual=false;
+function velInicial(){ // escolhe a velocidade que deixa a execução visível: simula os passos e mira num tempo total confortável
+ const orc=cfg.torneio?10000:25000;let S=0;
+ const it=cfg.busca?buscaGen(cfg.algo,cfg.vals,cfg.alvo):gera(cfg.algo,cfg.vals).it;
+ for(const _ of it)S++;
+ for(let v=2;v<=14;v++)if(Math.ceil(S/LOTE[v-1])*ATRASOS[v-1]<=orc)return v;
+ return 14;
+}
 function iniciaAuto(mantemVel){
  const n=cfg.vals.length,busca=cfg.busca;let a=null,it;
  if(busca)it=buscaGen(cfg.algo,cfg.vals,cfg.alvo);else{const g=gera(cfg.algo,cfg.vals);a=g.a;it=g.it}
  auto={tipo:busca?'busca':'ord',a,it,n:0,play:cfg.torneio?cfg.torneio.play:true,timer:null,hl:[]};
- if(!mantemVel)$('#vel').value=busca?(n<=30?4:n<=150?7:n<=400?10:12):(n<=20?5:n<=60?7:n<=150?9:n<=400?12:13);
- $('#btnPlay').textContent=auto.play?'Pausar':'Continuar';barra();tick();
+ if(!mantemVel||!velManual)$('#vel').value=velInicial();
+ $('#btnPlay').textContent=auto.play?'Pausar':'Continuar';barra();
+ auto.timer=setTimeout(tick,900); // pausa inicial: dá tempo de ver a lista antes do primeiro passo
 }
 function abre(p,anim){ // desvira uma peça na busca automática
  if(anim){p.el.classList.remove('gira');void p.el.offsetWidth;p.el.classList.add('gira');setTimeout(()=>p.el.classList.remove('virada'),180)}
  else p.el.classList.remove('virada');
- toc(230,.7);$('#ultima').textContent='Última virada: '+p.val;
+ sVirar();$('#ultima').textContent='Última virada: '+p.val;
 }
 function proxima(k){
  if(auto.tipo==='busca')return proximaBusca(k);
  let hi=[],pv=-1,fim=false;const ch=new Set();
  for(let t=0;t<k;t++){
   const r=auto.it.next();if(r.done){fim=true;break}
-  const[h,p=-1,c=[],w=c.length?1:0]=r.value;hi=h;pv=p;c.forEach(x=>ch.add(x));auto.n++;mov+=w;if(!c.length)comps++;
+  const[h,p=-1,c=[],w=c.length?1:0,nc=0,cc=null]=r.value;hi=h;pv=p;c.forEach(x=>ch.add(x));auto.n++;mov+=w;comps+=cc!==null?cc:(c.length||nc?0:1);
  }
  ch.forEach(sl=>{const p=pecas[auto.a[sl]];p.slot=sl;posiciona(p)});
  auto.hl.forEach(p=>p.el.classList.remove('cmp','pv'));auto.hl=[];
  hi.forEach(sl=>{const p=pecas[auto.a[sl]];p.el.classList.add('cmp');auto.hl.push(p)});
  if(pv>=0){const p=pecas[auto.a[pv]];p.el.classList.add('pv');auto.hl.push(p)}
- if(ch.size)toc(140+Math.min(1,+pecas[auto.a[[...ch][0]]].val/G.vmax)*90);else if(hi.length)nota(+pecas[auto.a[hi[0]]].val);
+ if(ch.size)sMover(140+Math.min(1,+pecas[auto.a[[...ch][0]]].val/G.vmax)*90,1,'moverAuto');else if(hi.length)nota(+pecas[auto.a[hi[0]]].val);
  $('#titulo').textContent=`${NOME[cfg.algo]} · ${nomeDir()}: passo ${auto.n}`;contador();
  if(cfg.torneio)$('#cron').textContent=fmt(auto.n*PASSO_MS);
  if(fim)fimAuto();
@@ -799,13 +921,14 @@ function proximaBusca(k){
  if(ult){
   auto.hl.forEach(p=>p.el.classList.remove('cmp'));auto.hl=[];
   const p=pecas[ult[0]];p.el.classList.add('cmp');auto.hl.push(p);nota(+p.val);
-  pecas.forEach((q,i)=>q.el.classList.toggle('fora',i<ult[1]||i>ult[2]));
+  pecas.forEach((q,i)=>q.el.classList.toggle('fora',i<ult[1]||i>ult[2]));faixaR=[ult[1],ult[2]];faixa(ult[1],ult[2]);
  }
  $('#titulo').textContent=`${NOME[cfg.algo]}: passo ${auto.n}`;contador();
  if(cfg.torneio)$('#cron').textContent=fmt(auto.n*PASSO_MS);
  if(fim)fimAuto(res);
 }
 const passo=()=>{if(auto)proxima(1)};
+$('#vel').addEventListener('input',()=>{velManual=true});
 function tick(){
  if(!auto)return;clearTimeout(auto.timer);if(!auto.play)return;
  const i=+$('#vel').value-1,d=ATRASOS[i];
@@ -815,7 +938,7 @@ function tick(){
 function fimAuto(res){
  const A=auto,busca=A.tipo==='busca',T=cfg.torneio;
  clearTimeout(A.timer);auto=null;limpaDestaques();
- pecas.forEach(p=>p.el.classList.remove('fora'));
+ pecas.forEach(p=>p.el.classList.remove('fora'));faixaR=null;faixa(null);
  let achou=true;
  if(busca){achou=res>=0;if(achou)verificaBusca();else ausente()}
  else{jaOrd=false;verifica()}
@@ -825,19 +948,28 @@ function fimAuto(res){
  $('#resGraf').innerHTML='';$('#resumo').classList.remove('larga');$('#resNum').className='';$('#resNum').textContent=mov.toLocaleString('pt-BR');
  $('#resLab').textContent=un;$('#resumo').hidden=false;atividade();
  if(T){
-  const reg={nome:NOME[cfg.algo],ms:A.n*PASSO_MS,mov,cmp:comps,tipo:tipoAtual(),id:Date.now()+T.i,alg:1,aus:busca&&!achou};
-  ranking.push(reg);T.regs.push(reg);guarda();renderRank();$('#cron').textContent=fmt(reg.ms);
+  const k=cfg.algo,ac=T.acc[k]=T.acc[k]||{ms:[],mov:[],cmp:[]};ac.ms.push(A.n*PASSO_MS);ac.mov.push(mov);ac.cmp.push(comps);
+  const av=x=>x.reduce((q,y)=>q+y,0)/x.length,rd=x=>Math.round(av(x)*10)/10;
+  let reg=T.map[k];
+  if(!reg){reg={nome:NOME[k],tipo:tipoAtual(),id:Date.now()+T.i,alg:1,aus:false};T.map[k]=reg;ranking.push(reg);T.regs.push(reg)}
+  reg.ms=av(ac.ms);reg.mov=rd(ac.mov);reg.cmp=rd(ac.cmp);reg.rod=ac.ms.length;reg.aus=reg.aus||(busca&&!achou);
+  guarda();renderRank();$('#cron').textContent=fmt(A.n*PASSO_MS);
   T.play=A.play;T.i++;
-  if(T.i>=T.lista.length){T.fim=true;torneioFim()}
-  else{$('#titulo').textContent=`Próximo: ${NOME[T.lista[T.i]]}…`;
-   T.tm=setTimeout(()=>{cfg.algo=T.lista[T.i];montaMesa(true)},+$('#vel').value>=10?500:1400)}
+  const esp=+$('#vel').value>=10?500:1400;
+  if(T.i>=T.lista.length){
+   if(T.r+1<T.rod){
+    $('#titulo').textContent=`Rodada ${T.r+1} de ${T.rod} concluída. Sorteando nova lista…`;
+    T.tm=setTimeout(()=>{T.r++;T.i=0;if(cfg.gerA)Object.assign(cfg,novoConjunto(cfg.gerA));cfg.algo=T.lista[0];montaMesa(true)},esp)
+   }else{T.fim=true;torneioFim()}
+  }else{$('#titulo').textContent=`Próximo: ${NOME[T.lista[T.i]]}…`;
+   T.tm=setTimeout(()=>{cfg.algo=T.lista[T.i];montaMesa(true)},esp)}
  }
 }
 function melhor(L){return L.slice().sort(cmpRank)[0]}
 function torneioResumo(){
  const T=cfg.torneio,L=T.regs.slice().sort(cmpRank),w=L[0];if(!w)return;
  const u=cfg.busca?'viradas':'movimentos',por=crit==='mov'?u:crit==='cmp'?'comparações':'tempo',mx=Math.max(1e-9,...L.map(r=>kv(r,crit)));
- $('#resAlgo').textContent=`Competição concluída · vencedor (por ${por})`;
+ $('#resAlgo').textContent=`Competição concluída`+(T.rod>1?` · média de ${T.rod} rodadas`:'')+` · vencedor (por ${por})`;
  $('#resNum').className='nome';$('#resNum').textContent=w.nome;$('#resLab').textContent=vTxt(w);
  $('#resGraf').innerHTML=L.map(r=>`<div class="gr"><span>${r.nome}</span><div><i style="width:${Math.max(2,kv(r,crit)/mx*100)}%"></i></div><b>${vTxt(r)}</b></div>`).join('');
  $('#resumo').classList.add('larga');$('#resumo').hidden=false;
@@ -856,7 +988,7 @@ function limpaDestaques(){pecas.forEach(p=>p.el.classList.remove('cmp','pv'))}
 $('#btnPlay').onclick=()=>{if(!auto)return;auto.play=!auto.play;if(cfg.torneio)cfg.torneio.play=auto.play;$('#btnPlay').textContent=auto.play?'Pausar':'Continuar';tick()};
 $('#btnPasso').onclick=()=>{if(!auto)return;auto.play=false;if(cfg.torneio)cfg.torneio.play=false;clearTimeout(auto.timer);$('#btnPlay').textContent='Continuar';passo()};
 $('#btnParar').onclick=()=>{
- const T=cfg.torneio;stopAuto();pecas.forEach(p=>p.el.classList.remove('fora'));
+ const T=cfg.torneio;stopAuto();pecas.forEach(p=>p.el.classList.remove('fora'));faixaR=null;faixa(null);
  if(T){T.fim=true;$('#titulo').textContent='Competição interrompida';$('#btnProx').hidden=false}
  jaOrd=ordenado();barra();
 };
@@ -869,7 +1001,8 @@ ranking=ranking.filter(r=>r.tipo);
 const tipoAtual=()=>cfg.busca?'buscar':'ordenar';
 const BIG=1e12;
 const kv=(r,c)=>c==='mov'?(r.mov??BIG):c==='cmp'?(r.cmp??BIG):r.ms;
-const vTxt=r=>crit==='mov'?(r.mov??'—')+'':crit==='cmp'?(r.cmp??'—')+'':fmt(r.ms);
+const fn=x=>x==null?'—':(+x).toLocaleString('pt-BR',{maximumFractionDigits:1});
+const vTxt=r=>crit==='mov'?fn(r.mov):crit==='cmp'?fn(r.cmp):fmt(r.ms);
 const cmpRank=(a,b)=>kv(a,crit)-kv(b,crit)||a.ms-b.ms||(a.mov??BIG)-(b.mov??BIG);
 const lista=()=>ranking.filter(r=>r.tipo===tipoAtual()).sort(cmpRank);
 const guarda=()=>{try{localStorage.setItem('mesa-ranking',JSON.stringify(ranking))}catch(e){}};
@@ -886,10 +1019,10 @@ function comeca(){
  if(!comp||comp.estado!=='espera')return;
  comp.nome=$('#nome').value.trim()||'Competidor '+(lista().length+1);$('#cNome').textContent=comp.nome;
  comp.estado='contagem';$('#ovBox').hidden=true;
- const c=$('#ovCount');c.hidden=false;let n=3;c.textContent=n;
+ const c=$('#ovCount');c.hidden=false;let n=3;c.textContent=n;sContagem(false);
  const passo=()=>{n--;
-  if(n>0){c.textContent=n;comp.tm=setTimeout(passo,800)}
-  else{c.hidden=true;$('#ov').hidden=true;comp.estado='rodando';comp.t0=performance.now();mostraAlvo();loop()}};
+  if(n>0){c.textContent=n;sContagem(false);comp.tm=setTimeout(passo,800)}
+  else{sContagem(true);c.hidden=true;$('#ov').hidden=true;comp.estado='rodando';comp.t0=performance.now();mostraAlvo();loop()}};
  comp.tm=setTimeout(passo,800);
 }
 function mostraAlvo(){
@@ -914,8 +1047,8 @@ function renderRank(){
  L.forEach((r,i)=>{const li=document.createElement('li');
   const a=document.createElement('span');a.textContent=`${i+1}º ${r.nome}`;
   const v=document.createElement('b');v.textContent=vTxt(r);li.append(a,v);
-  const pt=[];if(crit!=='ms')pt.push(fmt(r.ms));if(crit!=='mov'&&r.mov!=null)pt.push(`${r.mov} ${unid(r.mov,r.tipo==='buscar')}`);if(crit!=='cmp'&&r.cmp!=null)pt.push(`${r.cmp} comp.`);
-  if(r.alg)pt.push('automático');if(r.aus)pt.push('valor ausente');
+  const pt=[];if(crit!=='ms')pt.push(fmt(r.ms));if(crit!=='mov'&&r.mov!=null)pt.push(`${fn(r.mov)} ${unid(r.mov,r.tipo==='buscar')}`);if(crit!=='cmp'&&r.cmp!=null)pt.push(`${fn(r.cmp)} comp.`);
+  if(r.rod>1)pt.push(`média de ${r.rod} rodadas`);else if(r.alg)pt.push('automático');if(r.aus)pt.push('valor ausente');
   if(pt.length){const m=document.createElement('small');m.textContent=pt.join(' · ');li.appendChild(m)}
   l.appendChild(li)});
 }
@@ -981,12 +1114,63 @@ function customSelect(sel){
  refresh();return{refresh};
 }
 const algoCS=customSelect($('#algo'));
-const atualizaSom=()=>document.querySelectorAll('.btnSom').forEach(b=>b.textContent=som?'Som: ligado':'Som: desligado');
-document.querySelectorAll('.btnSom').forEach(b=>b.onclick=()=>{som=!som;try{localStorage.setItem('mesa-som',som?'1':'0')}catch(e){}atualizaSom();toc(180)});
-atualizaSom();
+const salvaSons=()=>{try{localStorage.setItem('mesa-som',som?'1':'0');localStorage.setItem('mesa-sons',JSON.stringify(sons))}catch(e){}};
+const atualizaSom=()=>{document.querySelectorAll('.btnSom').forEach(b=>b.textContent=som?'Som: ligado':'Som: desligado');
+ $('#somMestre').checked=som;$('#spLista').classList.toggle('mudo',!som)};
+function montaSom(){
+ $('#spLista').innerHTML=EFEITOS.map(([k,n])=>`<div class="srow"><div class="seg"><label><input type="checkbox" data-k="${k}"${sons[k]!==false?' checked':''}><span>${n}</span></label></div><button type="button" class="sec" data-t="${k}" aria-label="Ouvir: ${n}">▶</button></div>`).join('');
+ $('#spLista').addEventListener('change',e=>{const k=e.target.dataset.k;if(!k)return;sons[k]=e.target.checked;salvaSons();if(e.target.checked)testa(k)});
+ $('#spLista').addEventListener('click',e=>{const b=e.target.closest('button[data-t]');if(b)testa(b.dataset.t)});
+ $('#somMestre').onchange=e=>{som=e.target.checked;salvaSons();atualizaSom();if(som)testa('mover')};
+ document.querySelectorAll('.btnSom').forEach(b=>b.addEventListener('click',e=>{e.stopPropagation();abreAp(b,$('#sp'))}));
+ atualizaSom();
+}
+montaSom();
+
+/* ===== Ajuda ===== */
+const INFO_ORD=[
+ ['bolha','Compara vizinhos e troca os que estão fora de ordem; o maior “sobe” a cada volta. Esta versão não para antes.','O(n²)','O(n²)','O(n²)'],
+ ['selecao','Procura a menor peça do resto e a coloca na próxima posição.','O(n²)','O(n²)','O(n²)'],
+ ['insercao','Encaixa cada peça no lugar certo entre as que já estão ordenadas. Voa em lista quase ordenada.','O(n)','O(n²)','O(n²)'],
+ ['shell','Insertion sort com saltos que vão diminuindo até 1.','O(n log n)','~O(n^1,5)','O(n²)'],
+ ['quick','Escolhe um pivô (última peça) e separa menores e maiores. Sofre em lista já ordenada.','O(n log n)','O(n log n)','O(n²)'],
+ ['merge','Divide ao meio, ordena cada metade e intercala.','O(n log n)','O(n log n)','O(n log n)'],
+ ['heap','Monta um heap (árvore de máximos) e retira o maior repetidamente.','O(n log n)','O(n log n)','O(n log n)'],
+ ['contagem','Conta quantas vezes cada valor aparece e posiciona as peças, sem comparar. k = amplitude dos valores.','O(n + k)','O(n + k)','O(n + k)'],
+ ['radix','Ordena dígito a dígito (unidades, dezenas…) com contagem estável. d = nº de dígitos.','O(d·n)','O(d·n)','O(d·n)']];
+const INFO_BUS=[
+ ['linear','Olha peça por peça. Única que aceita lista embaralhada.','Não','O(n)'],
+ ['binaria','Olha o meio e descarta a metade errada.','Sim','O(log n)'],
+ ['ternaria','Dois pontos dividem a lista em três partes; descarta duas.','Sim','O(log n)'],
+ ['interp','Estima onde o valor está, como quem abre uma lista telefônica.','Sim','O(log log n) médio · O(n) pior'],
+ ['salto','Pula de √n em √n e depois olha o bloco peça por peça.','Sim','O(√n)'],
+ ['expo','Dobra o passo até passar do valor e faz busca binária ali.','Sim','O(log n)'],
+ ['fib','Divide o intervalo em tamanhos de Fibonacci (só usa soma e subtração).','Sim','O(log n)']];
+function montaAjuda(){
+ const tr=r=>`<tr><td>${NOME[r[0]]}</td><td>${r[1]}</td>${r.slice(2).map(x=>`<td class="o">${x}</td>`).join('')}</tr>`;
+ const cor=(c,t)=>`<li><span class="sq" style="--c:${c}"></span>${t}</li>`;
+ $('#ajCorpo').innerHTML=`
+ <h2>Cores</h2><ul>
+  ${cor('#ffb347','<b>Laranja</b>: peças sendo comparadas (ordenação) ou peça que acabou de ser lida (busca).')}
+  ${cor('#5ec8ff','<b>Azul</b>: pivô do Quick sort.')}
+  ${cor('#3ddc84','<b>Verde</b>: tudo ordenado, ou valor encontrado.')}
+  ${cor('#ff4d4d','<b>Vermelho</b>: o valor buscado não está na lista (a tela pisca).')}
+  <li><span class="sq d"></span><b>Peça apagada</b>: já descartada pela busca. <span class="sq f" style="margin-left:6px"></span><b>Faixa iluminada</b>: intervalo que ainda resta.</li>
+ </ul>
+ <h2>Algoritmos de ordenação</h2>
+ <div class="tbl"><table><thead><tr><th>Nome</th><th>Como funciona</th><th>Melhor</th><th>Médio</th><th>Pior</th></tr></thead><tbody>${INFO_ORD.map(tr).join('')}</tbody></table></div>
+ <p class="nota">n = quantidade de peças. Counting e Radix não comparam valores: a contagem de comparações fica em zero.</p>
+ <h2>Algoritmos de busca</h2>
+ <div class="tbl"><table><thead><tr><th>Nome</th><th>Como funciona</th><th>Lista ordenada?</th><th>Complexidade</th></tr></thead><tbody>${INFO_BUS.map(tr).join('')}</tbody></table></div>`;
+}
+montaAjuda();
+const fechaAj=()=>{$('#aj').hidden=true};
+document.querySelectorAll('.btnAj').forEach(b=>b.addEventListener('click',e=>{e.stopPropagation();$('#ap').hidden=true;$('#sp').hidden=true;$('#aj').hidden=false;$('#ajx').focus()}));
+$('#ajx').onclick=fechaAj;$('#aj').addEventListener('click',e=>{if(e.target===$('#aj'))fechaAj()});
+document.addEventListener('keydown',e=>{if(e.key==='Escape')fechaAj()});
 $('#btnCsv').onclick=()=>{
- const rows=[['posicao','nome','tempo_s','movimentos','comparacoes','automatico']];
- lista().forEach((r,i)=>rows.push([i+1,r.nome,(r.ms/1000).toFixed(3),r.mov??'',r.cmp??'',r.alg?'sim':'nao']));
+ const rows=[['posicao','nome','tempo_s','movimentos','comparacoes','automatico','rodadas']];
+ lista().forEach((r,i)=>rows.push([i+1,r.nome,(r.ms/1000).toFixed(3),r.mov??'',r.cmp??'',r.alg?'sim':'nao',r.rod||1]));
  const csv=rows.map(r=>r.map(x=>`"${String(x).replace(/"/g,'""')}"`).join(';')).join('\n'),a=document.createElement('a');
  a.href=URL.createObjectURL(new Blob(['\ufeff'+csv],{type:'text/csv'}));a.download='ranking-'+tipoAtual()+'.csv';a.click();setTimeout(()=>URL.revokeObjectURL(a.href),1000);
 };
