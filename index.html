@@ -224,13 +224,13 @@ button.wl.on{box-shadow:0 0 0 3px var(--h)}
 .srow button{font-size:14px;padding:0 14px}
 #spLista.mudo .seg span{opacity:.55}
 /* ===== Ajuda ===== */
-#aj{position:fixed;inset:0;z-index:8500;display:grid;place-items:center;padding:14px;background:rgba(var(--dk2),.72);backdrop-filter:blur(8px)}
-#aj .painel{position:relative;width:min(860px,100%);padding:24px 28px;color:var(--h)}
-#aj button.fecha{position:absolute;top:12px;right:12px;width:34px;height:34px;padding:0;border-radius:50%;font-size:15px}
-#aj h1{font-size:28px;padding-right:40px}
+#aj,#gf{position:fixed;inset:0;z-index:8500;display:grid;place-items:center;padding:14px;background:rgba(var(--dk2),.72);backdrop-filter:blur(8px)}
+#aj .painel,#gf .painel{position:relative;width:min(860px,100%);padding:24px 28px;color:var(--h)}
+#aj button.fecha,#gf button.fecha{position:absolute;top:12px;right:12px;width:34px;height:34px;padding:0;border-radius:50%;font-size:15px}
+#aj h1,#gf h1{font-size:28px;padding-right:40px}
 #aj h2{font-size:18px;color:var(--h);margin:20px 0 8px}
 #aj ul{list-style:none;padding:0;display:grid;gap:7px;font-size:15px;line-height:1.4;color:var(--x4)}
-#aj p.nota{margin-top:10px;font-size:14px;color:var(--x3);line-height:1.5}
+#aj p.nota,#gf p.nota{margin-top:10px;font-size:14px;color:var(--x3);line-height:1.5}
 .sq{display:inline-block;width:18px;height:18px;border-radius:5px;vertical-align:-3px;margin-right:8px;background:var(--c);box-shadow:0 0 8px var(--c)}
 .sq.f{background:var(--well);box-shadow:inset 0 0 0 2px var(--alvoln);opacity:.9}
 .sq.d{background:var(--t2);opacity:.3;box-shadow:none}
@@ -240,6 +240,15 @@ button.wl.on{box-shadow:0 0 0 3px var(--h)}
 #aj th{color:var(--h);font-weight:700}
 #aj td:first-child{color:var(--h);font-weight:700;white-space:nowrap}
 #aj td.o{white-space:nowrap;font-variant-numeric:tabular-nums}
+#passoTxt{position:absolute;top:56px;left:50%;transform:translateX(-50%);z-index:4400;max-width:min(92%,820px);padding:7px 20px;border-radius:999px;background:rgba(var(--dk2),.82);border:1px solid rgba(var(--ln),.35);color:var(--h);font-size:17px;text-align:center;pointer-events:none;font-variant-numeric:tabular-nums}
+.comp #passoTxt{left:calc((100% - 250px)/2)}
+#toast{position:absolute;top:104px;left:50%;transform:translateX(-50%);z-index:5100;padding:6px 16px;border-radius:999px;background:rgba(var(--dk2),.92);color:var(--h);font-size:16px;opacity:0;transition:opacity .2s;pointer-events:none}#toast.on{opacity:1}
+#desafio{position:absolute;top:64px;right:14px;width:280px;z-index:4600;display:flex;flex-direction:column;gap:10px;padding:16px;border-radius:16px;color:var(--h);background:linear-gradient(160deg,rgba(var(--dk),.94),rgba(var(--dk2),.96));border:1px solid rgba(var(--ln),.3);box-shadow:0 20px 50px rgba(0,0,0,.5)}
+#desafio h3{font-size:18px}#dsPts{font-size:30px;font-weight:700;font-variant-numeric:tabular-nums}#dsQ{font-size:16px;line-height:1.35}#dsOps{display:flex;flex-direction:column;gap:8px}
+#dsFb{min-height:22px;font-size:15px;color:var(--x4)}#desafio button{font-size:16px;padding:10px 12px}
+#dsOps button:disabled{opacity:.55}#dsOps button.certa,#dsOps button.errada{opacity:1;color:#06210f;background:#3ddc84}#dsOps button.errada{background:#ff7b7b;color:#3a0707}
+#gf{display:grid}#gf .painel{width:min(820px,100%)}
+#gfBox svg{width:100%;height:auto;display:block;margin-top:10px}#gfBox text{fill:var(--x4);font:13px Georgia,serif}
 </style>
 </head>
 <body>
@@ -252,7 +261,7 @@ button.wl.on{box-shadow:0 0 0 3px var(--h)}
    <button class="sec aba" data-t="p2">Gerador automático</button>
    <button class="sec btnSom" style="margin-left:auto"></button>
    <button class="sec btnAp" aria-haspopup="dialog">Aparência</button>
-   <button class="sec btnAj" aria-haspopup="dialog">Ajuda</button>
+   <button class="sec btnGraf">Gráfico de custo</button> <button class="sec btnAj" aria-haspopup="dialog">Ajuda</button>
   </div>
   <div class="grp" style="margin-top:12px">Sentido da ordenação</div>
   <div class="seg">
@@ -317,7 +326,7 @@ button.wl.on{box-shadow:0 0 0 3px var(--h)}
     <label><input type="radio" name="gmodo" value="um" checked><span>Um algoritmo</span></label>
     <label><input type="radio" name="gmodo" value="torneio"><span>Competição de algoritmos</span></label>
    </div>
-   <div id="visBox"><div class="grp">Lista inicial</div><div class="seg"><label><input type="radio" name="gforma" value="emb" checked><span>Embaralhada</span></label><label><input type="radio" name="gforma" value="quase"><span>Quase ordenada</span></label><label><input type="radio" name="gforma" value="inv"><span>Invertida</span></label><label><input type="radio" name="gforma" value="rep"><span>Muitos repetidos</span></label></div><div class="grp">Visual da ordenação</div><div class="seg"><label><input type="radio" name="gvis" value="pecas" checked><span>Peças</span></label><label><input type="radio" name="gvis" value="linhas"><span>Linhas verticais (altura = valor)</span></label></div></div>
+   <div id="visBox"><div class="grp">Lista inicial</div><div class="seg"><label><input type="radio" name="gforma" value="emb" checked><span>Embaralhada</span></label><label><input type="radio" name="gforma" value="quase"><span>Quase ordenada</span></label><label><input type="radio" name="gforma" value="inv"><span>Invertida</span></label><label><input type="radio" name="gforma" value="rep"><span>Muitos repetidos</span></label></div><div class="grp">Visual da ordenação</div><div class="seg"><label><input type="radio" name="gvis" value="pecas" checked><span>Peças</span></label><label><input type="radio" name="gvis" value="linhas"><span>Linhas verticais (altura = valor)</span></label></div><div class="seg" style="margin-top:8px"><label><input type="checkbox" id="gdegrade"><span>Degradê de cores por valor (só nas linhas; dá para ligar e desligar durante a animação)</span></label></div></div>
    <div id="umBox"><div class="grp">Algoritmo</div><div class="linha"><select id="algo"></select></div></div>
    <div id="tornBox" hidden>
     <div class="grp">Quem participa (mínimo 2)</div>
@@ -332,6 +341,7 @@ button.wl.on{box-shadow:0 0 0 3px var(--h)}
     <input id="galvo" class="peq" type="number" inputmode="numeric" aria-label="Valor a buscar">
     <div class="seg" id="gEmbBox" style="margin-top:8px" hidden><label><input type="checkbox" id="gemb"><span>Lista embaralhada (só a busca linear aceita)</span></label></div>
    </div>
+   <div id="desBox"><div class="grp">Modo desafio</div><div class="seg"><label><input type="checkbox" id="gdesafio"><span>O visitante adivinha o próximo passo e ganha pontos (use poucas peças)</span></label></div></div>
    <p class="legenda" id="legGer"></p>
    <button id="btnGerar">Gerar e ordenar</button>
   </div>
@@ -344,19 +354,23 @@ button.wl.on{box-shadow:0 0 0 3px var(--h)}
   <button class="sec" id="btnReiniciar">Reiniciar</button>
   <div id="ctrlAuto">
    <button class="sec" id="btnPlay">Pausar</button>
-   <button class="sec" id="btnPasso">Passo</button>
+   <button class="sec" id="btnAnt" title="Voltar um passo (←)">◀ Passo</button>
+   <button class="sec" id="btnPasso" title="Avançar um passo (→)">Passo ▶</button>
    <label>Velocidade <input id="vel" type="range" min="1" max="14" value="5"></label>
    <button class="sec" id="btnParar">Parar</button>
   </div>
   <span id="cont"></span>
+  <button class="sec" id="btnCor" hidden></button>
   <button class="sec btnSom"></button>
   <button class="sec btnAp" aria-haspopup="dialog">Aparência</button>
-   <button class="sec btnAj" aria-haspopup="dialog">Ajuda</button>
+   <button class="sec btnGraf">Gráfico de custo</button> <button class="sec btnAj" aria-haspopup="dialog">Ajuda</button>
   <span id="titulo"></span>
  </div>
  <div id="alvoGrande" hidden><span>Encontre o valor</span><b id="alvoNum"></b><small id="ultima"></small></div>
  <div id="mesa"></div>
+ <div id="passoTxt" hidden></div><div id="toast"></div>
  <div id="flash"></div>
+ <aside id="desafio" hidden><h3>Desafio</h3><div id="dsPts">0 / 0</div><div id="dsQ"></div><div id="dsOps"></div><div id="dsFb"></div><button class="sec" id="dsParar">Encerrar desafio</button></aside>
  <div id="msg">Ordenado!</div>
  <div id="resumo" hidden>
   <button id="fechaResumo" aria-label="Fechar resumo">✕</button>
@@ -398,6 +412,16 @@ button.wl.on{box-shadow:0 0 0 3px var(--h)}
  </div>
 </div>
 
+<div id="gf" hidden>
+ <div class="painel" role="dialog" aria-label="Gráfico de custo">
+  <button class="fecha" id="gfx" aria-label="Fechar gráfico">✕</button>
+  <h1>Custo × tamanho da lista</h1>
+  <p class="nota">Medido de verdade: o programa roda cada algoritmo em listas embaralhadas de 10, 50, 100, 500 e 1000 peças e conta comparações + movimentos. Compare o crescimento do O(n²) com o do O(n log n).</p>
+  <div class="seg" id="gfSel" style="margin-top:12px"></div>
+  <div class="seg" style="margin-top:8px"><label><input type="checkbox" id="gfLog"><span>Escala logarítmica</span></label><button class="sec" id="gfAnim" style="padding:8px 14px;font-size:15px">▶ Animar de novo</button></div>
+  <div id="gfBox"></div>
+ </div>
+</div>
 <div id="ap" role="dialog" aria-label="Aparência" hidden>
  <h3>Aparência</h3>
  <div class="grp">Cor do tema</div><div class="temas" id="apTemas"></div>
@@ -407,7 +431,7 @@ button.wl.on{box-shadow:0 0 0 3px var(--h)}
 <script>
 const MAX=20,MAXG=1000,PASSO_MS=1,$=s=>document.querySelector(s),mesa=$('#mesa');
 let DIG=2,mov=0,comps=0,valores=[],pecas=[],vagasEl=[],idxEl=[],cfg=null,G={},z=10,jaOrd=false,auto=null,DIR=1;
-const NOMES={bolha:'Bubble sort',selecao:'Selection sort',insercao:'Insertion sort',quick:'Quick sort',merge:'Merge sort',heap:'Heap sort',shell:'Shell sort',contagem:'Counting sort',radix:'Radix sort'};
+const NOMES={bolha:'Bubble sort',selecao:'Selection sort',insercao:'Insertion sort',quick:'Quick sort',merge:'Merge sort',heap:'Heap sort',shell:'Shell sort',contagem:'Counting sort',radix:'Radix sort',gnome:'Gnome sort',cocktail:'Cocktail sort',comb:'Comb sort',tim:'Tim sort',bogo:'Bogo sort (de brincadeira)'};
 const BUSCAS={linear:'Busca linear',binaria:'Busca binária',ternaria:'Busca ternária',interp:'Busca por interpolação',salto:'Busca por salto (jump)',expo:'Busca exponencial',fib:'Busca de Fibonacci'};
 const NOME={...NOMES,...BUSCAS};
 const embaralha=a=>{for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]]}return a};
@@ -561,18 +585,19 @@ $('#btnIniciar').onclick=()=>{
 function preencheAlgo(){
  const L=radio('gtipo')==='buscar'?BUSCAS:NOMES;
  $('#algo').innerHTML=Object.entries(L).map(([k,v])=>`<option value="${k}">${v}</option>`).join('');$('#algo').selectedIndex=0;algoCS.refresh();
- $('#tornLista').innerHTML=Object.entries(L).map(([k,v])=>`<label><input type="checkbox" value="${k}" checked><span>${v}</span></label>`).join('');
+ $('#tornLista').innerHTML=Object.entries(L).filter(([k])=>k!=='bogo').map(([k,v])=>`<label><input type="checkbox" value="${k}" checked><span>${v}</span></label>`).join('');
  atualizaGer();
 }
 function atualizaGer(){
  const busca=radio('gtipo')==='buscar',torn=radio('gmodo')==='torneio';
- $('#visBox').hidden=busca;$('#umBox').hidden=torn;$('#tornBox').hidden=!torn;$('#gAlvoBox').hidden=!busca;
+ $('#visBox').hidden=busca;$('#desBox').hidden=torn;$('#umBox').hidden=torn;$('#tornBox').hidden=!torn;$('#gAlvoBox').hidden=!busca;
  $('#gEmbBox').hidden=!(busca&&!torn&&$('#algo').value==='linear');
  $('#btnGerar').textContent=torn?'Iniciar competição':busca?'Gerar e buscar':'Gerar e ordenar';
  let t;
  if(torn)t='Todos os algoritmos recebem exatamente a mesma lista'+(busca?' e o mesmo valor a buscar':'')+'. Eles rodam um depois do outro e cada resultado é salvo no ranking. O tempo da competição é simulado (cada passo vale 1 ms) para que mudar a velocidade não altere o resultado. Dá para acelerar, pausar e avançar passo a passo. Com várias rodadas, cada uma usa uma lista nova e o ranking mostra a média.';
  else if(busca)t='Laranja: peça que acabou de ser virada. Peças apagadas já foram descartadas; a faixa iluminada marca o intervalo que ainda resta. Só a busca linear funciona em lista embaralhada; as demais precisam da lista ordenada, então ela é gerada já ordenada no sentido escolhido. Se o valor informado não estiver na lista gerada, a busca termina avisando que ele não está presente.';
  else t=(radio('gvis')==='linhas'?'Cada linha tem altura proporcional ao valor (uma linha 10 é o dobro de uma linha 5). ':'')+'Laranja: peças sendo comparadas. Azul: pivô do Quick sort. Dá para pausar, avançar passo a passo e mudar a velocidade durante a animação. Com muitas peças, aumente a velocidade.';
+ if(!busca&&!torn&&$('#algo').value==='bogo')t+=' Bogo sort: só 6 peças, senão a animação nunca acabaria. Ele embaralha tudo e confere; em média precisa de n! tentativas.';
  $('#legGer').textContent=t;
 }
 document.querySelectorAll('input[name=gtipo]').forEach(r=>r.onchange=preencheAlgo);
@@ -595,14 +620,14 @@ function novoConjunto(g){
  return{vals,alvo};
 }
 $('#btnGerar').onclick=()=>{
- const n=Math.max(2,Math.min(MAXG,parseInt($('#qtd').value)||8)),busca=radio('gtipo')==='buscar',torn=radio('gmodo')==='torneio';
- DIR=dirAtual();let algos=[$('#algo').value];
+ let n=Math.max(2,Math.min(MAXG,parseInt($('#qtd').value)||8));const busca=radio('gtipo')==='buscar',torn=radio('gmodo')==='torneio';
+ DIR=dirAtual();let algos=[$('#algo').value];if(!busca&&!torn&&algos[0]==='bogo'&&n>6){n=6;$('#qtd').value=6}
  if(torn){algos=[...document.querySelectorAll('#tornLista input:checked')].map(i=>i.value);
   if(algos.length<2){$('#tAviso').hidden=false;return}}
  $('#tAviso').hidden=true;
  const at=$('#galvo').value.trim();
  const g={n,tipo:busca?'buscar':'ordenar',forma:busca?'emb':radio('gforma'),emb:busca&&!torn&&algos[0]==='linear'&&$('#gemb').checked,alvo:busca&&at!==''&&!isNaN(+at)?parseInt(at,10):''};
- const c={...novoConjunto(g),busca,algo:algos[0],gerA:g,barras:!busca&&radio('gvis')==='linhas'};
+ const c={...novoConjunto(g),busca,algo:algos[0],gerA:g,barras:!busca&&radio('gvis')==='linhas',desafio:!torn&&$('#gdesafio').checked,degrade:!busca&&radio('gvis')==='linhas'&&$('#gdegrade').checked};
  if(torn){c.comp=true;c.zera=$('#tzera').checked;c.torneio={lista:algos,i:0,r:0,rod:Math.max(1,Math.min(10,parseInt($('#trod').value)||1)),play:true,fim:false,regs:[],map:{},acc:{},tm:null}}
  inicia(c);
 };
@@ -615,7 +640,7 @@ $('#btnReiniciar').onclick=()=>montaMesa();
 
 /* ===== Mesa ===== */
 function medidas(n){
- const top=cfg&&cfg.busca?172:82,W=mesa.clientWidth,H=mesa.clientHeight,s1=Math.min(88,(W-60)/n-14);
+ const top=cfg&&cfg.busca?186:(cfg&&cfg.barras?122:82),W=mesa.clientWidth,H=mesa.clientHeight,s1=Math.min(88,(W-60)/n-14);
  if(cfg&&cfg.barras){ // linhas verticais: uma coluna por valor, apoiadas numa linha de base
   const step=Math.min(90,(W-40)/n),g=step>=8?Math.max(2,Math.round(step*.15)):step>=3?1:0;
   Object.assign(G,{size:Math.max(.5,step-g),gap:g,step,cols:n,rows:1,W,H});
@@ -651,7 +676,7 @@ function montaMesa(manter){
   if(cfg.zera){ranking=ranking.filter(r=>r.tipo!==tipoAtual());guarda()}}
  mov=0;comps=0;$('#resumo').hidden=true;$('#sandbox').classList.toggle('comp',!!cfg.comp);$('#rank').hidden=!cfg.comp;
  const n=cfg.vals.length;DIG=Math.max(2,...cfg.vals.map(v=>v.length));medidas(n);
- G.vmax=Math.max(1,...cfg.vals.map(Number));
+ G.vmax=Math.max(1,...cfg.vals.map(Number));G.vmin=Math.min(...cfg.vals.map(Number));$('#passoTxt').style.top=cfg.busca?'150px':'56px';
  for(let i=0;i<(cfg.barras?0:n);i++){
   const s=document.createElement('div');s.className='vaga';mesa.appendChild(s);vagasEl.push(s);
   const t=document.createElement('div');t.className='idx';t.textContent=i;mesa.appendChild(t);idxEl.push(t);
@@ -682,7 +707,8 @@ function desenha(){
   const r=rect(p),s=p.el.style;
   s.width=G.size+'px';s.height=(cfg.barras?p.h:G.size)+'px';
   s.fontSize=cfg.barras?((G.size>=22&&p.h>=28)?Math.min(G.size*.5,20):0)+'px':(G.size<13?0:G.size*Math.min(.42,.95/DIG))+'px';
-  s.left=r.x+'px';s.top=r.y+'px'});
+  s.left=r.x+'px';s.top=r.y+'px';
+  s.background=cfg.barras&&cfg.degrade?corVal(+p.val):''});
  if(faixaR&&!cfg.barras)faixa(faixaR[0],faixaR[1]);
 }
 window.addEventListener('resize',()=>{if($('#sandbox').classList.contains('ativa')&&pecas.length)desenha()});
@@ -690,7 +716,7 @@ function contador(){$('#cont').textContent=(cfg.busca?'Viradas: ':'Movimentos: '
 const emTorneio=()=>!!(cfg&&cfg.torneio&&!cfg.torneio.fim);
 function barra(){
  contador();
- $('#ctrlAuto').style.display=(auto||emTorneio())?'flex':'none';
+ $('#ctrlAuto').style.display=(auto||emTorneio())&&!cfg.desafio?'flex':'none';$('#btnCor').hidden=!cfg.barras;$('#btnCor').textContent='Cores: '+(cfg.degrade?'degradê':'desligadas');
  if(!auto&&!cfg.torneio)$('#titulo').textContent=cfg.busca?'Toque nas peças para virá-las.':`Arraste as peças e solte sobre uma vaga. Ordem ${nomeDir()}.`;
 }
 
@@ -783,6 +809,23 @@ function* alg(nome,vals,a){ // cada yield: [destaques, pivô, posições alterad
   if(m!==i){sw(i,m);yield[[i,m],-1,[i,m]]}}
  if(nome==='insercao')for(let i=1;i<n;i++)for(let j=i;j>0;j--){yield[[j-1,j]];if(gt(a[j-1],a[j])){sw(j-1,j);yield[[j-1,j],-1,[j-1,j]]}else break}
  if(nome==='shell')for(let gp=n>>1;gp>0;gp>>=1)for(let i=gp;i<n;i++)for(let j=i;j>=gp;j-=gp){yield[[j-gp,j]];if(gt(a[j-gp],a[j])){sw(j-gp,j);yield[[j-gp,j],-1,[j-gp,j]]}else break}
+
+ if(nome==='gnome'){let i=1;while(i<n){yield[[i-1,i]];if(gt(a[i-1],a[i])){sw(i-1,i);yield[[i-1,i],-1,[i-1,i]];if(i>1)i--}else i++}}
+ if(nome==='cocktail'){let lo=0,hi=n-1,tr=true;while(tr&&lo<hi){tr=false;
+  for(let j=lo;j<hi;j++){yield[[j,j+1]];if(gt(a[j],a[j+1])){sw(j,j+1);tr=true;yield[[j,j+1],-1,[j,j+1]]}}hi--;if(!tr)break;tr=false;
+  for(let j=hi;j>lo;j--){yield[[j-1,j]];if(gt(a[j-1],a[j])){sw(j-1,j);tr=true;yield[[j-1,j],-1,[j-1,j]]}}lo++}}
+ if(nome==='comb'){let g=n,tr=true;while(g>1||tr){g=Math.max(1,Math.floor(g/1.3));tr=false;
+  for(let i=0;i+g<n;i++){yield[[i,i+g]];if(gt(a[i],a[i+g])){sw(i,i+g);tr=true;yield[[i,i+g],-1,[i,i+g]]}}}}
+ if(nome==='tim'){const R=Math.max(4,Math.min(32,Math.ceil(n/8)));
+  for(let lo=0;lo<n;lo+=R){const hi=Math.min(lo+R,n)-1;for(let i=lo+1;i<=hi;i++)for(let j=i;j>lo;j--){yield[[j-1,j]];if(gt(a[j-1],a[j])){sw(j-1,j);yield[[j-1,j],-1,[j-1,j]]}else break}}
+  for(let sz=R;sz<n;sz*=2)for(let l=0;l+sz<n;l+=2*sz){const m=l+sz-1,h=Math.min(l+2*sz-1,n-1),r=rg(l,h),old=a.slice(l,h+1),Lf=old.slice(0,m+1-l),Rt=old.slice(m+1-l);
+   yield[r,-1,[],0,1];let i=0,j=0,k=l,cm=0;
+   while(i<Lf.length||j<Rt.length){if(i<Lf.length&&j<Rt.length)cm++;a[k++]=(j>=Rt.length||(i<Lf.length&&DIR*(v(Lf[i])-v(Rt[j]))<=0))?Lf[i++]:Rt[j++]}
+   let mv=0;for(let q=l;q<=h;q++)if(a[q]!==old[q-l])mv++;yield[r,-1,r,mv,0,cm]}}
+ if(nome==='bogo'){const all=rg(0,n-1);let t=0;const ok=()=>a.every((x,i)=>!i||DIR*(v(a[i-1])-v(x))<=0);
+  while(!ok()){t++;for(let i=n-1;i>0;i--)sw(i,Math.floor(Math.random()*(i+1)));
+   yield[all,-1,all,n,0,0,`Tentativa ${t}: embaralhou tudo`];
+   yield[all,-1,[],0,0,n-1,ok()?`Tentativa ${t}: ordenou! Foi só sorte.`:`Tentativa ${t}: ainda desordenado… embaralha de novo`]}}
  if(nome==='contagem'||nome==='radix'){ // não comparam valores: leem, contam e posicionam
   const vs=Array.from({length:n},(_,i)=>v(i)),mn=Math.min(...vs),mx=Math.max(...vs),where=a.map((_,i)=>i);
   const coloca=function*(out){ // leva cada peça ao lugar definido em out (a posição k recebe out[k])
@@ -885,47 +928,88 @@ function velInicial(){ // escolhe a velocidade que deixa a execução visível: 
 function iniciaAuto(mantemVel){
  const n=cfg.vals.length,busca=cfg.busca;let a=null,it;
  if(busca)it=buscaGen(cfg.algo,cfg.vals,cfg.alvo);else{const g=gera(cfg.algo,cfg.vals);a=g.a;it=g.it}
- auto={tipo:busca?'busca':'ord',a,it,n:0,play:cfg.torneio?cfg.torneio.play:true,timer:null,hl:[]};
+ auto={tipo:busca?'busca':'ord',a,A:a&&a.slice(),S:a&&a.slice(),seen:new Set(),hist:[],pos:0,done:false,res:-1,it,n:0,play:cfg.torneio?cfg.torneio.play:true,timer:null,hl:[]};
  if(!mantemVel||!velManual)$('#vel').value=velInicial();
  $('#btnPlay').textContent=auto.play?'Pausar':'Continuar';barra();
- auto.timer=setTimeout(tick,900); // pausa inicial: dá tempo de ver a lista antes do primeiro passo
+ if(cfg.desafio&&!cfg.torneio){auto.play=false;iniciaDesafio()}else auto.timer=setTimeout(tick,900); // pausa inicial: dá tempo de ver a lista antes do primeiro passo
 }
 function abre(p,anim){ // desvira uma peça na busca automática
  if(anim){p.el.classList.remove('gira');void p.el.offsetWidth;p.el.classList.add('gira');setTimeout(()=>p.el.classList.remove('virada'),180)}
  else p.el.classList.remove('virada');
  sVirar();$('#ultima').textContent='Última virada: '+p.val;
 }
-function proxima(k){
- if(auto.tipo==='busca')return proximaBusca(k);
- let hi=[],pv=-1,fim=false;const ch=new Set();
- for(let t=0;t<k;t++){
-  const r=auto.it.next();if(r.done){fim=true;break}
-  const[h,p=-1,c=[],w=c.length?1:0,nc=0,cc=null]=r.value;hi=h;pv=p;c.forEach(x=>ch.add(x));auto.n++;mov+=w;comps+=cc!==null?cc:(c.length||nc?0:1);
- }
- ch.forEach(sl=>{const p=pecas[auto.a[sl]];p.slot=sl;posiciona(p)});
- auto.hl.forEach(p=>p.el.classList.remove('cmp','pv'));auto.hl=[];
- hi.forEach(sl=>{const p=pecas[auto.a[sl]];p.el.classList.add('cmp');auto.hl.push(p)});
- if(pv>=0){const p=pecas[auto.a[pv]];p.el.classList.add('pv');auto.hl.push(p)}
- if(ch.size)sMover(140+Math.min(1,+pecas[auto.a[[...ch][0]]].val/G.vmax)*90,1,'moverAuto');else if(hi.length)nota(+pecas[auto.a[hi[0]]].val);
- $('#titulo').textContent=`${NOME[cfg.algo]} · ${nomeDir()}: passo ${auto.n}`;contador();
- if(cfg.torneio)$('#cron').textContent=fmt(auto.n*PASSO_MS);
- if(fim)fimAuto();
+function txOrd(h,p,c,S){ // texto do passo (estado S = depois do passo)
+ const nome=cfg.algo,V=s=>pecas[S[s]].val,o=(x,y)=>DIR*(x-y)>0,rel=(x,y)=>o(x,y)?(DIR>0?'>':'<'):(DIR>0?'≤':'≥'),mm=DIR>0?'menor':'maior';
+ if(nome==='contagem'||nome==='radix')return c.length?`Põe o ${V(c[0])} no lugar certo (sem comparar)`:`Lê o ${V(h[0])} e anota na contagem`;
+ if(nome==='merge'||(nome==='tim'&&h.length>2))return c.length?`Faixa ${h[0]}–${h[h.length-1]} intercalada e ordenada`:`Vai intercalar a faixa ${h[0]}–${h[h.length-1]}`;
+ if(c.length&&h.length===1&&p>=0)return`Pivô ${V(h[0])} vai para o lugar definitivo`;
+ if(c.length)return`Trocou ${V(h[1])} com ${V(h[0])}`;
+ if(nome==='selecao'&&h.length===1){const j=+V(h[0]),m=+V(p);return`${j} ${j<m?'<':j>m?'>':'='} ${m} (${mm} até agora): ${DIR*(j-m)<0?'novo '+mm:'continua o mesmo'}`}
+ if(nome==='quick'&&h.length===1){const j=+V(h[0]),m=+V(p);return`${j} ${j<m?'<':j>m?'>':'='} pivô ${m}: ${DIR*(j-m)<0?'vai para o grupo da esquerda':'fica no grupo da direita'}`}
+ if(nome==='heap')return h[0]===h[1]?`Pai ${V(h[0])} já ${DIR>0?'é maior':'é menor'} que os filhos: fica`:`Filho ${V(h[1])} ${DIR>0?'>':'<'} pai ${V(h[0])}: sobe`;
+ const x=+V(h[0]),y=+V(h[1]);return`${x} ${rel(x,y)} ${y}: ${o(x,y)?'fora de ordem, troca':'já está em ordem'}`;
 }
-function proximaBusca(k){
- let fim=false,res=-1,ult=null;const anim=ATRASOS[+$('#vel').value-1]>=170;
+function txBusca(i,lo,hi){
+ const x=+pecas[i].val,t=+cfg.alvo,k=DIR*(x-t);
+ if(k===0)return`Leu ${x} = alvo ${t}: encontrou!`;
+ if(cfg.algo==='linear')return`Leu ${x} ≠ ${t}: segue para a próxima peça`;
+ return`Leu ${x}. Alvo ${t} é ${t<x?'menor':'maior'} que ${x}: descarta ${k<0?'o que vem antes (esquerda)':'o que vem depois (direita)'}`;
+}
+function puxa(){ // busca o próximo passo no gerador e guarda no histórico (sem mexer na tela)
+ if(auto.done)return null;
+ const r=auto.it.next();if(r.done){auto.done=true;auto.res=r.value;return null}
+ let e;
+ if(auto.tipo==='busca'){const[i,lo,hi]=r.value;e={i,lo,hi,op:!auto.seen.has(i),tx:txBusca(i,lo,hi)};auto.seen.add(i)}
+ else{
+  const[h,p=-1,c=[],w=c.length?1:0,nc=0,cc=null,tx]=r.value,S=auto.S,d=c.map(sl=>[sl,S[sl],auto.a[sl]]).filter(x=>x[1]!==x[2]);
+  d.forEach(([sl,,nv])=>S[sl]=nv);
+  e={d,h,p,w,dc:cc!==null?cc:(c.length||nc?0:1),tx:tx||txOrd(h,p,c,S)};
+ }
+ auto.hist.push(e);
+ if(auto.hist.length>20000){auto.hist.splice(0,5000);auto.pos-=5000} // guarda os últimos ~15 mil passos
+ return e;
+}
+const tit=()=>`${NOME[cfg.algo]}${auto.tipo==='busca'?'':' · '+nomeDir()}: passo ${auto.n}`;
+function mostraOrd(e){
+ auto.hl.forEach(p=>p.el.classList.remove('cmp','pv'));auto.hl=[];
+ if(e){e.h.forEach(sl=>{const p=pecas[auto.A[sl]];p.el.classList.add('cmp');auto.hl.push(p)});
+  if(e.p>=0){const p=pecas[auto.A[e.p]];p.el.classList.add('pv');auto.hl.push(p)}}
+ txt(e?e.tx:'Estado inicial da lista');
+}
+function mostraBusca(e){
+ auto.hl.forEach(p=>p.el.classList.remove('cmp'));auto.hl=[];
+ if(e){const p=pecas[e.i];p.el.classList.add('cmp');auto.hl.push(p);nota(+p.val);
+  pecas.forEach((q,i)=>q.el.classList.toggle('fora',i<e.lo||i>e.hi));faixaR=[e.lo,e.hi];faixa(e.lo,e.hi)}
+ else{pecas.forEach(q=>q.el.classList.remove('fora'));faixaR=null;faixa(null)}
+ txt(e?e.tx:'Estado inicial da lista');
+}
+function proxima(k){
+ const H=auto.hist,bu=auto.tipo==='busca',ch=new Set(),anim=ATRASOS[+$('#vel').value-1]>=170;let fim=false,ult=null;
  for(let t=0;t<k;t++){
-  const r=auto.it.next();if(r.done){fim=true;res=r.value;break}
-  ult=r.value;auto.n++;comps++;
-  const p=pecas[ult[0]];if(p.virada){p.virada=false;mov++;abre(p,anim)}
+  const e=auto.pos<H.length?H[auto.pos]:puxa();
+  if(!e){fim=true;break}
+  auto.pos++;auto.n++;ult=e;
+  if(bu){comps++;if(e.op){const p=pecas[e.i];if(p.virada){p.virada=false;mov++;abre(p,anim)}}}
+  else{e.d.forEach(([sl,,nv])=>{auto.A[sl]=nv;ch.add(sl)});mov+=e.w;comps+=e.dc}
  }
+ ch.forEach(sl=>{const p=pecas[auto.A[sl]];p.slot=sl;posiciona(p)});
  if(ult){
-  auto.hl.forEach(p=>p.el.classList.remove('cmp'));auto.hl=[];
-  const p=pecas[ult[0]];p.el.classList.add('cmp');auto.hl.push(p);nota(+p.val);
-  pecas.forEach((q,i)=>q.el.classList.toggle('fora',i<ult[1]||i>ult[2]));faixaR=[ult[1],ult[2]];faixa(ult[1],ult[2]);
+  if(bu)mostraBusca(ult);
+  else{mostraOrd(ult);
+   if(ch.size)sMover(140+Math.min(1,+pecas[auto.A[[...ch][0]]].val/G.vmax)*90,1,'moverAuto');else if(ult.h.length)nota(+pecas[auto.A[ult.h[0]]].val)}
  }
- $('#titulo').textContent=`${NOME[cfg.algo]}: passo ${auto.n}`;contador();
+ $('#titulo').textContent=tit();contador();
  if(cfg.torneio)$('#cron').textContent=fmt(auto.n*PASSO_MS);
- if(fim)fimAuto(res);
+ if(fim)fimAuto(auto.res);
+}
+function volta(){ // desfaz o último passo mostrado
+ if(!auto||auto.pos<=0)return;
+ const e=auto.hist[--auto.pos],bu=auto.tipo==='busca';auto.n--;
+ if(bu){comps--;if(e.op){const p=pecas[e.i];p.virada=true;p.el.classList.add('virada');mov--}}
+ else{e.d.forEach(([sl,o])=>{auto.A[sl]=o});e.d.forEach(([sl])=>{const p=pecas[auto.A[sl]];p.slot=sl;posiciona(p)});mov-=e.w;comps-=e.dc}
+ const q=auto.pos>0?auto.hist[auto.pos-1]:null;bu?mostraBusca(q):mostraOrd(q);
+ $('#titulo').textContent=tit();contador();
+ if(cfg.torneio)$('#cron').textContent=fmt(auto.n*PASSO_MS);
 }
 const passo=()=>{if(auto)proxima(1)};
 $('#vel').addEventListener('input',()=>{velManual=true});
@@ -937,7 +1021,7 @@ function tick(){
 }
 function fimAuto(res){
  const A=auto,busca=A.tipo==='busca',T=cfg.torneio;
- clearTimeout(A.timer);auto=null;limpaDestaques();
+ clearTimeout(A.timer);auto=null;limpaDestaques();$('#desafio').hidden=true;txt('');
  pecas.forEach(p=>p.el.classList.remove('fora'));faixaR=null;faixa(null);
  let achou=true;
  if(busca){achou=res>=0;if(achou)verificaBusca();else ausente()}
@@ -946,7 +1030,7 @@ function fimAuto(res){
  const un=busca?(mov===1?'virada':'viradas'):(mov===1?'movimento':'movimentos');
  $('#resAlgo').textContent=`${NOME[cfg.algo]} · ${cfg.vals.length} peças`+(busca&&!achou?' · valor ausente':'');
  $('#resGraf').innerHTML='';$('#resumo').classList.remove('larga');$('#resNum').className='';$('#resNum').textContent=mov.toLocaleString('pt-BR');
- $('#resLab').textContent=un;$('#resumo').hidden=false;atividade();
+ $('#resLab').textContent=un+(cfg.desafio&&D?` · desafio: ${D.ok} de ${D.tot} acertos`:'');$('#resumo').hidden=false;atividade();
  if(T){
   const k=cfg.algo,ac=T.acc[k]=T.acc[k]||{ms:[],mov:[],cmp:[]};ac.ms.push(A.n*PASSO_MS);ac.mov.push(mov);ac.cmp.push(comps);
   const av=x=>x.reduce((q,y)=>q+y,0)/x.length,rd=x=>Math.round(av(x)*10)/10;
@@ -981,6 +1065,7 @@ function torneioFim(){
 $('#fechaResumo').onclick=()=>$('#resumo').hidden=true;
 function stopAuto(){
  if(auto){clearTimeout(auto.timer);auto=null}
+ $('#desafio').hidden=true;txt('');
  if(cfg&&cfg.torneio)clearTimeout(cfg.torneio.tm);
  mesa.style.removeProperty('--t');limpaDestaques();
 }
@@ -1137,7 +1222,12 @@ const INFO_ORD=[
  ['merge','Divide ao meio, ordena cada metade e intercala.','O(n log n)','O(n log n)','O(n log n)'],
  ['heap','Monta um heap (árvore de máximos) e retira o maior repetidamente.','O(n log n)','O(n log n)','O(n log n)'],
  ['contagem','Conta quantas vezes cada valor aparece e posiciona as peças, sem comparar. k = amplitude dos valores.','O(n + k)','O(n + k)','O(n + k)'],
- ['radix','Ordena dígito a dígito (unidades, dezenas…) com contagem estável. d = nº de dígitos.','O(d·n)','O(d·n)','O(d·n)']];
+ ['radix','Ordena dígito a dígito (unidades, dezenas…) com contagem estável. d = nº de dígitos.','O(d·n)','O(d·n)','O(d·n)'],
+ ['gnome','Anda para a frente; ao achar um par fora de ordem, troca e volta um passo, como um gnomo arrumando vasos.','O(n)','O(n²)','O(n²)'],
+ ['cocktail','Bubble sort nos dois sentidos: uma volta leva o maior para o fim, a seguinte leva o menor para o começo.','O(n)','O(n²)','O(n²)'],
+ ['comb','Bubble sort com um salto grande que vai encolhendo (÷1,3). Tira logo as “tartarugas” do começo.','O(n log n)','~O(n²)','O(n²)'],
+ ['tim','Insertion sort em blocos pequenos e depois intercala os blocos, como o Merge. É o que Python e Java usam (aqui, versão simplificada).','O(n)','O(n log n)','O(n log n)'],
+ ['bogo','Embaralha tudo e confere se ficou ordenado; repete até dar certo. Ninguém usa: com n peças são n! tentativas em média (6 peças: ~720; 10: ~3,6 milhões; 20: mais que a idade do universo). Serve de piada e de lição sobre algoritmo ruim.','O(n)','O(n·n!)','sem limite']];
 const INFO_BUS=[
  ['linear','Olha peça por peça. Única que aceita lista embaralhada.','Não','O(n)'],
  ['binaria','Olha o meio e descarta a metade errada.','Sim','O(log n)'],
@@ -1157,6 +1247,10 @@ function montaAjuda(){
   ${cor('#ff4d4d','<b>Vermelho</b>: o valor buscado não está na lista (a tela pisca).')}
   <li><span class="sq d"></span><b>Peça apagada</b>: já descartada pela busca. <span class="sq f" style="margin-left:6px"></span><b>Faixa iluminada</b>: intervalo que ainda resta.</li>
  </ul>
+ <h2>Atalhos de teclado (animação automática)</h2><ul>
+  <li><b>Espaço</b>: pausa e continua. <b>→</b>: avança um passo. <b>←</b>: volta um passo.</li>
+  <li><b>+</b> e <b>−</b>: aumentam e diminuem a velocidade.</li></ul>
+ <p class="nota">O texto no alto da tela explica cada passo. Voltar passo funciona enquanto o algoritmo roda e guarda os últimos 15 mil passos. Nas linhas verticais, o botão “Cores” liga e desliga o degradê por valor.</p>
  <h2>Algoritmos de ordenação</h2>
  <div class="tbl"><table><thead><tr><th>Nome</th><th>Como funciona</th><th>Melhor</th><th>Médio</th><th>Pior</th></tr></thead><tbody>${INFO_ORD.map(tr).join('')}</tbody></table></div>
  <p class="nota">n = quantidade de peças. Counting e Radix não comparam valores: a contagem de comparações fica em zero.</p>
@@ -1174,6 +1268,96 @@ $('#btnCsv').onclick=()=>{
  const csv=rows.map(r=>r.map(x=>`"${String(x).replace(/"/g,'""')}"`).join(';')).join('\n'),a=document.createElement('a');
  a.href=URL.createObjectURL(new Blob(['\ufeff'+csv],{type:'text/csv'}));a.download='ranking-'+tipoAtual()+'.csv';a.click();setTimeout(()=>URL.revokeObjectURL(a.href),1000);
 };
+/* ===== Passo a passo, desafio, degradê, gráfico e atalhos ===== */
+const txt=s=>{const e=$('#passoTxt');e.textContent=s;e.hidden=!s};
+let toastT;function toast(s){const t=$('#toast');t.textContent=s;t.classList.add('on');clearTimeout(toastT);toastT=setTimeout(()=>t.classList.remove('on'),1200)}
+$('#btnAnt').onclick=()=>{if(!auto||cfg.desafio)return;auto.play=false;if(cfg.torneio)cfg.torneio.play=false;clearTimeout(auto.timer);$('#btnPlay').textContent='Continuar';volta()};
+const corVal=v=>{const f=(v-G.vmin)/((G.vmax-G.vmin)||1),h=Math.round(260*(1-f));return`linear-gradient(180deg,hsl(${h} 85% 64%),hsl(${h} 85% 44%))`};
+$('#btnCor').onclick=()=>{cfg.degrade=!cfg.degrade;desenha();barra()};
+/* desafio */
+let D=null;
+const desenhaPts=()=>{$('#dsPts').textContent=`${D.ok} / ${D.tot}`};
+function iniciaDesafio(){D={ok:0,tot:0};$('#desafio').hidden=false;$('#dsQ').textContent='';$('#dsOps').innerHTML='';$('#dsFb').textContent='';desenhaPts();perguntar()}
+const espia=()=>auto.pos<auto.hist.length?auto.hist[auto.pos]:puxa();
+const SEM_Q=['merge','contagem','radix','bogo'];
+function ehQ(e){return auto.tipo==='busca'?auto.pos>0:(!SEM_Q.includes(cfg.algo)&&!e.d.length&&(e.h.length===2||(e.h.length===1&&e.p>=0)))}
+function perguntar(){
+ while(auto){const e=espia();
+  if(!e){proxima(1);return}
+  if(ehQ(e)&&montaOps(e))return;
+  proxima(1)}
+}
+function montaOps(e){
+ const n=pecas.length,bu=auto.tipo==='busca';let cor,cand,q,lab;
+ if(bu){const p=auto.hist[auto.pos-1],m=(p.lo+p.hi)>>1;cor=[e.lo,e.hi];lab=(l,h)=>`posições ${l} a ${h}`;
+  cand=[[p.lo,m-1],[m+1,p.hi],[p.lo+1,p.hi],[p.lo,p.hi-1],[p.lo,p.i-1],[p.i+1,p.hi]].filter(([l,h])=>l<=h&&l>=0&&h<n);
+  q=`Alvo ${cfg.alvo}. Acabou de ler ${pecas[p.i].val}. Qual será o próximo intervalo de busca?`}
+ else{const P=(e.h.length===1?[e.h[0],e.p]:e.h.slice()).sort((x,y)=>x-y);cor=P;lab=(a,b)=>`posições ${a} e ${b}`;
+  cand=[[P[0]+1,P[1]+1],[P[0]-1,P[1]-1],[P[0]-1,P[1]],[P[0],P[1]+1],[P[0]+1,P[1]],[P[0],P[1]-1]].filter(([a,b])=>a<b&&a>=0&&b<n);
+  q='Quais peças serão comparadas agora?'}
+ const key=x=>x.join(),seen=new Set([key(cor)]),pool=[];
+ embaralha(cand).forEach(x=>{if(!seen.has(key(x))){seen.add(key(x));pool.push(x)}});
+ const ops=embaralha([cor,...pool.slice(0,2)]);if(ops.length<2)return false;
+ $('#dsQ').textContent=q;$('#dsFb').textContent='';const box=$('#dsOps');box.innerHTML='';
+ ops.forEach(o=>{const b=document.createElement('button');b.className='sec';b.textContent=lab(...o);b.onclick=()=>responde(b,key(o)===key(cor),lab(...cor));box.appendChild(b)});
+ return true;
+}
+function responde(b,ok,certa){
+ if(!D||b.parentNode.firstChild.disabled)return;
+ [...$('#dsOps').children].forEach(x=>x.disabled=true);D.tot++;if(ok)D.ok++;b.classList.add(ok?'certa':'errada');desenhaPts();
+ $('#dsFb').textContent=ok?'✔ Acertou! +1 ponto':'✘ Não foi dessa vez. Era: '+certa;
+ if(ok)tom(880,.14,.15,0,'triangle');else tom(200,.25,.15,0,'sawtooth');
+ const ia=auto;setTimeout(()=>{if(auto===ia){proxima(1);if(auto===ia)perguntar()}},ok?800:1700);
+}
+$('#dsParar').onclick=()=>$('#btnParar').click();
+/* gráfico */
+const GF_N=[10,50,100,500,1000],gfCache={};let gfSel=['bolha','insercao','quick','merge','heap'],gfRaf=0;
+function custoDe(nome,n){
+ const k=nome+n;if(gfCache[k]!=null)return gfCache[k];
+ const d0=DIR;DIR=1;let s=0;
+ try{for(const y of gera(nome,embaralha(Array.from({length:n},(_,i)=>String(i+1)))).it){const c=y[2]||[],nc=y[4]||0,cc=y[5];s+=(y[3]!==undefined?y[3]:(c.length?1:0))+(cc!=null?cc:(c.length||nc?0:1))+nc}}finally{DIR=d0}
+ return gfCache[k]=s;
+}
+function montaGfSel(){$('#gfSel').innerHTML=Object.entries(NOMES).filter(([k])=>k!=='bogo').map(([k,v])=>`<label><input type="checkbox" value="${k}"${gfSel.includes(k)?' checked':''}><span>${v}</span></label>`).join('')}
+function desenhaGraf(anima){
+ const log=$('#gfLog').checked,W=720,Hh=380,L=72,R=150,T=16,B=46,pw=W-L-R,ph=Hh-T-B,ks=Object.keys(NOMES),lista=ks.filter(k=>gfSel.includes(k));
+ if(!lista.length){$('#gfBox').innerHTML='<p class="nota">Marque pelo menos um algoritmo.</p>';return}
+ const dados=lista.map(k=>({k,i:ks.indexOf(k),pts:GF_N.map(n=>custoDe(k,n))}));
+ const mx=Math.max(10,...dados.flatMap(d=>d.pts)),top=log?Math.pow(10,Math.ceil(Math.log10(mx))):mx;
+ const X=n=>L+n/1000*pw,Y=c=>T+ph-(log?Math.log10(Math.max(1,c))/Math.log10(top):c/top)*ph,f=x=>Math.round(x).toLocaleString('pt-BR');
+ let s=`<svg viewBox="0 0 ${W} ${Hh}" role="img" aria-label="Custo por tamanho da lista"><defs><clipPath id="gfc"><rect id="gfr" x="0" y="0" width="${anima?0:W}" height="${Hh}"/></clipPath></defs>`;
+ const tk=log?Array.from({length:Math.round(Math.log10(top))+1},(_,i)=>Math.pow(10,i)):[0,1,2,3,4].map(i=>top*i/4);
+ tk.forEach(v=>{const y=Y(v);s+=`<line x1="${L}" x2="${L+pw}" y1="${y}" y2="${y}" style="stroke:rgba(var(--ln),.2)"/><text x="${L-8}" y="${y+4}" text-anchor="end">${f(v)}</text>`});
+ GF_N.forEach(n=>{s+=`<text x="${X(n)}" y="${T+ph+20}" text-anchor="middle">${n}</text>`});
+ s+=`<text x="${L+pw/2}" y="${Hh-6}" text-anchor="middle">tamanho da lista (n)</text><g clip-path="url(#gfc)">`;
+ const lab=[];
+ dados.forEach(d=>{const c=`hsl(${(d.i*47+10)%360} 75% 60%)`;
+  s+=`<polyline points="${d.pts.map((p,j)=>X(GF_N[j])+','+Y(p)).join(' ')}" fill="none" stroke-width="3" stroke-linejoin="round" style="stroke:${c}"/>`+d.pts.map((p,j)=>`<circle cx="${X(GF_N[j])}" cy="${Y(p)}" r="4" style="fill:${c}"/>`).join('');
+  lab.push({d,c,y:Y(d.pts[4])})});
+ lab.sort((a,b)=>a.y-b.y);for(let i=1;i<lab.length;i++)if(lab[i].y-lab[i-1].y<15)lab[i].y=lab[i-1].y+15;
+ lab.forEach(l=>{s+=`<text x="${L+pw+10}" y="${l.y+4}" style="fill:${l.c};font-weight:700">${NOMES[l.d.k].replace(' sort','')} (${f(l.d.pts[4])})</text>`});
+ $('#gfBox').innerHTML=s+'</g></svg>';
+ cancelAnimationFrame(gfRaf);
+ if(anima){const r=$('#gfr');
+  if(matchMedia('(prefers-reduced-motion:reduce)').matches)r.setAttribute('width',W);
+  else{const t0=performance.now(),q=t=>{const u=Math.min(1,(t-t0)/2600);r.setAttribute('width',W*(1-Math.pow(1-u,2)));if(u<1)gfRaf=requestAnimationFrame(q)};gfRaf=requestAnimationFrame(q)}}
+}
+function abreGraf(){['#ap','#sp'].forEach(q=>$(q).hidden=true);if(!$('#gfSel').children.length)montaGfSel();$('#gf').hidden=false;$('#gfx').focus();desenhaGraf(true)}
+document.querySelectorAll('.btnGraf').forEach(b=>b.addEventListener('click',e=>{e.stopPropagation();abreGraf()}));
+$('#gfSel').addEventListener('change',()=>{gfSel=[...document.querySelectorAll('#gfSel input:checked')].map(i=>i.value);desenhaGraf(true)});
+$('#gfLog').onchange=()=>desenhaGraf(true);$('#gfAnim').onclick=()=>desenhaGraf(true);
+$('#gfx').onclick=()=>{$('#gf').hidden=true};$('#gf').addEventListener('click',e=>{if(e.target===$('#gf'))$('#gf').hidden=true});
+/* atalhos */
+const sbAtivo=()=>$('#sandbox').classList.contains('ativa')&&$('#aj').hidden&&$('#gf').hidden;
+document.addEventListener('keydown',e=>{
+ if(e.key==='Escape')$('#gf').hidden=true;
+ if(!sbAtivo()||e.ctrlKey||e.metaKey||e.altKey)return;
+ const t=e.target.tagName,k=e.key;if(t==='INPUT'||t==='SELECT'||t==='TEXTAREA'||cfg.desafio||(!auto&&!emTorneio()))return;
+ if(k===' '||k==='ArrowRight'||k==='ArrowLeft'){e.preventDefault();if(t==='BUTTON')e.target.blur();$(k===' '?'#btnPlay':k==='ArrowRight'?'#btnPasso':'#btnAnt').click()}
+ else if(k==='+'||k==='='||k==='-'||k==='_'){const v=$('#vel');v.value=+v.value+(k==='-'||k==='_'?-1:1);v.dispatchEvent(new Event('input'));toast('Velocidade '+v.value+' de 14')}
+});
+document.addEventListener('keyup',e=>{if(e.key===' '&&sbAtivo()&&(auto||emTorneio()))e.preventDefault()});
+
 preencheAlgo();
 desenhaLista();
 </script>
