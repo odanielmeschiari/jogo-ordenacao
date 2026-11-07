@@ -1,7 +1,7 @@
 /* Mesa: medidas, desenho das peças e contadores */
 /* ===== Mesa ===== */
 function medidas(n){
- const top=cfg&&cfg.busca?186:(cfg&&cfg.barras?122:82),W=mesa.clientWidth,H=mesa.clientHeight,s1=Math.min(88,(W-60)/n-14);
+ const ext=cfg&&cfg.algo&&!cfg.desafio?46:0,top=(cfg&&cfg.busca?186:(cfg&&cfg.barras?122:82))+ext,W=mesa.clientWidth,H=mesa.clientHeight,s1=Math.min(88,(W-60)/n-14);
  if(cfg&&cfg.barras){ // linhas verticais: uma coluna por valor, apoiadas numa linha de base
   const step=Math.min(90,(W-40)/n),g=step>=8?Math.max(2,Math.round(step*.15)):step>=3?1:0;
   Object.assign(G,{size:Math.max(.5,step-g),gap:g,step,cols:n,rows:1,W,H});
@@ -37,7 +37,7 @@ function montaMesa(manter){
   if(cfg.zera){ranking=ranking.filter(r=>r.tipo!==tipoAtual());guarda()}}
  mov=0;comps=0;$('#resumo').hidden=true;$('#sandbox').classList.toggle('comp',!!cfg.comp);$('#rank').hidden=!cfg.comp;
  const n=cfg.vals.length;DIG=Math.max(2,...cfg.vals.map(v=>v.length));medidas(n);
- G.vmax=Math.max(1,...cfg.vals.map(Number));G.vmin=Math.min(...cfg.vals.map(Number));$('#passoTxt').style.top=cfg.busca?'150px':'56px';
+ G.vmax=Math.max(1,...cfg.vals.map(Number));G.vmin=Math.min(...cfg.vals.map(Number));$('#passoTxt').style.top=(cfg.busca?150:56)+(cfg.algo&&!cfg.desafio?46:0)+'px';
  for(let i=0;i<(cfg.barras?0:n);i++){
   const s=document.createElement('div');s.className='vaga';mesa.appendChild(s);vagasEl.push(s);
   const t=document.createElement('div');t.className='idx';t.textContent=i;mesa.appendChild(t);idxEl.push(t);
@@ -77,6 +77,6 @@ function contador(){$('#cont').textContent=(cfg.busca?'Viradas: ':'Movimentos: '
 const emTorneio=()=>!!(cfg&&cfg.torneio&&!cfg.torneio.fim);
 function barra(){
  contador();
- $('#ctrlAuto').style.display=(auto||emTorneio())&&!cfg.desafio?'flex':'none';$('#btnCor').hidden=!cfg.barras;$('#btnCor').textContent='Cores: '+(cfg.degrade?'degradê':'desligadas');
+ const ctl=(auto||emTorneio())&&!cfg.desafio;$('#ctrlAuto').style.display=ctl?'flex':'none';$('#sandbox').classList.toggle('com-ctrl',!!ctl);$('#btnCor').hidden=!cfg.barras;$('#btnCor').textContent='Cores: '+(cfg.degrade?'degradê':'desligadas');
  if(!auto&&!cfg.torneio)$('#titulo').textContent=cfg.busca?'Toque nas peças para virá-las.':`Arraste as peças e solte sobre uma vaga. Ordem ${nomeDir()}.`;
 }

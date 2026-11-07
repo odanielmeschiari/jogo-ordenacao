@@ -1,0 +1,73 @@
+/* Organização das telas: painel inicial (cabeçalho, abas, blocos, rodapé fixo) e barra da mesa */
+
+/* ---------- Painel inicial ---------- */
+.painel.gerente{display:flex;flex-direction:column;overflow:hidden;padding:0}
+.cab{display:flex;align-items:center;gap:16px;flex-wrap:wrap;padding:22px 34px 6px}
+.cab h1{margin-right:auto}
+.ferr{display:flex;gap:6px;flex-wrap:wrap}
+.ferr button{font-size:14px;padding:8px 14px}
+button.sec.mudo{color:var(--dim)}
+
+.painel.gerente .abas{margin:10px 34px 0;gap:6px;flex:none;border-bottom:1px solid rgba(var(--ln),.18);padding-bottom:10px}
+.sentido{display:flex;align-items:center;gap:6px 16px;flex-wrap:wrap;margin:10px 34px 0;flex:none}
+.rot{font-size:15px;color:var(--x2);line-height:1.3}
+
+.aba-corpo{flex:1;min-height:0;display:flex;flex-direction:column}
+.aba-corpo[hidden]{display:none!important}
+.corpo{flex:1;min-height:0;overflow:auto;padding:4px 34px 12px}
+.rodape{flex:none;display:flex;justify-content:space-between;align-items:center;gap:14px;flex-wrap:wrap;padding:14px 34px 18px;
+ border-top:1px solid rgba(var(--ln),.18);background:rgba(var(--dk2),.55)}
+.rodape button:only-child{margin-left:auto}
+#btnGerar{margin-top:0}
+
+.bloco{margin-top:14px;padding:14px 18px 16px;border-radius:14px;background:rgba(0,0,0,.18);border:1px solid rgba(var(--ln),.14)}
+.bloco>h2{font-size:13px;letter-spacing:.09em;text-transform:uppercase;color:var(--x3);margin-bottom:6px}
+.bloco .sub{margin:4px 0 12px}
+.cfg{display:grid;grid-template-columns:170px minmax(0,1fr);gap:6px 16px;align-items:center;padding:9px 0}
+.cfg+.cfg,.rows>.cfg:first-child{border-top:1px solid rgba(var(--ln),.09)}
+.cfg.cheia{grid-template-columns:minmax(0,1fr)}
+.rows{display:contents}
+.dica{margin-top:6px;font-size:13px;color:var(--x3);line-height:1.4}
+.corpo>.sub{margin:10px 0 0}
+.corpo>.legenda{margin:14px 0 4px}
+
+@media (max-width:620px){
+ .cab{padding:18px 16px 4px}.painel.gerente .abas,.sentido{margin-left:16px;margin-right:16px}
+ .corpo{padding:4px 16px 10px}.rodape{padding:12px 16px 14px}
+ .bloco{padding:12px 12px 14px}
+ .cfg{grid-template-columns:minmax(0,1fr)}
+ .painel.gerente .abas{flex-wrap:nowrap}
+ .painel.gerente .abas button{flex:1;padding:10px 6px;font-size:15px}
+}
+
+/* ---------- Barra da mesa: linha 1 = navegação | estado | ferramentas; linha 2 = execução automática ---------- */
+.barra{flex-direction:column;align-items:stretch;flex-wrap:nowrap;gap:8px;padding:10px 14px}
+.barra-linha{display:flex;align-items:center;gap:10px 12px;flex-wrap:wrap}
+.barra .grupo{display:flex;gap:8px}
+.barra .ferr{margin-left:auto;flex-wrap:nowrap}
+.barra .ferr button,.barra button{font-size:14px;padding:8px 14px}
+.barra #titulo{margin:0 auto;flex:0 1 auto;min-width:0;max-width:100%;text-align:center;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;order:2}
+.barra #cont{order:1}
+.barra .ferr{order:3}
+#linhaAuto{display:none}
+#sandbox.com-ctrl #linhaAuto{display:flex}
+#linhaAuto #ctrlAuto{flex-wrap:wrap}
+
+/* conteúdo que fica sob a barra desce uma linha quando os controles automáticos aparecem */
+#sandbox.com-ctrl #toast{top:146px}
+#sandbox.com-ctrl #alvoGrande{top:108px}
+#sandbox.com-ctrl #rank{top:108px}
+
+@media (max-width:620px){
+ /* celular: cada linha da barra vira uma faixa rolável na horizontal, com a mesma altura do desktop */
+ .barra{padding:8px 10px;gap:6px}
+ .barra-linha{flex-wrap:nowrap;overflow-x:auto;scrollbar-width:none}
+ .barra-linha::-webkit-scrollbar{display:none}
+ .barra button,.barra #cont,.barra label{flex:none;white-space:nowrap}
+ .barra .ferr button{padding:7px 10px;font-size:13px}
+ .barra #titulo{display:none}
+ .barra .ferr{margin-left:0}
+ #linhaAuto #ctrlAuto{flex-wrap:nowrap}
+ .barra #cont{order:4}
+ #passoTxt,#toast{width:max-content;font-size:14px;padding:6px 14px}
+}

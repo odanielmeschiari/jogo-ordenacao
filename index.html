@@ -17,121 +17,229 @@
 <link rel="stylesheet" href="css/ajuda.css">
 <link rel="stylesheet" href="css/desafio.css">
 <link rel="stylesheet" href="css/grafico.css">
+<link rel="stylesheet" href="css/layout.css">
 </head>
 <body>
 
 <section id="gerenciador" class="tela ativa">
- <div class="painel">
-  <h1>Mesa de ordenação</h1>
-  <div class="abas">
-   <button class="sec aba on" data-t="p1">Montar peças</button>
-   <button class="sec aba" data-t="p2">Gerador automático</button>
-   <button class="sec btnSom" style="margin-left:auto"></button>
-   <button class="sec btnAp" aria-haspopup="dialog">Aparência</button>
-   <button class="sec btnGraf">Gráfico de custo</button> <button class="sec btnAj" aria-haspopup="dialog">Ajuda</button>
+ <div class="painel gerente">
+  <header class="cab">
+   <h1>Mesa de ordenação</h1>
+   <div class="ferr" role="toolbar" aria-label="Ferramentas">
+    <button class="sec btnSom" title="Ligar ou desligar o som"></button>
+    <button class="sec btnAp" aria-haspopup="dialog" title="Tema de cor e papel de parede">Aparência</button>
+    <button class="sec btnGraf" title="Gráfico de custo dos algoritmos">Custo</button>
+    <button class="sec btnAj" aria-haspopup="dialog" title="Ajuda">Ajuda</button>
+   </div>
+  </header>
+
+  <div class="abas" role="tablist">
+   <button class="sec aba on" data-t="p1" role="tab">Montar peças</button>
+   <button class="sec aba" data-t="p2" role="tab">Gerador automático</button>
   </div>
-  <div class="grp" style="margin-top:12px">Sentido da ordenação</div>
-  <div class="seg">
-   <label><input type="radio" name="dir" value="asc" checked><span>Crescente ↑ (menor → maior)</span></label>
-   <label><input type="radio" name="dir" value="desc"><span>Decrescente ↓ (maior → menor)</span></label>
+  <div class="sentido">
+   <span class="rot">Sentido da ordenação</span>
+   <div class="seg">
+    <label><input type="radio" name="dir" value="asc" checked><span>Crescente ↑ (menor → maior)</span></label>
+    <label><input type="radio" name="dir" value="desc"><span>Decrescente ↓ (maior → menor)</span></label>
+   </div>
   </div>
 
-  <div id="p1">
-   <div id="manualBox">
-   <p class="sub">Digite um valor e toque em + para criar uma peça.</p>
-   <div class="linha">
-    <input id="valor" type="number" inputmode="numeric" aria-label="Valor da peça" autofocus>
-    <button id="btnAdd" aria-label="Adicionar peça">+</button>
+  <div id="p1" class="aba-corpo">
+   <div class="corpo">
+    <section class="bloco">
+     <h2>Peças</h2>
+     <div id="manualBox">
+      <p class="sub">Digite um valor e toque em + para criar uma peça.</p>
+      <div class="linha">
+       <input id="valor" type="number" inputmode="numeric" aria-label="Valor da peça" autofocus>
+       <button id="btnAdd" aria-label="Adicionar peça">+</button>
+      </div>
+      <div class="lista" id="lista"></div>
+     </div>
+     <div id="gerBox" hidden>
+      <p class="sub">Cada competidor recebe peças e um valor a buscar sorteados nesta faixa. Se a faixa tiver menos números que a quantidade, o jogo usa só os que existem.</p>
+      <div class="linha">
+       <label class="campo">De<input id="fmin" class="peq" type="number" inputmode="numeric" value="1"></label>
+       <label class="campo">Até<input id="fmax" class="peq" type="number" inputmode="numeric" value="99"></label>
+       <label class="campo">Quantidade (2 a 1000)<input id="fqtd" class="peq" type="number" inputmode="numeric" value="10"></label>
+      </div>
+     </div>
+    </section>
+
+    <section class="bloco">
+     <h2>Regras do jogo</h2>
+     <div class="cfg">
+      <span class="rot">Ordem inicial das peças</span>
+      <div class="seg">
+       <label><input type="radio" name="ordem" value="atual" checked><span>Na ordem que está</span></label>
+       <label><input type="radio" name="ordem" value="asc"><span>Ordenado</span></label>
+       <label><input type="radio" name="ordem" value="emb"><span>Embaralhado</span></label>
+      </div>
+     </div>
+     <div class="cfg">
+      <span class="rot">Modo</span>
+      <div class="seg">
+       <label><input type="radio" name="modo" value="sandbox" checked><span>Sandbox (peças à mostra)</span></label>
+       <label><input type="radio" name="modo" value="busca"><span>Busca (peças viradas)</span></label>
+      </div>
+     </div>
+     <div class="cfg" id="alvoBox" hidden>
+      <span class="rot">Valor a buscar</span>
+      <div>
+       <input id="alvo" class="peq" type="number" inputmode="numeric" aria-label="Valor a buscar">
+       <div id="alvoAviso" class="aviso" role="alert" hidden></div>
+      </div>
+     </div>
+    </section>
+
+    <section class="bloco">
+     <h2>Competição e exposição</h2>
+     <div class="cfg">
+      <span class="rot">Competição</span>
+      <div class="seg"><label><input type="checkbox" id="comp"><span>Cronômetro e ranking de competidores</span></label></div>
+     </div>
+     <div class="cfg" id="zeraBox" hidden>
+      <span class="rot">Ranking</span>
+      <div class="seg"><label><input type="checkbox" id="zera"><span>Iniciar com ranking zerado</span></label></div>
+     </div>
+     <div class="cfg">
+      <span class="rot">Exposição</span>
+      <div class="seg"><label><input type="checkbox" id="feira"><span>Modo feira: volta ao início após 3 min sem mexer</span></label></div>
+     </div>
+    </section>
    </div>
-   <div class="lista" id="lista"></div>
-   </div>
-   <div id="gerBox" hidden>
-    <p class="sub">Cada competidor recebe peças e um valor a buscar sorteados nesta faixa. Se a faixa tiver menos números que a quantidade, o jogo usa só os que existem.</p>
-    <div class="linha">
-     <label class="campo">De<input id="fmin" class="peq" type="number" inputmode="numeric" value="1"></label>
-     <label class="campo">Até<input id="fmax" class="peq" type="number" inputmode="numeric" value="99"></label>
-     <label class="campo">Quantidade (2 a 1000)<input id="fqtd" class="peq" type="number" inputmode="numeric" value="10"></label>
-    </div>
-   </div>
-   <div class="grp">Ordem inicial das peças</div>
-   <div class="seg">
-    <label><input type="radio" name="ordem" value="atual" checked><span>Na ordem que está</span></label>
-    <label><input type="radio" name="ordem" value="asc"><span>Ordenado</span></label>
-    <label><input type="radio" name="ordem" value="emb"><span>Embaralhado</span></label>
-   </div>
-   <div class="grp">Modo</div>
-   <div class="seg">
-    <label><input type="radio" name="modo" value="sandbox" checked><span>Sandbox (peças à mostra)</span></label>
-    <label><input type="radio" name="modo" value="busca"><span>Busca (peças viradas)</span></label>
-   </div>
-   <div id="alvoBox" hidden>
-    <div class="grp">Valor a buscar</div>
-    <input id="alvo" class="peq" type="number" inputmode="numeric" aria-label="Valor a buscar">
-    <div id="alvoAviso" class="aviso" role="alert" hidden></div>
-   </div>
-   <div class="grp">Competição</div>
-   <div class="seg"><label><input type="checkbox" id="comp"><span>Cronômetro e ranking de competidores</span></label></div>
-   <div class="seg" id="zeraBox" hidden style="margin-top:8px"><label><input type="checkbox" id="zera"><span>Iniciar com ranking zerado</span></label></div>
-   <div class="seg" style="margin-top:8px"><label><input type="checkbox" id="feira"><span>Modo feira: volta ao início após 3 min sem mexer</span></label></div>
-   <div class="acoes">
+   <footer class="rodape">
     <button class="sec" id="btnLimpar">Limpar tudo</button>
     <button id="btnIniciar" disabled>Iniciar sandbox</button>
-   </div>
+   </footer>
   </div>
 
-  <div id="p2" hidden>
-   <p class="sub">Gera valores aleatórios e distintos (de 1 a 99, ou de 1 até a quantidade se ela passar de 99) e mostra o algoritmo trabalhando passo a passo. Com muitas peças, a fileira quebra em várias linhas, lidas da esquerda para a direita e de cima para baixo.</p>
-   <div class="grp">O que o algoritmo faz</div>
-   <div class="seg">
-    <label><input type="radio" name="gtipo" value="ordenar" checked><span>Ordenar</span></label>
-    <label><input type="radio" name="gtipo" value="buscar"><span>Buscar um valor</span></label>
+  <div id="p2" class="aba-corpo" hidden>
+   <div class="corpo">
+    <p class="sub">Gera valores aleatórios e distintos (de 1 a 99, ou de 1 até a quantidade se ela passar de 99) e mostra o algoritmo trabalhando passo a passo. Com muitas peças, a fileira quebra em várias linhas, lidas da esquerda para a direita e de cima para baixo.</p>
+
+    <section class="bloco">
+     <h2>Tarefa</h2>
+     <div class="cfg">
+      <span class="rot">O que o algoritmo faz</span>
+      <div class="seg">
+       <label><input type="radio" name="gtipo" value="ordenar" checked><span>Ordenar</span></label>
+       <label><input type="radio" name="gtipo" value="buscar"><span>Buscar um valor</span></label>
+      </div>
+     </div>
+     <div class="cfg">
+      <span class="rot">Modo</span>
+      <div class="seg">
+       <label><input type="radio" name="gmodo" value="um" checked><span>Um algoritmo</span></label>
+       <label><input type="radio" name="gmodo" value="torneio"><span>Competição de algoritmos</span></label>
+      </div>
+     </div>
+     <div class="cfg" id="umBox">
+      <span class="rot">Algoritmo</span>
+      <div class="linha"><select id="algo"></select></div>
+     </div>
+     <div class="rows" id="tornBox" hidden>
+      <div class="cfg cheia">
+       <span class="rot">Quem participa (mínimo 2)</span>
+       <div class="seg" id="tornLista"></div>
+      </div>
+      <div class="cfg">
+       <span class="rot">Ranking</span>
+       <div class="seg"><label><input type="checkbox" id="tzera" checked><span>Zerar o ranking antes de começar</span></label></div>
+      </div>
+      <div class="cfg">
+       <span class="rot">Rodadas (1 a 10)</span>
+       <div>
+        <input id="trod" class="peq" type="number" inputmode="numeric" min="1" max="10" value="1" aria-label="Número de rodadas">
+        <p class="dica">Cada rodada usa uma lista nova e o ranking mostra a média.</p>
+       </div>
+      </div>
+      <div id="tAviso" class="aviso" role="alert" hidden>Marque pelo menos dois algoritmos para competir.</div>
+     </div>
+    </section>
+
+    <section class="bloco">
+     <h2>Lista</h2>
+     <div class="cfg">
+      <span class="rot">Quantidade de peças (2 a 1000)</span>
+      <div class="linha"><input id="qtd" class="peq" type="number" inputmode="numeric" min="2" max="1000" value="8"></div>
+     </div>
+     <div class="cfg" id="gAlvoBox" hidden>
+      <span class="rot">Valor a buscar</span>
+      <div>
+       <input id="galvo" class="peq" type="number" inputmode="numeric" aria-label="Valor a buscar">
+       <p class="dica">Deixe vazio para sortear um valor da lista.</p>
+       <div class="seg" id="gEmbBox" style="margin-top:8px" hidden><label><input type="checkbox" id="gemb"><span>Lista embaralhada (só a busca linear aceita)</span></label></div>
+      </div>
+     </div>
+    </section>
+
+    <section class="bloco" id="visBox">
+     <h2>Ordem inicial e visual</h2>
+     <div class="cfg">
+      <span class="rot">Lista inicial</span>
+      <div class="seg"><label><input type="radio" name="gforma" value="emb" checked><span>Embaralhada</span></label><label><input type="radio" name="gforma" value="quase"><span>Quase ordenada</span></label><label><input type="radio" name="gforma" value="inv"><span>Invertida</span></label><label><input type="radio" name="gforma" value="rep"><span>Muitos repetidos</span></label></div>
+     </div>
+     <div class="cfg">
+      <span class="rot">Visual da ordenação</span>
+      <div class="seg"><label><input type="radio" name="gvis" value="pecas" checked><span>Peças</span></label><label><input type="radio" name="gvis" value="linhas"><span>Linhas verticais (altura = valor)</span></label></div>
+     </div>
+     <div class="cfg">
+      <span class="rot">Cores</span>
+      <div>
+       <div class="seg"><label><input type="checkbox" id="gdegrade"><span>Degradê de cores por valor</span></label></div>
+       <p class="dica">Só nas linhas; dá para ligar e desligar durante a animação.</p>
+      </div>
+     </div>
+    </section>
+
+    <section class="bloco" id="desBox">
+     <h2>Desafio</h2>
+     <div class="cfg">
+      <span class="rot">Modo desafio</span>
+      <div>
+       <div class="seg"><label><input type="checkbox" id="gdesafio"><span>O visitante adivinha o próximo passo e ganha pontos</span></label></div>
+       <p class="dica">Use poucas peças.</p>
+      </div>
+     </div>
+    </section>
+
+    <p class="legenda" id="legGer"></p>
    </div>
-   <div class="grp">Quantidade de peças (2 a 1000)</div>
-   <div class="linha"><input id="qtd" class="peq" type="number" inputmode="numeric" min="2" max="1000" value="8"></div>
-   <div class="grp">Modo</div>
-   <div class="seg">
-    <label><input type="radio" name="gmodo" value="um" checked><span>Um algoritmo</span></label>
-    <label><input type="radio" name="gmodo" value="torneio"><span>Competição de algoritmos</span></label>
-   </div>
-   <div id="visBox"><div class="grp">Lista inicial</div><div class="seg"><label><input type="radio" name="gforma" value="emb" checked><span>Embaralhada</span></label><label><input type="radio" name="gforma" value="quase"><span>Quase ordenada</span></label><label><input type="radio" name="gforma" value="inv"><span>Invertida</span></label><label><input type="radio" name="gforma" value="rep"><span>Muitos repetidos</span></label></div><div class="grp">Visual da ordenação</div><div class="seg"><label><input type="radio" name="gvis" value="pecas" checked><span>Peças</span></label><label><input type="radio" name="gvis" value="linhas"><span>Linhas verticais (altura = valor)</span></label></div><div class="seg" style="margin-top:8px"><label><input type="checkbox" id="gdegrade"><span>Degradê de cores por valor (só nas linhas; dá para ligar e desligar durante a animação)</span></label></div></div>
-   <div id="umBox"><div class="grp">Algoritmo</div><div class="linha"><select id="algo"></select></div></div>
-   <div id="tornBox" hidden>
-    <div class="grp">Quem participa (mínimo 2)</div>
-    <div class="seg" id="tornLista"></div>
-    <div class="seg" style="margin-top:8px"><label><input type="checkbox" id="tzera" checked><span>Zerar o ranking antes de começar</span></label></div>
-    <div class="grp">Rodadas (1 a 10): cada rodada usa uma lista nova e o ranking mostra a média</div>
-    <input id="trod" class="peq" type="number" inputmode="numeric" min="1" max="10" value="1" aria-label="Número de rodadas">
-    <div id="tAviso" class="aviso" role="alert" hidden>Marque pelo menos dois algoritmos para competir.</div>
-   </div>
-   <div id="gAlvoBox" hidden>
-    <div class="grp">Valor a buscar (deixe vazio para sortear um valor da lista)</div>
-    <input id="galvo" class="peq" type="number" inputmode="numeric" aria-label="Valor a buscar">
-    <div class="seg" id="gEmbBox" style="margin-top:8px" hidden><label><input type="checkbox" id="gemb"><span>Lista embaralhada (só a busca linear aceita)</span></label></div>
-   </div>
-   <div id="desBox"><div class="grp">Modo desafio</div><div class="seg"><label><input type="checkbox" id="gdesafio"><span>O visitante adivinha o próximo passo e ganha pontos (use poucas peças)</span></label></div></div>
-   <p class="legenda" id="legGer"></p>
-   <button id="btnGerar">Gerar e ordenar</button>
+   <footer class="rodape">
+    <button id="btnGerar">Gerar e ordenar</button>
+   </footer>
   </div>
  </div>
 </section>
 
 <section id="sandbox" class="tela">
  <div class="barra">
-  <button class="sec" id="btnVoltar">Voltar</button>
-  <button class="sec" id="btnReiniciar">Reiniciar</button>
-  <div id="ctrlAuto">
-   <button class="sec" id="btnPlay">Pausar</button>
-   <button class="sec" id="btnAnt" title="Voltar um passo (←)">◀ Passo</button>
-   <button class="sec" id="btnPasso" title="Avançar um passo (→)">Passo ▶</button>
-   <label>Velocidade <input id="vel" type="range" min="1" max="14" value="5"></label>
-   <button class="sec" id="btnParar">Parar</button>
+  <div class="barra-linha">
+   <div class="grupo">
+    <button class="sec" id="btnVoltar">Voltar</button>
+    <button class="sec" id="btnReiniciar">Reiniciar</button>
+   </div>
+   <span id="cont"></span>
+   <span id="titulo"></span>
+   <div class="ferr" role="toolbar" aria-label="Ferramentas">
+    <button class="sec btnSom" title="Ligar ou desligar o som"></button>
+    <button class="sec btnAp" aria-haspopup="dialog" title="Tema de cor e papel de parede">Aparência</button>
+    <button class="sec btnGraf" title="Gráfico de custo dos algoritmos">Custo</button>
+    <button class="sec btnAj" aria-haspopup="dialog" title="Ajuda">Ajuda</button>
+   </div>
   </div>
-  <span id="cont"></span>
-  <button class="sec" id="btnCor" hidden></button>
-  <button class="sec btnSom"></button>
-  <button class="sec btnAp" aria-haspopup="dialog">Aparência</button>
-   <button class="sec btnGraf">Gráfico de custo</button> <button class="sec btnAj" aria-haspopup="dialog">Ajuda</button>
-  <span id="titulo"></span>
+  <div class="barra-linha" id="linhaAuto">
+   <div id="ctrlAuto">
+    <button class="sec" id="btnPlay">Pausar</button>
+    <button class="sec" id="btnAnt" title="Voltar um passo (←)">◀ Passo</button>
+    <button class="sec" id="btnPasso" title="Avançar um passo (→)">Passo ▶</button>
+    <label>Velocidade <input id="vel" type="range" min="1" max="14" value="5"></label>
+    <button class="sec" id="btnParar">Parar</button>
+   </div>
+   <button class="sec" id="btnCor" hidden></button>
+  </div>
  </div>
  <div id="alvoGrande" hidden><span>Encontre o valor</span><b id="alvoNum"></b><small id="ultima"></small></div>
  <div id="mesa"></div>
