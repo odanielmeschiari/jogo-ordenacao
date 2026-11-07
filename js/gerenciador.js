@@ -1,6 +1,8 @@
-/* Tela inicial: montar peças, gerador automático e início do jogo */
+/* Tela inicial: jogo (montar peças), simulador e início do jogo */
 /* ===== Gerenciador ===== */
 let ausOk=false;
+const MAXROD=20,rodadasComp=()=>$('#comp').checked?Math.max(1,Math.min(MAXROD,parseInt($('#crod').value)||1)):1;
+function mistura(a,d){for(let k=0;k<6;k++){embaralha(a);if(a.some((v,i)=>i&&d*(+a[i-1]-+v)>0))break}return a}
 const ausenteNaLista=t=>t!==''&&!isNaN(+t)&&!valores.includes(String(parseInt(t,10)));
 function desenhaLista(){
  const l=$('#lista');l.innerHTML=valores.length?'':'<div class="vazio">Nenhuma peça ainda.</div>';ausOk=false;
@@ -21,7 +23,7 @@ function atualizaManager(){
  if(!aus)ausOk=false;
  $('#alvoAviso').hidden=!aus;
  if(aus)$('#alvoAviso').textContent=`⚠ O valor ${parseInt(t,10)} não está na lista de peças. Nesta busca ele nunca será encontrado: o jogo só vai avisar que não está presente depois que você virar todas as peças.`;
- $('#btnIniciar').textContent=b?(aus&&ausOk?'Iniciar mesmo assim':'Iniciar busca'):'Iniciar sandbox';$('#zeraBox').hidden=!$('#comp').checked;
+ $('#btnIniciar').textContent=b?(aus&&ausOk?'Iniciar mesmo assim':'Iniciar busca'):'Iniciar sandbox';$('#zeraBox').hidden=$('#rodBox').hidden=!$('#comp').checked;
  $('#alvoBox').hidden=!b||rand;$('#gerBox').hidden=!rand;$('#manualBox').hidden=rand;
  $('#btnIniciar').disabled=!rand&&!valores.length;
  // na geração aleatória a ordem inicial só pode ser "ordenado" ou "embaralhado" (não há ordem prévia a manter)
@@ -44,20 +46,21 @@ document.querySelectorAll('.aba').forEach(b=>b.onclick=()=>{
 $('#btnIniciar').onclick=()=>{
  const d=dirAtual();let a=valores.slice(),o=radio('ordem');
  if(o==='asc')a.sort((x,y)=>d*(x-y));
- if(o==='emb'){for(let k=0;k<6;k++){embaralha(a);if(a.some((v,i)=>i&&d*(+a[i-1]-+v)>0))break}}
+ if(o==='emb')mistura(a,d);
  const busca=radio('modo')==='busca',alvo=$('#alvo').value.trim();
  if(radio('origem')==='aleatorio'){
   const mn=parseInt($('#fmin').value),mx=parseInt($('#fmax').value),q=parseInt($('#fqtd').value);
   const bad=[['#fmin',mn],['#fmax',mx],['#fqtd',q]].find(([,v])=>isNaN(v));
   if(bad||mx<=mn){$(bad?bad[0]:'#fmax').focus();return}
-  inicia({vals:[],busca,alvo:'',comp:$('#comp').checked,gera:{min:mn,max:mx,qtd:Math.max(2,Math.min(MAXG,q)),ordem:o},zera:$('#comp').checked&&$('#zera').checked});return}
+  inicia({vals:[],busca,alvo:'',comp:$('#comp').checked,gera:{min:mn,max:mx,qtd:Math.max(2,Math.min(MAXG,q)),ordem:o},zera:$('#comp').checked&&$('#zera').checked,rod:rodadasComp()});return}
  if(busca&&(alvo===''||isNaN(+alvo))){$('#alvo').focus();return}
  if(busca&&ausenteNaLista(alvo)&&!ausOk){ // avisa e pede confirmação antes de começar
   ausOk=true;atualizaManager();const av=$('#alvoAviso');av.classList.remove('pulsa');void av.offsetWidth;av.classList.add('pulsa');return}
- inicia({vals:a,busca,alvo:busca?String(parseInt(alvo,10)):'',comp:$('#comp').checked,zera:$('#comp').checked&&$('#zera').checked});
+ const rod=rodadasComp(); // lista manual embaralhada: a sequência de listas é fixa, para todos os competidores jogarem as mesmas
+ inicia({vals:a,busca,alvo:busca?String(parseInt(alvo,10)):'',comp:$('#comp').checked,zera:$('#comp').checked&&$('#zera').checked,rod,listas:o==='emb'&&rod>1?Array.from({length:rod},(_,k)=>k?mistura(valores.slice(),d):a):null});
 };
 
-/* --- Gerador automático --- */
+/* --- Simulador --- */
 function preencheAlgo(){
  const L=radio('gtipo')==='buscar'?BUSCAS:NOMES;
  $('#algo').innerHTML=Object.entries(L).map(([k,v])=>`<option value="${k}">${v}</option>`).join('');$('#algo').selectedIndex=0;algoCS.refresh();

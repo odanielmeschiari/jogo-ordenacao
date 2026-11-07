@@ -20,12 +20,12 @@ assets/walls/       papéis de parede (antes embutidos em base64 no HTML); para 
 | `estado.js` | constantes, estado global e utilitários |
 | `som.js` | sons sintetizados (Web Audio) |
 | `aparencia.js` | tema de cor e papel de parede |
-| `gerenciador.js` | tela inicial: peças, gerador, início do jogo |
+| `gerenciador.js` | tela inicial: jogo, simulador, início |
 | `mesa.js` | medidas, desenho das peças, contadores |
 | `pecas.js` | ordem, sobreposição, encaixe, arraste |
 | `algoritmos.js` | ordenações e buscas (geradores passo a passo) |
 | `execucao.js` | execução automática, histórico, torneio |
-| `competicao.js` | cronômetro, ranking, CSV |
+| `competicao.js` | cronômetro, ranking (com várias rodadas por competidor), CSV |
 | `feira.js` | modo feira (reinício por inatividade) |
 | `seletor.js` | seletor personalizado |
 | `som-ui.js` | painel de som |

@@ -36,8 +36,8 @@
   </header>
 
   <div class="abas" role="tablist">
-   <button class="sec aba on" data-t="p1" role="tab">Montar peças</button>
-   <button class="sec aba" data-t="p2" role="tab">Gerador automático</button>
+   <button class="sec aba on" data-t="p1" role="tab">Jogo</button>
+   <button class="sec aba" data-t="p2" role="tab">Simulador</button>
   </div>
   <div class="sentido">
    <span class="rot">Sentido da ordenação</span>
@@ -111,6 +111,13 @@
      <div class="cfg" id="zeraBox" hidden>
       <span class="rot">Ranking</span>
       <div class="seg"><label><input type="checkbox" id="zera"><span>Iniciar com ranking zerado</span></label></div>
+     </div>
+     <div class="cfg" id="rodBox" hidden>
+      <span class="rot">Rodadas por competidor (1 a 20)</span>
+      <div>
+       <input id="crod" class="peq" type="number" inputmode="numeric" min="1" max="20" value="1" aria-label="Rodadas por competidor">
+       <p class="dica">Cada competidor joga todas as rodadas e entra no ranking com a média delas. Com lista sorteada, cada rodada tem uma lista nova; com lista manual embaralhada, todos jogam a mesma sequência de listas.</p>
+      </div>
      </div>
      <div class="cfg">
       <span class="rot">Exposição</span>

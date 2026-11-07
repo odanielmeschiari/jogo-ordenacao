@@ -32,10 +32,11 @@ function faixa(lo,hi){ // destaca o intervalo restante da busca (uma faixa por l
   const r=r0+k,x=Math.max(lo,r*G.cols),y=Math.min(hi,(r+1)*G.cols-1),va=vaga(x),vb=vaga(y);
   Object.assign(d.style,{left:(va.x-pad)+'px',top:(va.y-pad)+'px',width:(vb.x-va.x+G.size+2*pad)+'px',height:(G.size+2*pad)+'px',opacity:1})});
 }
-function montaMesa(manter){
+function montaMesa(manter,prox){ // prox: dados do competidor que segue para a próxima rodada (sem pedir o nome de novo)
  stopAuto();cancelaComp();mesa.innerHTML='';faixas=[];faixaR=null;pecas=[];vagasEl=[];idxEl=[];$('#msg').classList.remove('on','err');$('#flash').classList.remove('on');
  DIR=cfg.dir;mesa.classList.toggle('barras',!!cfg.barras);
  if(cfg.gera)sorteia(cfg.gera);
+ else if(cfg.listas)cfg.vals=cfg.listas[prox?prox.r:0];
  const T=cfg.torneio;
  if(!manter)velManual=false;
  if(T&&!manter){T.i=0;T.r=0;T.map={};T.acc={};T.fim=false;T.play=true;T.regs=[];cfg.algo=T.lista[0];
@@ -60,7 +61,7 @@ function montaMesa(manter){
   iniciaAuto(!!manter);
  }else if(cfg.algo)iniciaAuto();
  barra();
- if(cfg.comp&&!T)espera();
+ if(cfg.comp&&!T)espera(prox);
  mostraAlvo();
 }
 function desenha(){

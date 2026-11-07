@@ -1,6 +1,6 @@
 /* Som sintetizado (Web Audio, sem arquivos) */
 /* ===== Som (sintetizado, sem arquivos) ===== */
-const EFEITOS=[['mover','Peças arrastadas à mão (madeira)'],['moverAuto','Peças se movendo no gerador automático (madeira)'],['virar','Virar peça na busca'],['nota','Tom das comparações (agudo = valor maior)'],
+const EFEITOS=[['mover','Peças arrastadas à mão (madeira)'],['moverAuto','Peças se movendo no simulador (madeira)'],['virar','Virar peça na busca'],['nota','Tom das comparações (agudo = valor maior)'],
  ['contagem','Contagem regressiva'],['vitoria','Sucesso (ordenado / encontrado)'],['erro','Erro (valor ausente)']];
 let AC=null,BUS=null,som=true,sons={},ultSom=0,RUI=null;
 EFEITOS.forEach(([k])=>sons[k]=k!=='moverAuto');

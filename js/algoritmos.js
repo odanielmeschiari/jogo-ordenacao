@@ -1,5 +1,5 @@
 /* Algoritmos (geradores passo a passo): ordenação e busca */
-/* ===== Gerador automático: ordenação ===== */
+/* ===== Simulador: ordenação ===== */
 function gera(nome,vals){const a=vals.map((_,i)=>i);return{a,it:alg(nome,vals,a)}}
 function* alg(nome,vals,a){ // cada yield: [destaques, pivô, posições alteradas]
  const n=vals.length,v=i=>+vals[i],sw=(i,j)=>{[a[i],a[j]]=[a[j],a[i]]};
@@ -54,7 +54,7 @@ function* alg(nome,vals,a){ // cada yield: [destaques, pivô, posições alterad
   for(let i=(n>>1)-1;i>=0;i--)yield*sift(i,n);for(let e=n-1;e>0;e--){sw(0,e);yield[[0,e],-1,[0,e]];yield*sift(0,e)}}
 }
 
-/* ===== Gerador automático: busca ===== */
+/* ===== Simulador: busca ===== */
 function* buscaGen(nome,vals,alvo){ // cada yield: [peça lida, início do intervalo, fim do intervalo]; retorna o índice achado ou -1
  const n=vals.length,t=+alvo,V=i=>+vals[i],c=x=>DIR*(x-t); // c<0: a peça vem antes do alvo; c>0: vem depois
  const ler=function*(i,lo,hi){yield[i,lo,hi];return V(i)};

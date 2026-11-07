@@ -16,14 +16,20 @@ const fmt=ms=>(ms/1000).toFixed(2).replace('.',',')+' s';
 const unid=(n,busca)=>busca?(n===1?'virada':'viradas'):(n===1?'movimento':'movimentos');
 const bloqueado=()=>!!cfg.comp&&(!comp||comp.estado!=='rodando');
 function cancelaComp(){if(comp){cancelAnimationFrame(comp.raf);clearTimeout(comp.tm)}comp=null;$('#ov').hidden=true}
-function espera(){
- comp={estado:'espera'};$('#ov').hidden=false;$('#ovBox').hidden=false;$('#ovCount').hidden=true;
+const rotComp=()=>comp.nome+(cfg.rod>1?` · rodada ${comp.r+1}/${cfg.rod}`:'');
+function espera(prox){ // prox: o mesmo competidor segue para a próxima rodada (vai direto à contagem)
+ comp={estado:'espera',r:0,acc:{ms:[],mov:[]},aus:false};$('#ov').hidden=false;$('#ovBox').hidden=false;$('#ovCount').hidden=true;
  $('#nome').value='';$('#cNome').textContent='';$('#cron').textContent='0,00 s';$('#btnProx').hidden=true;
- renderRank();setTimeout(()=>$('#nome').focus(),60);
+ renderRank();
+ if(prox){Object.assign(comp,prox);$('#cNome').textContent=rotComp();contagem();return}
+ setTimeout(()=>$('#nome').focus(),60);
 }
 function comeca(){
  if(!comp||comp.estado!=='espera')return;
- comp.nome=$('#nome').value.trim()||'Competidor '+(lista().length+1);$('#cNome').textContent=comp.nome;
+ comp.nome=$('#nome').value.trim()||'Competidor '+(lista().length+1);$('#cNome').textContent=rotComp();
+ contagem();
+}
+function contagem(){
  comp.estado='contagem';$('#ovBox').hidden=true;
  const c=$('#ovCount');c.hidden=false;let n=3;c.textContent=n;sContagem(false);
  const passo=()=>{n--;
@@ -41,8 +47,14 @@ function loop(){$('#cron').textContent=fmt(performance.now()-comp.t0);comp.raf=r
 function termina(){
  if(!comp||comp.estado!=='rodando')return;
  cancelAnimationFrame(comp.raf);const ms=performance.now()-comp.t0;comp.estado='fim';$('#cron').textContent=fmt(ms);
- const reg={nome:comp.nome,ms,mov,tipo:tipoAtual(),id:Date.now(),aus:cfg.busca&&!cfg.vals.includes(cfg.alvo)};ranking.push(reg);guarda();renderRank();
- $('#msg').textContent+=' · '+fmt(ms)+' · '+mov+' '+unid(mov,cfg.busca);$('#btnProx').hidden=false;
+ const rod=cfg.rod||1,A=comp.acc;
+ A.ms.push(ms);A.mov.push(mov);comp.aus=comp.aus||!!(cfg.busca&&!cfg.vals.includes(cfg.alvo));
+ $('#msg').textContent+=' · '+fmt(ms)+' · '+mov+' '+unid(mov,cfg.busca);
+ if(A.ms.length<rod){$('#btnProx').textContent=`Rodada ${A.ms.length+1} de ${rod}`;$('#btnProx').hidden=false;return} // o ranking só recebe o competidor depois da última rodada
+ const av=x=>x.reduce((q,y)=>q+y,0)/x.length,mm=rod>1?Math.round(av(A.mov)*10)/10:mov;
+ const reg={nome:comp.nome,ms:av(A.ms),mov:mm,tipo:tipoAtual(),id:Date.now(),aus:comp.aus,rod};ranking.push(reg);guarda();renderRank();
+ if(rod>1)$('#msg').textContent+=` · média de ${rod} rodadas: ${fmt(reg.ms)} · ${fn(mm)} ${unid(mm,cfg.busca)}`;
+ $('#btnProx').textContent='Próximo competidor';$('#btnProx').hidden=false;
 }
 function renderRank(){
  const l=$('#rankLista'),L=lista(),b=cfg.busca;l.innerHTML='';
@@ -64,7 +76,9 @@ document.querySelectorAll('#rank .crit button').forEach(x=>x.onclick=()=>{
 });
 $('#btnComecar').onclick=comeca;
 $('#nome').addEventListener('keydown',e=>{if(e.key==='Enter')comeca()});
-$('#btnProx').onclick=()=>{if(cfg.torneio&&cfg.gerA)Object.assign(cfg,novoConjunto(cfg.gerA));montaMesa()};
+$('#btnProx').onclick=()=>{if(cfg.torneio&&cfg.gerA)Object.assign(cfg,novoConjunto(cfg.gerA));
+ const c=comp,prox=c&&c.estado==='fim'&&c.r+1<(cfg.rod||1)?{nome:c.nome,r:c.r+1,acc:c.acc,aus:c.aus}:null; // próxima rodada do mesmo competidor
+ montaMesa(false,prox)};
 let confT=null;
 $('#btnLimpaRank').onclick=()=>{const b=$('#btnLimpaRank');
  if(!confT){b.textContent='Toque de novo para confirmar';confT=setTimeout(()=>{confT=null;b.textContent='Limpar ranking'},3000);return}
