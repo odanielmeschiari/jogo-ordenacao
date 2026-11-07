@@ -1,16 +1,38 @@
 /* Aparência: tema de cor + papel de parede */
 /* ===== Aparência (tema + papel de parede) ===== */
-const WALLS=[['mogno','Mogno'],['lousa','Lousa verde'],['folhas','Tábuas e folhas'],['vermelho','Feltro vermelho'],['azul','Tábuas azuis'],
- ['marinho','Tábuas marinho'],['cafe','Mesa de trabalho'],['feltro','Feltro verde'],['madeira','Madeira escura'],['marmore','Mármore'],
- ['cidade','Cidade futurista'],['estrada','Estrada na chuva'],['gotas','Gotas na folha'],['lago','Lago e montanha'],['neblina','Floresta com neblina'],['estrelas','Árvore sob estrelas'],['moraine','Lago Moraine'],['flores','Campo de flores'],
- ['lagoverde','Lago verde na neblina'],['nebulosa','Nebulosa colorida'],['cometa','Cometa sobre as montanhas'],['carina','Penhascos cósmicos'],['troncos','Floresta de troncos altos'],['vialactea','Via Láctea'],['azulestelar','Céu azul estrelado'],
- ['planeta','Planeta gelado'],['orbita','Terra em órbita'],['nebroxa','Nebulosa roxa'],['outono','Vale no outono'],['pinheiros','Pinheiros na neblina'],['bosque','Bosque iluminado'],['terranoite','Terra à noite']];
+const WALLS=[['areia','Areia escura'],
+ ['tintamarrom','Tinta fluida marrom'],
+ ['vilacosteira','Vila costeira ao entardecer'],
+ ['vialactea','Via Láctea sobre as montanhas'],
+ ['montanha','Montanha ao entardecer'],
+ ['juta','Tecido de juta'],
+ ['viaduto','Trem no viaduto'],
+ ['rochas','Rochas e mar escuros'],
+ ['azulliso','Azul liso'],
+ ['valenevado','Vale nevado'],
+ ['trilhaluz','Trilha na floresta'],
+ ['estrada','Estrada na floresta'],
+ ['serravermelha','Serra avermelhada'],
+ ['aurora','Aurora no desfiladeiro'],
+ ['montanhanublada','Montanha nublada'],
+ ['vale','Vale com montanhas'],
+ ['praia','Praia ao anoitecer'],
+ ['canion','Cânion sob as estrelas'],
+ ['tintaazul','Tinta fluida azul'],
+ ['lagoturquesa','Lago turquesa'],
+ ['neblina','Floresta com neblina'],
+ ['pinheiros','Pinheiros vistos de cima'],
+ ['vilalago','Vila alpina à noite'],
+ ['pagode','Pagode e Monte Fuji'],
+ ['azulonda','Azul ondulado'],
+ ['samambaias','Floresta com samambaias'],
+ ['carro','Carro na fumaça (P&B)']];
 /* Camada escura única sobre o papel de parede, igual para todos os temas (o tema só pinta menus e peças). */
 const WALL_SCRIM='rgba(0,0,0,.2)';
 const salvaVisual=()=>{try{localStorage.setItem('mesa-visual',JSON.stringify(visual))}catch(e){}};
 function aplicaWall(){
  if(typeof WALL_IMG==='undefined')return;
- if(!WALL_IMG[visual.wall])visual.wall='mogno';
+ if(!WALL_IMG[visual.wall])visual.wall='juta';
  document.body.style.backgroundImage=`linear-gradient(${WALL_SCRIM},${WALL_SCRIM}),url("${WALL_IMG[visual.wall]}")`;
 }
 function marcaAp(){
