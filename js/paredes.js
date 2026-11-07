@@ -1,5 +1,8 @@
 /* Papéis de parede: id -> arquivo em assets/walls/ */
 const WALL_IMG={
+ mesavermelha:'assets/walls/mesavermelha.jpg',
+ mesaverde:'assets/walls/mesaverde.jpg',
+ tabuas:'assets/walls/tabuas.jpg',
  areia:'assets/walls/areia.jpg',
  tintamarrom:'assets/walls/tintamarrom.jpg',
  vilacosteira:'assets/walls/vilacosteira.jpg',
@@ -28,5 +31,5 @@ const WALL_IMG={
  samambaias:'assets/walls/samambaias.jpg',
  carro:'assets/walls/carro.jpg'
 };
-/* Miniaturas leves (400x225) para o seletor: evita carregar 27 imagens grandes só para mostrar os quadradinhos. */
+/* Miniaturas leves (400x225) para o seletor: evita carregar 30 imagens grandes só para mostrar os quadradinhos. */
 const WALL_THUMB=Object.fromEntries(Object.entries(WALL_IMG).map(([k,v])=>[k,v.replace('assets/walls/','assets/walls/thumbs/')]));

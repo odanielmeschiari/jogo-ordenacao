@@ -32,7 +32,7 @@ const TEMAS={
   b1:'#4a4f5a',b2:'#2c3037',be:'#14161a',bi:'#ffffff',vaga:'rgba(0,0,0,.2)',alvo:'rgba(0,0,0,.12)',alvoln:'rgba(30,34,42,.7)',
   fundo:'#2a2c31',onwall:'rgba(235,238,245,.88)',halo:'#000',well:'rgba(0,0,0,.06)',inbg:'rgba(255,255,255,.75)',brilho:'#20232a'}}
 };
-let visual={tema:'marrom',wall:'juta'};
+let visual={tema:'marrom',wall:'mesavermelha'};
 try{Object.assign(visual,JSON.parse(localStorage.getItem('mesa-visual')||'{}'))}catch(e){}
 if(!TEMAS[visual.tema])visual.tema='marrom';
 function aplicaTema(){const r=document.documentElement.style,v=TEMAS[visual.tema].v;for(const k in v)r.setProperty('--'+k,v[k])}

@@ -1,6 +1,7 @@
 /* Aparência: tema de cor + papel de parede */
 /* ===== Aparência (tema + papel de parede) ===== */
-const WALLS=[['areia','Areia escura'],
+const WALLS=[['mesavermelha','Mesa vermelha'],['mesaverde','Mesa verde'],['tabuas','Tábuas de madeira'],
+ ['areia','Areia escura'],
  ['tintamarrom','Tinta fluida marrom'],
  ['vilacosteira','Vila costeira ao entardecer'],
  ['vialactea','Via Láctea sobre as montanhas'],
@@ -32,7 +33,7 @@ const WALL_SCRIM='rgba(0,0,0,.2)';
 const salvaVisual=()=>{try{localStorage.setItem('mesa-visual',JSON.stringify(visual))}catch(e){}};
 function aplicaWall(){
  if(typeof WALL_IMG==='undefined')return;
- if(!WALL_IMG[visual.wall])visual.wall='juta';
+ if(!WALL_IMG[visual.wall])visual.wall='mesavermelha';
  document.body.style.backgroundImage=`linear-gradient(${WALL_SCRIM},${WALL_SCRIM}),url("${WALL_IMG[visual.wall]}")`;
 }
 function marcaAp(){
