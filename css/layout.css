@@ -31,15 +31,6 @@ button.sec.mudo{color:var(--dim)}
 .corpo>.sub{margin:10px 0 0}
 .corpo>.legenda{margin:14px 0 4px}
 
-@media (max-width:620px){
- .cab{padding:18px 16px 4px}.painel.gerente .abas,.sentido{margin-left:16px;margin-right:16px}
- .corpo{padding:4px 16px 10px}.rodape{padding:12px 16px 14px}
- .bloco{padding:12px 12px 14px}
- .cfg{grid-template-columns:minmax(0,1fr)}
- .painel.gerente .abas{flex-wrap:nowrap}
- .painel.gerente .abas button{flex:1;padding:10px 6px;font-size:15px}
-}
-
 /* ---------- Barra da mesa: linha 1 = navegação | estado | ferramentas; linha 2 = execução automática ---------- */
 .barra{flex-direction:column;align-items:stretch;flex-wrap:nowrap;gap:8px;padding:10px 14px}
 .barra-linha{display:flex;align-items:center;gap:10px 12px;flex-wrap:wrap}
@@ -58,16 +49,6 @@ button.sec.mudo{color:var(--dim)}
 #sandbox.com-ctrl #alvoGrande{top:108px}
 #sandbox.com-ctrl #rank{top:108px}
 
-@media (max-width:620px){
- /* celular: cada linha da barra vira uma faixa rolável na horizontal, com a mesma altura do desktop */
- .barra{padding:8px 10px;gap:6px}
- .barra-linha{flex-wrap:nowrap;overflow-x:auto;scrollbar-width:none}
- .barra-linha::-webkit-scrollbar{display:none}
- .barra button,.barra #cont,.barra label{flex:none;white-space:nowrap}
- .barra .ferr button{padding:7px 10px;font-size:13px}
- .barra #titulo{display:none}
- .barra .ferr{margin-left:0}
- #linhaAuto #ctrlAuto{flex-wrap:nowrap}
- .barra #cont{order:4}
- #passoTxt,#toast{width:max-content;font-size:14px;padding:6px 14px}
-}
+/* elementos que só existem no celular (ver css/mobile.css); no desktop o ranking e o menu da barra ficam como sempre */
+.btnMais,.soMob,.fechar-mob,#rankTg{display:none}
+.rank-topo,.rank-id,#rankDet{display:contents}

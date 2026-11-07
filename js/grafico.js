@@ -8,7 +8,7 @@ function custoDe(nome,n){
 }
 function montaGfSel(){$('#gfSel').innerHTML=Object.entries(NOMES).filter(([k])=>k!=='bogo').map(([k,v])=>`<label><input type="checkbox" value="${k}"${gfSel.includes(k)?' checked':''}><span>${v}</span></label>`).join('')}
 function desenhaGraf(anima){
- const log=$('#gfLog').checked,W=720,Hh=380,L=72,R=150,T=16,B=46,pw=W-L-R,ph=Hh-T-B,ks=Object.keys(NOMES),lista=ks.filter(k=>gfSel.includes(k));
+ const M=mob(),log=$('#gfLog').checked,W=M?380:720,Hh=M?340:380,L=M?60:72,R=M?14:150,T=16,B=46,pw=W-L-R,ph=Hh-T-B,ks=Object.keys(NOMES),lista=ks.filter(k=>gfSel.includes(k));
  if(!lista.length){$('#gfBox').innerHTML='<p class="nota">Marque pelo menos um algoritmo.</p>';return}
  const dados=lista.map(k=>({k,i:ks.indexOf(k),pts:GF_N.map(n=>custoDe(k,n))}));
  const mx=Math.max(10,...dados.flatMap(d=>d.pts)),top=log?Math.pow(10,Math.ceil(Math.log10(mx))):mx;
@@ -23,15 +23,17 @@ function desenhaGraf(anima){
   s+=`<polyline points="${d.pts.map((p,j)=>X(GF_N[j])+','+Y(p)).join(' ')}" fill="none" stroke-width="3" stroke-linejoin="round" style="stroke:${c}"/>`+d.pts.map((p,j)=>`<circle cx="${X(GF_N[j])}" cy="${Y(p)}" r="4" style="fill:${c}"/>`).join('');
   lab.push({d,c,y:Y(d.pts[4])})});
  lab.sort((a,b)=>a.y-b.y);for(let i=1;i<lab.length;i++)if(lab[i].y-lab[i-1].y<15)lab[i].y=lab[i-1].y+15;
- lab.forEach(l=>{s+=`<text x="${L+pw+10}" y="${l.y+4}" style="fill:${l.c};font-weight:700">${NOMES[l.d.k].replace(' sort','')} (${f(l.d.pts[4])})</text>`});
- $('#gfBox').innerHTML=s+'</g></svg>';
+ if(!M)lab.forEach(l=>{s+=`<text x="${L+pw+10}" y="${l.y+4}" style="fill:${l.c};font-weight:700">${NOMES[l.d.k].replace(' sort','')} (${f(l.d.pts[4])})</text>`});
+ const leg=M?'<div class="gf-leg">'+dados.slice().sort((a,b)=>b.pts[4]-a.pts[4]).map(d=>`<span><i style="background:hsl(${(d.i*47+10)%360} 75% 60%)"></i>${NOMES[d.k].replace(' sort','')} (${f(d.pts[4])})</span>`).join('')+'</div>':'';
+ $('#gfBox').innerHTML=s+'</g></svg>'+leg;
  cancelAnimationFrame(gfRaf);
  if(anima){const r=$('#gfr');
   if(matchMedia('(prefers-reduced-motion:reduce)').matches)r.setAttribute('width',W);
-  else{const t0=performance.now(),q=t=>{const u=Math.min(1,(t-t0)/2600);r.setAttribute('width',W*(1-Math.pow(1-u,2)));if(u<1)gfRaf=requestAnimationFrame(q)};gfRaf=requestAnimationFrame(q)}}
+  else{const t0=performance.now(),q=t=>{const u=Math.max(0,Math.min(1,(t-t0)/2600));r.setAttribute('width',W*(1-Math.pow(1-u,2)));if(u<1)gfRaf=requestAnimationFrame(q)};gfRaf=requestAnimationFrame(q)}}
 }
 function abreGraf(){['#ap','#sp'].forEach(q=>$(q).hidden=true);if(!$('#gfSel').children.length)montaGfSel();$('#gf').hidden=false;$('#gfx').focus();desenhaGraf(true)}
 document.querySelectorAll('.btnGraf').forEach(b=>b.addEventListener('click',e=>{e.stopPropagation();abreGraf()}));
 $('#gfSel').addEventListener('change',()=>{gfSel=[...document.querySelectorAll('#gfSel input:checked')].map(i=>i.value);desenhaGraf(true)});
 $('#gfLog').onchange=()=>desenhaGraf(true);$('#gfAnim').onclick=()=>desenhaGraf(true);
 $('#gfx').onclick=()=>{$('#gf').hidden=true};$('#gf').addEventListener('click',e=>{if(e.target===$('#gf'))$('#gf').hidden=true});
+MOB.addEventListener('change',()=>{if(!$('#gf').hidden)desenhaGraf(false)});

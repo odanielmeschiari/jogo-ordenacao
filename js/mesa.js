@@ -1,13 +1,18 @@
 /* Mesa: medidas, desenho das peças e contadores */
 /* ===== Mesa ===== */
+function topoMesa(){ // espaço no alto da mesa tomado por caixas sobrepostas (valor a buscar, texto do passo, controles)
+ if(mob())return 10+(cfg&&cfg.busca&&cfg.alvo!==''?90:0)+(cfg&&cfg.algo?50:0); // no celular a mesa já começa abaixo da barra e os controles ficam embaixo
+ const ext=cfg&&cfg.algo&&!cfg.desafio?46:0;
+ return(cfg&&cfg.busca?186:(cfg&&cfg.barras?122:82))+ext;
+}
 function medidas(n){
- const ext=cfg&&cfg.algo&&!cfg.desafio?46:0,top=(cfg&&cfg.busca?186:(cfg&&cfg.barras?122:82))+ext,W=mesa.clientWidth,H=mesa.clientHeight,s1=Math.min(88,(W-60)/n-14);
+ const top=topoMesa(),W=mesa.clientWidth,H=mesa.clientHeight,s1=Math.min(88,(W-60)/n-14);
  if(cfg&&cfg.barras){ // linhas verticais: uma coluna por valor, apoiadas numa linha de base
   const step=Math.min(90,(W-40)/n),g=step>=8?Math.max(2,Math.round(step*.15)):step>=3?1:0;
   Object.assign(G,{size:Math.max(.5,step-g),gap:g,step,cols:n,rows:1,W,H});
   G.x0=(W-step*n+g)/2;G.base=H-32;G.maxH=Math.max(60,G.base-top-10);G.rowY=G.base-G.maxH;return}
  let s,g,c,r;
- if(s1>=34){s=s1;g=14;c=n;r=1}
+ if(s1>=(mob()?56:34)){s=s1;g=14;c=n;r=1} // no celular, peças pequenas demais para o dedo quebram em linhas maiores
  else for(s=88;;s--){g=Math.max(3,Math.round(s*.16));c=Math.max(1,Math.floor((W-40+g)/(s+g)));r=Math.ceil(n/c);
   if(r*(s+g)-g<=H-top-28||s<=8)break}
  Object.assign(G,{size:s,gap:g,step:s+g,cols:c,rows:r,W,H});
@@ -37,7 +42,7 @@ function montaMesa(manter){
   if(cfg.zera){ranking=ranking.filter(r=>r.tipo!==tipoAtual());guarda()}}
  mov=0;comps=0;$('#resumo').hidden=true;$('#sandbox').classList.toggle('comp',!!cfg.comp);$('#rank').hidden=!cfg.comp;
  const n=cfg.vals.length;DIG=Math.max(2,...cfg.vals.map(v=>v.length));medidas(n);
- G.vmax=Math.max(1,...cfg.vals.map(Number));G.vmin=Math.min(...cfg.vals.map(Number));$('#passoTxt').style.top=(cfg.busca?150:56)+(cfg.algo&&!cfg.desafio?46:0)+'px';
+ G.vmax=Math.max(1,...cfg.vals.map(Number));G.vmin=Math.min(...cfg.vals.map(Number));$('#passoTxt').style.top=mob()?'':(cfg.busca?150:56)+(cfg.algo&&!cfg.desafio?46:0)+'px';
  for(let i=0;i<(cfg.barras?0:n);i++){
   const s=document.createElement('div');s.className='vaga';mesa.appendChild(s);vagasEl.push(s);
   const t=document.createElement('div');t.className='idx';t.textContent=i;mesa.appendChild(t);idxEl.push(t);
@@ -73,7 +78,8 @@ function desenha(){
  if(faixaR&&!cfg.barras)faixa(faixaR[0],faixaR[1]);
 }
 window.addEventListener('resize',()=>{if($('#sandbox').classList.contains('ativa')&&pecas.length)desenha()});
-function contador(){$('#cont').textContent=(cfg.busca?'Viradas: ':'Movimentos: ')+mov+(cfg.algo?' · Comparações: '+comps:'')}
+function contador(){const m=mob(); // no celular os rótulos são abreviados para caberem na barra
+ $('#cont').textContent=(cfg.busca?(m?'Viradas ':'Viradas: '):(m?'Mov. ':'Movimentos: '))+mov+(cfg.algo?(m?' · Comp. ':' · Comparações: ')+comps:'')}
 const emTorneio=()=>!!(cfg&&cfg.torneio&&!cfg.torneio.fim);
 function barra(){
  contador();

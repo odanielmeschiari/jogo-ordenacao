@@ -1,6 +1,8 @@
 /* Constantes, estado global e utilitários compartilhados */
 const MAX=20,MAXG=1000,PASSO_MS=1,$=s=>document.querySelector(s),mesa=$('#mesa');
 let DIG=2,mov=0,comps=0,valores=[],pecas=[],vagasEl=[],idxEl=[],cfg=null,G={},z=10,jaOrd=false,auto=null,DIR=1;
+/* celular: telas estreitas ou celular deitado (mesmo critério de css/mobile.css) */
+const MOB=matchMedia('(max-width:620px), (max-height:520px) and (pointer:coarse)'),mob=()=>MOB.matches;
 const NOMES={bolha:'Bubble sort',selecao:'Selection sort',insercao:'Insertion sort',quick:'Quick sort',merge:'Merge sort',heap:'Heap sort',shell:'Shell sort',contagem:'Counting sort',radix:'Radix sort',gnome:'Gnome sort',cocktail:'Cocktail sort',comb:'Comb sort',tim:'Tim sort',bogo:'Bogo sort (de brincadeira)'};
 const BUSCAS={linear:'Busca linear',binaria:'Busca binária',ternaria:'Busca ternária',interp:'Busca por interpolação',salto:'Busca por salto (jump)',expo:'Busca exponencial',fib:'Busca de Fibonacci'};
 const NOME={...NOMES,...BUSCAS};

@@ -8,7 +8,7 @@ Jogo didático de ordenação e busca binária (e outros algoritmos). Abra `inde
 index.html          marcação das telas (gerenciador, sandbox, painéis)
 css/                estilos (carregados em ordem; a ordem importa na cascata)
 js/                 scripts (carregados em ordem, compartilham o escopo global)
-assets/walls/       papéis de parede (antes embutidos em base64 no HTML)
+assets/walls/       papéis de parede (antes embutidos em base64 no HTML); para incluir um novo, ponha a imagem aqui e registre em `js/paredes.js` e `js/aparencia.js`
 ```
 
 ### JS (ordem de carregamento)
@@ -34,6 +34,11 @@ assets/walls/       papéis de parede (antes embutidos em base64 no HTML)
 | `desafio.js` | modo desafio |
 | `grafico.js` | gráfico de custo |
 | `atalhos.js` | atalhos de teclado |
+| `mobile.js` | celular: menu ⋮ da barra, folha do ranking, medição das áreas fixas |
 | `iniciar.js` | inicialização |
 
 Observação: são scripts clássicos (não ES modules) de propósito — assim o jogo continua abrindo com duplo clique (`file://`), onde `import` é bloqueado pelo navegador. O comportamento é idêntico ao do arquivo único.
+
+### Celular
+
+`css/mobile.css` (carregado por último) vale para telas de até 620px, ou celular deitado, e não altera o desktop. No celular: painel inicial em tela cheia com rodapé fixo; barra da mesa com **Voltar**, contador e menu **⋮** (Reiniciar, Som, Aparência, Custo, Ajuda); controles de execução, ranking e desafio ficam em painéis na base da tela; Aparência e Som viram folhas; Ajuda e Custo ocupam a tela toda. `js/mobile.js` mede esses painéis e a mesa se ajusta ao espaço que sobra.

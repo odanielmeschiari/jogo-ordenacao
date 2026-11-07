@@ -9,5 +9,13 @@ const WALL_IMG={
  cafe:'assets/walls/cafe.jpg',
  feltro:'assets/walls/feltro.jpg',
  madeira:'assets/walls/madeira.jpg',
- marmore:'assets/walls/marmore.jpg'
+ marmore:'assets/walls/marmore.jpg',
+ cidade:'assets/walls/cidade.jpg',
+ estrada:'assets/walls/estrada.jpg',
+ gotas:'assets/walls/gotas.jpg',
+ lago:'assets/walls/lago.jpg',
+ neblina:'assets/walls/neblina.jpg',
+ estrelas:'assets/walls/estrelas.jpg',
+ moraine:'assets/walls/moraine.jpg',
+ flores:'assets/walls/flores.jpg'
 };

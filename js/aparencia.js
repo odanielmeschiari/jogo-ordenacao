@@ -1,7 +1,8 @@
 /* Aparência: tema de cor + papel de parede */
 /* ===== Aparência (tema + papel de parede) ===== */
 const WALLS=[['mogno','Mogno'],['lousa','Lousa verde'],['folhas','Tábuas e folhas'],['vermelho','Feltro vermelho'],['azul','Tábuas azuis'],
- ['marinho','Tábuas marinho'],['cafe','Mesa de trabalho'],['feltro','Feltro verde'],['madeira','Madeira escura'],['marmore','Mármore']];
+ ['marinho','Tábuas marinho'],['cafe','Mesa de trabalho'],['feltro','Feltro verde'],['madeira','Madeira escura'],['marmore','Mármore'],
+ ['cidade','Cidade futurista'],['estrada','Estrada na chuva'],['gotas','Gotas na folha'],['lago','Lago e montanha'],['neblina','Floresta com neblina'],['estrelas','Árvore sob estrelas'],['moraine','Lago Moraine'],['flores','Campo de flores']];
 const salvaVisual=()=>{try{localStorage.setItem('mesa-visual',JSON.stringify(visual))}catch(e){}};
 function aplicaWall(){
  if(typeof WALL_IMG==='undefined')return;
@@ -27,7 +28,9 @@ function montaAp(){
 function abreAp(btn,ap=$('#ap')){
  (ap.id==='ap'?$('#sp'):$('#ap')).hidden=true;
  if(!ap.hidden){ap.hidden=true;return}
- ap.hidden=false;const r=btn.getBoundingClientRect(),w=ap.offsetWidth;
+ ap.hidden=false;
+ if(mob()){ap.style.left=ap.style.top='';return} // no celular o painel é uma folha fixa na base da tela (css/mobile.css)
+ const r=btn.getBoundingClientRect(),w=ap.offsetWidth;
  ap.style.left=Math.max(12,Math.min(innerWidth-w-12,r.right-w))+'px';
  ap.style.top=Math.max(12,Math.min(r.bottom+8,innerHeight-ap.offsetHeight-12))+'px';
 }

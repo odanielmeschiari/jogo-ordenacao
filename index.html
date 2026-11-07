@@ -2,7 +2,8 @@
 <html lang="pt-BR">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#1a0903">
 <title>Mesa de Ordenação</title>
 <script src="js/temas.js"></script>
 <link rel="stylesheet" href="css/base.css">
@@ -18,6 +19,7 @@
 <link rel="stylesheet" href="css/desafio.css">
 <link rel="stylesheet" href="css/grafico.css">
 <link rel="stylesheet" href="css/layout.css">
+<link rel="stylesheet" href="css/mobile.css">
 </head>
 <body>
 
@@ -59,7 +61,7 @@
      <div id="manualBox">
       <p class="sub">Digite um valor e toque em + para criar uma peça.</p>
       <div class="linha">
-       <input id="valor" type="number" inputmode="numeric" aria-label="Valor da peça" autofocus>
+       <input id="valor" type="number" inputmode="numeric" aria-label="Valor da peça" enterkeyhint="done">
        <button id="btnAdd" aria-label="Adicionar peça">+</button>
       </div>
       <div class="lista" id="lista"></div>
@@ -230,7 +232,9 @@
    </div>
    <span id="cont"></span>
    <span id="titulo"></span>
-   <div class="ferr" role="toolbar" aria-label="Ferramentas">
+   <button class="sec btnMais" aria-haspopup="true" aria-expanded="false" aria-controls="menuBarra" aria-label="Mais opções">⋮</button>
+   <div class="ferr" id="menuBarra" role="toolbar" aria-label="Ferramentas">
+    <button class="sec soMob" id="btnReiniciar2">Reiniciar</button>
     <button class="sec btnSom" title="Ligar ou desligar o som"></button>
     <button class="sec btnAp" aria-haspopup="dialog" title="Tema de cor e papel de parede">Aparência</button>
     <button class="sec btnGraf" title="Gráfico de custo dos algoritmos">Custo</button>
@@ -265,21 +269,27 @@
   <div id="ovCount" hidden></div>
  </div>
  <aside id="rank" hidden>
-  <div id="cNome"></div><div id="cron">0,00 s</div>
-  <button id="btnProx" hidden>Próximo competidor</button>
-  <h3 id="rankTitulo">Ranking</h3>
-  <div class="crit" role="group" aria-label="Critério do ranking">
-   <button class="sec on" data-c="ms">Tempo</button>
-   <button class="sec" data-c="mov" id="critMov">Movimentos</button>
-   <button class="sec" data-c="cmp">Comparações</button>
+  <div class="rank-topo">
+   <div class="rank-id"><div id="cNome"></div><div id="cron">0,00 s</div></div>
+   <button class="sec" id="rankTg" aria-expanded="false" aria-controls="rankDet">Ranking ▴</button>
+   <button id="btnProx" hidden>Próximo competidor</button>
   </div>
-  <ol id="rankLista"></ol>
-  <button class="sec" id="btnCsv">Exportar CSV</button>
-  <button class="sec" id="btnLimpaRank">Limpar ranking</button>
+  <div id="rankDet">
+   <h3 id="rankTitulo">Ranking</h3>
+   <div class="crit" role="group" aria-label="Critério do ranking">
+    <button class="sec on" data-c="ms">Tempo</button>
+    <button class="sec" data-c="mov" id="critMov">Movimentos</button>
+    <button class="sec" data-c="cmp">Comparações</button>
+   </div>
+   <ol id="rankLista"></ol>
+   <button class="sec" id="btnCsv">Exportar CSV</button>
+   <button class="sec" id="btnLimpaRank">Limpar ranking</button>
+  </div>
  </aside>
 </section>
 
 <div id="sp" role="dialog" aria-label="Som" hidden>
+ <button type="button" class="sec fechar-mob" aria-label="Fechar">✕</button>
  <h3>Som</h3>
  <div class="seg" style="margin-top:12px"><label><input type="checkbox" id="somMestre"><span>Som ligado</span></label></div>
  <div class="grp">Efeitos que você quer ouvir (▶ para testar)</div>
@@ -305,6 +315,7 @@
  </div>
 </div>
 <div id="ap" role="dialog" aria-label="Aparência" hidden>
+ <button type="button" class="sec fechar-mob" aria-label="Fechar">✕</button>
  <h3>Aparência</h3>
  <div class="grp">Cor do tema</div><div class="temas" id="apTemas"></div>
  <div class="grp">Papel de parede</div><div class="walls" id="apWalls"></div>
@@ -328,6 +339,7 @@
 <script src="js/desafio.js"></script>
 <script src="js/grafico.js"></script>
 <script src="js/atalhos.js"></script>
+<script src="js/mobile.js"></script>
 <script src="js/iniciar.js"></script>
 </body>
 </html>
