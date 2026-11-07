@@ -1,0 +1,18 @@
+/* Janela de ajuda */
+/* ===== Ajuda ===== */
+#aj,#gf{position:fixed;inset:0;z-index:8500;display:grid;place-items:center;padding:14px;background:rgba(var(--dk2),.72);backdrop-filter:blur(8px)}
+#aj .painel,#gf .painel{position:relative;width:min(860px,100%);padding:24px 28px;color:var(--h)}
+#aj button.fecha,#gf button.fecha{position:absolute;top:12px;right:12px;width:34px;height:34px;padding:0;border-radius:50%;font-size:15px}
+#aj h1,#gf h1{font-size:28px;padding-right:40px}
+#aj h2{font-size:18px;color:var(--h);margin:20px 0 8px}
+#aj ul{list-style:none;padding:0;display:grid;gap:7px;font-size:15px;line-height:1.4;color:var(--x4)}
+#aj p.nota,#gf p.nota{margin-top:10px;font-size:14px;color:var(--x3);line-height:1.5}
+.sq{display:inline-block;width:18px;height:18px;border-radius:5px;vertical-align:-3px;margin-right:8px;background:var(--c);box-shadow:0 0 8px var(--c)}
+.sq.f{background:var(--well);box-shadow:inset 0 0 0 2px var(--alvoln);opacity:.9}
+.sq.d{background:var(--t2);opacity:.3;box-shadow:none}
+.tbl{overflow-x:auto;border-radius:10px;background:var(--well)}
+#aj table{border-collapse:collapse;width:100%;font-size:14px;min-width:560px}
+#aj th,#aj td{padding:7px 10px;text-align:left;vertical-align:top;border-bottom:1px solid rgba(var(--ln),.15);color:var(--x4)}
+#aj th{color:var(--h);font-weight:700}
+#aj td:first-child{color:var(--h);font-weight:700;white-space:nowrap}
+#aj td.o{white-space:nowrap;font-variant-numeric:tabular-nums}

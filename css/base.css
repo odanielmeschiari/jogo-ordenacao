@@ -1,0 +1,47 @@
+/* Base: reset, tipografia, campos, botões, seletores e avisos */
+:root{--sh:inset 0 2px 0 rgba(255,255,255,.55),inset 0 -4px 0 rgba(var(--ein),.35),0 5px 0 var(--edge),0 10px 14px rgba(0,0,0,.45)}
+*{box-sizing:border-box;margin:0}
+[hidden]{display:none!important}
+html,body{height:100%;overflow:hidden;font-family:Georgia,"Palatino Linotype",serif;color:var(--brilho);
+ background-color:var(--fundo);background-position:center;background-size:cover;background-repeat:no-repeat;user-select:none;-webkit-user-select:none}
+.tela{position:absolute;inset:0;display:none}.tela.ativa{display:flex}
+#gerenciador{align-items:center;justify-content:center;padding:16px;background:radial-gradient(ellipse at center,rgba(var(--dk2),.12),rgba(var(--dk2),.65))}
+.painel{width:min(780px,100%);max-height:100%;overflow:auto;padding:28px 34px;border-radius:18px;
+ background:linear-gradient(160deg,rgba(var(--dk),.9),rgba(var(--dk2),.94));border:1px solid rgba(var(--ln),.25);box-shadow:0 30px 70px rgba(0,0,0,.6)}
+h1{font-size:clamp(26px,4.4vw,38px);line-height:1.1;color:var(--h)}
+.sub{margin:8px 0 16px;font-size:15px;color:var(--x2);line-height:1.5}
+.abas{display:flex;gap:10px;margin:16px 0 6px;flex-wrap:wrap}
+.grp{margin:16px 0 6px;font-size:15px;color:var(--x2)}
+.linha{display:flex;gap:12px}
+input[type=number],input[type=text]{flex:1;min-width:0;font:700 30px Georgia,serif;padding:10px 18px;border-radius:12px;color:var(--h);
+ background:var(--inbg);border:2px solid rgba(var(--ln),.3);outline:none;text-align:center;user-select:text}
+input.peq{flex:0 0 130px;font-size:24px}
+select{flex:1;min-width:0;font:700 20px Georgia,serif;padding:12px;border-radius:12px;color:var(--h);background:var(--inbg);border:2px solid rgba(var(--ln),.3)}
+option{background:rgb(var(--dk2));color:var(--h)}
+input:focus,select:focus{border-color:var(--b2);box-shadow:0 0 0 4px rgba(var(--ln),.2);outline:none}
+input[type=number]{-moz-appearance:textfield;appearance:textfield}
+input::-webkit-inner-spin-button,input::-webkit-outer-spin-button{-webkit-appearance:none;appearance:none;margin:0;display:none}
+button{font:700 18px Georgia,serif;cursor:pointer;border:0;border-radius:12px;padding:12px 22px;color:var(--bi);
+ background:linear-gradient(180deg,var(--b1),var(--b2));box-shadow:0 4px 0 var(--be),0 8px 16px rgba(0,0,0,.4);transition:transform .08s,box-shadow .08s,filter .15s}
+button:hover{filter:brightness(1.07)}
+button:active{transform:translateY(3px);box-shadow:0 1px 0 var(--be),0 3px 8px rgba(0,0,0,.4)}
+button:focus-visible{outline:3px solid var(--h);outline-offset:3px}
+button:disabled{opacity:.4;cursor:not-allowed;filter:none}
+button.sec{background:var(--well);color:var(--h);box-shadow:0 0 0 1px rgba(var(--ln),.35)}
+button.sec:active{transform:none}
+button.sec.on{background:linear-gradient(180deg,var(--b1),var(--b2));color:var(--bi)}
+#btnAdd{font-size:34px;line-height:1;padding:6px 26px}
+.seg{display:flex;gap:8px;flex-wrap:wrap}.seg label{cursor:pointer}
+.seg input{position:absolute;opacity:0;pointer-events:none}
+.seg span{display:block;padding:9px 14px;border-radius:10px;font-size:15px;background:var(--well);color:var(--h);box-shadow:0 0 0 1px rgba(var(--ln),.3)}
+.seg input:checked+span{background:linear-gradient(180deg,var(--b1),var(--b2));color:var(--bi)}
+.seg input:focus-visible+span{outline:3px solid var(--h)}
+.lista{margin-top:16px;min-height:100px;display:flex;flex-wrap:wrap;gap:12px;padding:16px;border-radius:14px;background:var(--well);box-shadow:inset 0 3px 10px rgba(0,0,0,.35);align-content:flex-start}
+.vazio{margin:auto;color:var(--dim);font-size:16px}
+.acoes{display:flex;gap:14px;margin-top:20px;justify-content:space-between;flex-wrap:wrap}
+#btnIniciar,#btnGerar{font-size:20px;padding:14px 34px}
+#btnGerar{margin-top:22px}
+.legenda{margin-top:14px;font-size:14px;color:var(--x3);line-height:1.5}
+.aviso{margin-top:10px;padding:10px 14px;border-radius:10px;font-size:15px;line-height:1.4;color:var(--h);background:rgba(214,60,45,.2);border:1px solid rgba(214,60,45,.75)}
+.aviso.pulsa{animation:pulsa .5s 2}
+@keyframes pulsa{50%{box-shadow:0 0 0 5px rgba(214,60,45,.45)}}

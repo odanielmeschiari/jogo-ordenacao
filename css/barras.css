@@ -1,0 +1,15 @@
+/* Linhas verticais (ordenação automática) */
+/* ===== Linhas verticais (ordenação automática) ===== */
+#mesa.barras{--sh:inset 0 1px 0 rgba(255,255,255,.5),inset 0 -2px 0 rgba(var(--ein),.3),0 2px 4px rgba(0,0,0,.4)}
+#mesa.barras .peca{border-radius:3px 3px 0 0;place-items:start center;padding-top:5px;cursor:default}
+#mesa.barras .peca.cmp{box-shadow:var(--sh),0 0 0 2px #ffb347,0 0 12px #ffb347}
+#mesa.barras .peca.pv{box-shadow:var(--sh),0 0 0 2px #5ec8ff,0 0 12px #5ec8ff}
+#mesa.barras::after{content:"";position:absolute;left:0;right:0;bottom:30px;height:2px;background:rgba(var(--ln),.35)}
+
+@keyframes assenta{0%{transform:translateY(-7px) scale(1.04)}55%{transform:translateY(1px)}100%{transform:none}}
+.peca.assenta{animation:assenta .2s ease-out}
+@media (prefers-reduced-motion:reduce){.peca.assenta{animation:none}}
+.gr{display:grid;grid-template-columns:130px 1fr 70px;gap:8px;align-items:center;font-size:14px;margin-top:6px;text-align:left;color:var(--h)}
+.gr span{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.gr b{text-align:right;font-weight:400}
+.gr div{height:12px;border-radius:6px;background:var(--well)}.gr i{display:block;height:100%;border-radius:6px;background:linear-gradient(90deg,var(--t3),var(--t1))}
+#resumo.larga{width:min(540px,92%)}

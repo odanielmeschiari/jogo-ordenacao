@@ -1,0 +1,34 @@
+/* Mesa, barra superior, animações e mensagens */
+#sandbox{flex-direction:column}
+.barra{position:absolute;top:0;left:0;right:0;z-index:5000;display:flex;flex-wrap:wrap;gap:10px;align-items:center;padding:12px 16px;background:linear-gradient(180deg,rgba(var(--dk2),.85),rgba(var(--dk2),0))}
+.barra button{font-size:15px;padding:9px 16px}
+#ctrlAuto{display:none;gap:10px;align-items:center;font-size:14px;color:var(--h)}
+#ctrlAuto input{accent-color:var(--b2);width:110px}
+#titulo{margin-left:auto;font-size:15px;color:var(--x4);padding:6px 14px;border-radius:999px;background:rgba(var(--dk2),.6);text-shadow:0 1px 3px rgba(0,0,0,.5)}
+#titulo:empty{display:none}
+#mesa{position:absolute;inset:0;touch-action:none}
+.vaga{position:absolute;border-radius:14%;background:var(--vaga);box-shadow:inset 0 4px 10px rgba(0,0,0,.5),0 1px 0 rgba(var(--ln),.18);transition:background .12s,box-shadow .12s}
+.vaga.alvo{background:var(--alvo);box-shadow:inset 0 0 0 3px var(--alvoln),0 0 22px var(--alvo)}
+.idx{position:absolute;text-align:center;font-size:14px;color:var(--onwall);text-shadow:0 0 3px var(--halo),0 1px 2px var(--halo);pointer-events:none}
+#mesa .peca{cursor:grab;touch-action:none;transition:left var(--t,.2s) ease,top var(--t,.2s) ease,transform .15s,box-shadow .15s,opacity .2s}
+#mesa .peca.virada{cursor:pointer}
+#mesa .peca.arrasta{cursor:grabbing;transition:transform .15s,box-shadow .15s;transform:scale(1.08) rotate(-2deg);
+ box-shadow:inset 0 2px 0 rgba(255,255,255,.55),inset 0 -4px 0 rgba(var(--ein),.35),0 14px 0 var(--edge),0 26px 26px rgba(0,0,0,.5)}
+.peca.cmp{box-shadow:var(--sh),0 0 0 4px #ffb347,0 0 20px #ffb347}
+.peca.pv{box-shadow:var(--sh),0 0 0 4px #5ec8ff,0 0 20px #5ec8ff}
+.peca.fora{opacity:.3}
+@keyframes pisca{0%,100%{box-shadow:var(--sh)}25%,75%{box-shadow:var(--sh),0 0 0 5px #3ddc84,0 0 26px #3ddc84}}
+@keyframes piscaR{0%,100%{box-shadow:var(--sh)}25%,75%{box-shadow:var(--sh),0 0 0 5px #ff4d4d,0 0 28px #ff4d4d}}
+@keyframes flashR{0%,100%{opacity:0}40%{opacity:1}}
+@keyframes giro{0%,100%{transform:perspective(600px) rotateY(0)}50%{transform:perspective(600px) rotateY(90deg)}}
+.peca.ok{animation:pisca .5s 3}.peca.gira{animation:giro .36s ease}.peca.nao{animation:piscaR .5s 4}
+#flash{position:absolute;inset:0;z-index:3000;pointer-events:none;opacity:0;background:radial-gradient(ellipse at center,rgba(255,40,40,0) 35%,rgba(255,40,40,.55))}
+#flash.on{animation:flashR .5s 3}
+#msg{position:absolute;bottom:26px;left:50%;transform:translate(-50%,20px);opacity:0;padding:10px 36px;border-radius:999px;background:rgba(8,38,18,.9);max-width:92%;text-align:center;
+ color:#7dffb0;font-size:30px;font-weight:700;border:2px solid #3ddc84;transition:.3s;pointer-events:none}
+#msg.err{background:rgba(60,10,10,.92);color:#ff9a9a;border-color:#ff4d4d}
+#msg.on{opacity:1;transform:translate(-50%,0)}
+@media (prefers-reduced-motion:reduce){#mesa .peca{transition:none}.peca.ok,.peca.gira,#flash.on,.aviso.pulsa{animation:none}.peca.nao{animation:none;box-shadow:var(--sh),0 0 0 4px #ff4d4d}}
+@media (max-width:520px){.painel{padding:22px 16px}#msg{font-size:20px;padding:8px 18px}}
+.peca.achou{color:#0b3d1a;box-shadow:var(--sh),0 0 0 4px #3ddc84,0 0 24px #3ddc84;
+ background:repeating-linear-gradient(92deg,rgba(20,90,40,0) 0 5px,rgba(20,90,40,.1) 5px 6px,rgba(20,90,40,0) 6px 13px),linear-gradient(160deg,#cdf7c4,#82e392 45%,#45bb60)}

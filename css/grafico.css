@@ -1,0 +1,3 @@
+/* Gráfico de custo */
+#gf{display:grid}#gf .painel{width:min(820px,100%)}
+#gfBox svg{width:100%;height:auto;display:block;margin-top:10px}#gfBox text{fill:var(--x4);font:13px Georgia,serif}

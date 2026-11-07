@@ -1,0 +1,8 @@
+/* Texto de passo, aviso e modo desafio */
+#passoTxt{position:absolute;top:56px;left:50%;transform:translateX(-50%);z-index:4400;max-width:min(92%,820px);padding:7px 20px;border-radius:999px;background:rgba(var(--dk2),.82);border:1px solid rgba(var(--ln),.35);color:var(--h);font-size:17px;text-align:center;pointer-events:none;font-variant-numeric:tabular-nums}
+.comp #passoTxt{left:calc((100% - 250px)/2)}
+#toast{position:absolute;top:104px;left:50%;transform:translateX(-50%);z-index:5100;padding:6px 16px;border-radius:999px;background:rgba(var(--dk2),.92);color:var(--h);font-size:16px;opacity:0;transition:opacity .2s;pointer-events:none}#toast.on{opacity:1}
+#desafio{position:absolute;top:64px;right:14px;width:280px;z-index:4600;display:flex;flex-direction:column;gap:10px;padding:16px;border-radius:16px;color:var(--h);background:linear-gradient(160deg,rgba(var(--dk),.94),rgba(var(--dk2),.96));border:1px solid rgba(var(--ln),.3);box-shadow:0 20px 50px rgba(0,0,0,.5)}
+#desafio h3{font-size:18px}#dsPts{font-size:30px;font-weight:700;font-variant-numeric:tabular-nums}#dsQ{font-size:16px;line-height:1.35}#dsOps{display:flex;flex-direction:column;gap:8px}
+#dsFb{min-height:22px;font-size:15px;color:var(--x4)}#desafio button{font-size:16px;padding:10px 12px}
+#dsOps button:disabled{opacity:.55}#dsOps button.certa,#dsOps button.errada{opacity:1;color:#06210f;background:#3ddc84}#dsOps button.errada{background:#ff7b7b;color:#3a0707}

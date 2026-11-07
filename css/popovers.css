@@ -1,0 +1,21 @@
+/* Painéis de Aparência e Som */
+/* ===== Aparência ===== */
+#ap,#sp{position:fixed;z-index:8000;width:min(380px,calc(100vw - 24px));max-height:calc(100% - 24px);overflow:auto;padding:18px 20px 20px;border-radius:16px;
+ background:linear-gradient(160deg,rgba(var(--dk),.97),rgba(var(--dk2),.98));border:1px solid rgba(var(--ln),.3);box-shadow:0 24px 60px rgba(0,0,0,.6);color:var(--h)}
+#ap h3,#sp h3,#aj h3{font-size:20px;color:var(--h)}
+#ap .grp,#sp .grp{margin:14px 0 8px}
+.temas{display:grid;grid-template-columns:repeat(3,1fr);gap:6px}
+button.sw{display:flex;flex-direction:column;align-items:center;gap:5px;padding:8px 4px;font-size:13px;font-weight:400;background:none;box-shadow:none;color:var(--x2);border-radius:12px}
+button.sw:active{transform:none;box-shadow:none}
+button.sw i{display:block;width:40px;height:40px;border-radius:50%;box-shadow:0 0 0 2px rgba(var(--ln),.35),0 3px 6px rgba(0,0,0,.35)}
+button.sw.on{background:var(--well)}button.sw.on i{box-shadow:0 0 0 3px var(--h),0 3px 6px rgba(0,0,0,.35)}button.sw.on span{color:var(--h);font-weight:700}
+.walls{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+button.wl{position:relative;height:64px;padding:0;border-radius:10px;overflow:hidden;background-size:cover;background-position:center;box-shadow:0 0 0 2px rgba(var(--ln),.3);font-weight:400}
+button.wl:active{transform:none;box-shadow:0 0 0 2px rgba(var(--ln),.3)}
+button.wl span{position:absolute;left:0;right:0;bottom:0;padding:2px 3px;font-size:11px;line-height:1.2;background:rgba(0,0,0,.62);color:#fff;text-align:center}
+button.wl.on{box-shadow:0 0 0 3px var(--h)}
+
+/* ===== Som ===== */
+.srow{display:flex;gap:8px;margin-top:6px;align-items:stretch}.srow .seg{flex:1}.srow .seg label{flex:1;display:block}
+.srow button{font-size:14px;padding:0 14px}
+#spLista.mudo .seg span{opacity:.55}

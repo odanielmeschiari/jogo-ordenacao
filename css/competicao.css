@@ -1,0 +1,19 @@
+/* Ranking, cronômetro e tela de nome */
+.comp #mesa{right:250px}.comp #msg{left:calc((100% - 250px)/2)}
+#rank{position:absolute;top:62px;right:14px;bottom:14px;width:226px;z-index:4500;display:flex;flex-direction:column;gap:10px;padding:16px;border-radius:16px;
+ background:linear-gradient(160deg,rgba(var(--dk),.92),rgba(var(--dk2),.95));border:1px solid rgba(var(--ln),.25);box-shadow:0 20px 50px rgba(0,0,0,.5)}
+#cNome{font-size:16px;color:var(--x2);min-height:20px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+#cron{font-size:34px;font-weight:700;color:var(--h);font-variant-numeric:tabular-nums}
+#rank h3{font-size:17px;color:var(--h)}
+#rank button{font-size:15px;padding:10px 12px}
+#rank .crit{display:flex;gap:6px;flex-wrap:wrap}
+#rank .crit button{flex:1 1 45%;font-size:13px;padding:7px 4px}
+#rankLista{flex:1;overflow:auto;list-style:none;padding:0;display:flex;flex-direction:column;gap:6px;align-content:flex-start;color:var(--h)}
+#rankLista li{display:flex;justify-content:space-between;gap:8px;padding:7px 10px;border-radius:8px;background:var(--well);font-size:15px;flex:none;flex-wrap:wrap}
+#rankLista span{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+#rankLista small{flex-basis:100%;font-size:13px;color:var(--x3)}
+#ov{position:absolute;inset:0 250px 0 0;z-index:4000;display:grid;place-items:center;background:rgba(var(--dk2),.6);backdrop-filter:blur(12px)}
+#ovBox{display:flex;flex-direction:column;gap:14px;align-items:center;width:min(380px,90%);padding:28px 30px;border-radius:18px;
+ background:linear-gradient(160deg,rgba(var(--dk),.94),rgba(var(--dk2),.96));border:1px solid rgba(var(--ln),.25)}
+#ovBox h2{font-size:24px;color:var(--h)}#ovBox input{width:100%;flex:none;font-size:26px}
+#ovCount{font-size:150px;font-weight:700;color:var(--h);text-shadow:0 4px 24px var(--halo)}
