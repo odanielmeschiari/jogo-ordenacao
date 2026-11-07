@@ -27,16 +27,16 @@ function* alg(nome,vals,a){ // cada yield: [destaques, pivô, posições alterad
  if(nome==='bogo'){const all=rg(0,n-1);let t=0;const ok=()=>a.every((x,i)=>!i||DIR*(v(a[i-1])-v(x))<=0);
   while(!ok()){t++;for(let i=n-1;i>0;i--)sw(i,Math.floor(Math.random()*(i+1)));
    yield[all,-1,all,n,0,0,`Tentativa ${t}: embaralhou tudo`];
-   yield[all,-1,[],0,0,n-1,ok()?`Tentativa ${t}: ordenou! Foi só sorte.`:`Tentativa ${t}: ainda desordenado… embaralha de novo`]}}
+   yield[all,-1,[],0,0,n-1,ok()?`Tentativa ${t}: ordenou! Foi só sorte.`:`Tentativa ${t}: ainda desordenado… embaralha de novo`,'checa']}}
  if(nome==='contagem'||nome==='radix'){ // não comparam valores: leem, contam e posicionam
   const vs=Array.from({length:n},(_,i)=>v(i)),mn=Math.min(...vs),mx=Math.max(...vs),where=a.map((_,i)=>i);
   const coloca=function*(out){ // leva cada peça ao lugar definido em out (a posição k recebe out[k])
    for(let k=0;k<n;k++){const s=where[out[k]];
-    if(s===k){yield[[k],-1,[],0,1];continue}
-    sw(k,s);where[a[k]]=k;where[a[s]]=s;yield[[k,s],-1,[k,s]]}};
+    if(s===k){yield[[k],-1,[],0,1,null,`O ${v(a[k])} já está no lugar certo (posição ${k})`,'fixa'];continue}
+    sw(k,s);where[a[k]]=k;where[a[s]]=s;yield[[k,s],-1,[k,s],undefined,undefined,undefined,undefined,'poe']}};
   const ordena=function*(chave,K){ // ordenação estável por contagem; chave(peça) devolve de 0 a K-1
    const cnt=new Array(K).fill(0),atual=a.slice();
-   for(let i=0;i<n;i++){yield[[i],-1,[],0,1];cnt[chave(a[i])]++}
+   for(let i=0;i<n;i++){yield[[i],-1,[],0,1,null,undefined,'conta'];cnt[chave(a[i])]++}
    for(let k=1;k<K;k++)cnt[k]+=cnt[k-1];
    const out=new Array(n);for(let i=n-1;i>=0;i--)out[--cnt[chave(atual[i])]]=atual[i];
    yield*coloca(out)};

@@ -46,9 +46,9 @@ function puxa(){ // busca o próximo passo no gerador e guarda no histórico (se
  let e;
  if(auto.tipo==='busca'){const[i,lo,hi]=r.value;e={i,lo,hi,op:!auto.seen.has(i),tx:txBusca(i,lo,hi)};auto.seen.add(i)}
  else{
-  const[h,p=-1,c=[],w=c.length?1:0,nc=0,cc=null,tx]=r.value,S=auto.S,d=c.map(sl=>[sl,S[sl],auto.a[sl]]).filter(x=>x[1]!==x[2]);
+  const[h,p=-1,c=[],w=c.length?1:0,nc=0,cc=null,tx,fase]=r.value,S=auto.S,d=c.map(sl=>[sl,S[sl],auto.a[sl]]).filter(x=>x[1]!==x[2]);
   d.forEach(([sl,,nv])=>S[sl]=nv);
-  e={d,h,p,w,dc:cc!==null?cc:(c.length||nc?0:1),tx:tx||txOrd(h,p,c,S)};
+  e={d,h,p,w,dc:cc!==null?cc:(c.length||nc?0:1),tx:tx||txOrd(h,p,c,S),fase};
  }
  auto.hist.push(e);
  if(auto.hist.length>20000){auto.hist.splice(0,5000);auto.pos-=5000} // guarda os últimos ~15 mil passos
