@@ -17,5 +17,21 @@ const WALL_IMG={
  neblina:'assets/walls/neblina.jpg',
  estrelas:'assets/walls/estrelas.jpg',
  moraine:'assets/walls/moraine.jpg',
- flores:'assets/walls/flores.jpg'
+ flores:'assets/walls/flores.jpg',
+ lagoverde:'assets/walls/lagoverde.jpg',
+ nebulosa:'assets/walls/nebulosa.jpg',
+ cometa:'assets/walls/cometa.jpg',
+ carina:'assets/walls/carina.jpg',
+ troncos:'assets/walls/troncos.jpg',
+ vialactea:'assets/walls/vialactea.jpg',
+ azulestelar:'assets/walls/azulestelar.jpg',
+ planeta:'assets/walls/planeta.jpg',
+ orbita:'assets/walls/orbita.jpg',
+ nebroxa:'assets/walls/nebroxa.jpg',
+ outono:'assets/walls/outono.jpg',
+ pinheiros:'assets/walls/pinheiros.jpg',
+ bosque:'assets/walls/bosque.jpg',
+ terranoite:'assets/walls/terranoite.jpg'
 };
+/* Miniaturas leves (400x225) para o seletor: evita carregar 32 imagens grandes só para mostrar os quadradinhos. */
+const WALL_THUMB=Object.fromEntries(Object.entries(WALL_IMG).map(([k,v])=>[k,v.replace('assets/walls/','assets/walls/thumbs/')]));

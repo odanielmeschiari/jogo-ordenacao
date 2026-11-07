@@ -5,7 +5,7 @@
 html,body{height:100%;overflow:hidden;font-family:Georgia,"Palatino Linotype",serif;color:var(--brilho);
  background-color:var(--fundo);background-position:center;background-size:cover;background-repeat:no-repeat;user-select:none;-webkit-user-select:none}
 .tela{position:absolute;inset:0;display:none}.tela.ativa{display:flex}
-#gerenciador{align-items:center;justify-content:center;padding:16px;background:radial-gradient(ellipse at center,rgba(var(--dk2),.12),rgba(var(--dk2),.65))}
+#gerenciador{align-items:center;justify-content:center;padding:16px}
 .painel{width:min(780px,100%);max-height:100%;overflow:auto;padding:28px 34px;
  background:linear-gradient(160deg,rgba(var(--dk),.9),rgba(var(--dk2),.94));border:1px solid rgba(var(--ln),.25);box-shadow:0 30px 70px rgba(0,0,0,.6)}
 h1{font-size:clamp(26px,4.4vw,38px);line-height:1.1;color:var(--h)}

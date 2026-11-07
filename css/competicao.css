@@ -15,12 +15,12 @@
 #rankConf{margin:0;font-size:13px;line-height:1.35}
 #rank #rankTodos{font-size:13px;padding:7px 8px}
 #nomeAviso{width:100%;margin:0;text-align:left;font-size:14px}
-#sai{position:absolute;inset:0;z-index:6000;display:grid;place-items:center;padding:14px;background:rgba(var(--dk2),.7);backdrop-filter:blur(10px)}
+#sai{position:absolute;inset:0;z-index:6000;display:grid;place-items:center;padding:14px;background:rgba(0,0,0,.6);backdrop-filter:blur(10px)}
 #saiBox{display:flex;flex-direction:column;gap:12px;width:min(380px,100%);padding:24px 26px;
  background:linear-gradient(160deg,rgba(var(--dk),.96),rgba(var(--dk2),.98));border:1px solid rgba(var(--ln),.25)}
 #saiBox h2{font-size:22px;color:var(--h)}#saiBox p{margin:0;font-size:16px;line-height:1.45;color:var(--x2)}#saiBox button{font-size:16px;padding:12px 14px}
-#ov{position:absolute;inset:0 250px 0 0;z-index:4000;display:grid;place-items:center;background:rgba(var(--dk2),.6);backdrop-filter:blur(12px)}
+#ov{position:absolute;inset:0 250px 0 0;z-index:4000;display:grid;place-items:center;background:rgba(0,0,0,.55);backdrop-filter:blur(12px)}
 #ovBox{display:flex;flex-direction:column;gap:14px;align-items:center;width:min(380px,90%);padding:28px 30px;
  background:linear-gradient(160deg,rgba(var(--dk),.94),rgba(var(--dk2),.96));border:1px solid rgba(var(--ln),.25)}
 #ovBox h2{font-size:24px;color:var(--h)}#ovBox input{width:100%;flex:none;font-size:26px}
-#ovCount{font-size:150px;font-weight:700;color:var(--h);text-shadow:0 4px 24px var(--halo)}
+#ovCount{font-size:150px;font-weight:700;color:var(--onwall);text-shadow:0 4px 24px var(--halo)}

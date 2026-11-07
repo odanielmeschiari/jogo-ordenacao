@@ -37,7 +37,7 @@ button.cartao span{font-size:15px;line-height:1.5;color:var(--x2)}
 #rankDica{margin:0}
 
 /* ---------- Detalhes de um competidor ---------- */
-#det{position:absolute;inset:0;z-index:6500;display:grid;place-items:center;padding:14px;background:rgba(var(--dk2),.7);backdrop-filter:blur(10px)}
+#det{position:absolute;inset:0;z-index:6500;display:grid;place-items:center;padding:14px;background:rgba(0,0,0,.6);backdrop-filter:blur(10px)}
 #detBox{position:relative;width:min(580px,100%);max-height:100%;overflow:auto;padding:26px 30px 28px;color:var(--h);user-select:text;-webkit-user-select:text;
  background:linear-gradient(160deg,rgba(var(--dk),.97),rgba(var(--dk2),.99));border:1px solid rgba(var(--ln),.3);box-shadow:0 24px 60px rgba(0,0,0,.6)}
 #detX{position:absolute;top:12px;right:12px;width:36px;height:36px;padding:0;font-size:15px}
