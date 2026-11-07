@@ -108,7 +108,7 @@ button,label{touch-action:manipulation}
 #rank.aberto{height:min(74dvh,560px)}
 #rank.aberto #rankDet{display:flex;flex-direction:column;gap:10px;flex:1;min-height:0}
 #rank .crit button{flex:1 1 30%;min-height:42px;font-size:13px}
-#rank #btnCsv,#rank #btnLimpaRank{min-height:44px}
+#rank #btnCsv,#rank #btnLimpaRank,#rank #rankTodos{min-height:44px}
 #ov{inset:0}
 
 /* modo desafio: cartão na base */

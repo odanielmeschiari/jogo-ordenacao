@@ -39,6 +39,15 @@ assets/walls/       papéis de parede (antes embutidos em base64 no HTML); para 
 
 Observação: são scripts clássicos (não ES modules) de propósito — assim o jogo continua abrindo com duplo clique (`file://`), onde `import` é bloqueado pelo navegador. O comportamento é idêntico ao do arquivo único.
 
+### Competição entre jogadores
+
+No **Jogo**, com "Cronômetro e ranking de competidores" marcado:
+
+- **Rodadas por competidor** (1 a 20, padrão 1): o competidor joga todas as rodadas seguidas e entra no ranking com a média de tempo e de movimentos (ou viradas). Cada registro guarda também o resultado de cada rodada; o ranking mostra os valores e o CSV traz uma coluna por rodada. Com peças sorteadas, cada rodada tem uma lista nova; com lista manual embaralhada, todos jogam a mesma sequência de listas.
+- **Ranking por configuração**: cada registro guarda a configuração (peças, direção, ordem inicial, alvo, rodadas). O ranking mostra só a configuração em jogo; "Ver todas as configurações" mostra tudo, inclusive registros antigos (sem configuração). "Limpar ranking" apaga o que está à mostra.
+- **Mesmo nome**: o jogo avisa antes de começar; ao terminar, só o melhor resultado do nome fica (um resultado parcial nunca substitui um completo).
+- **Sair no meio das rodadas** (Voltar ou Reiniciar): pergunta se salva a média parcial, descarta ou continua; o cronômetro fica parado enquanto a pergunta está aberta. O modo feira volta ao início sem perguntar.
+
 ### Celular
 
 `css/mobile.css` (carregado por último) vale para telas de até 620px, ou celular deitado, e não altera o desktop. No celular: painel inicial em tela cheia com rodapé fixo; barra da mesa com **Voltar**, contador e menu **⋮** (Reiniciar, Som, Aparência, Custo, Ajuda); controles de execução, ranking e desafio ficam em painéis na base da tela; Aparência e Som viram folhas; Ajuda e Custo ocupam a tela toda. `js/mobile.js` mede esses painéis e a mesa se ajusta ao espaço que sobra.

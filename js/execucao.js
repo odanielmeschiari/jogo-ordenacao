@@ -120,8 +120,8 @@ function fimAuto(res){
   const k=cfg.algo,ac=T.acc[k]=T.acc[k]||{ms:[],mov:[],cmp:[]};ac.ms.push(A.n*PASSO_MS);ac.mov.push(mov);ac.cmp.push(comps);
   const av=x=>x.reduce((q,y)=>q+y,0)/x.length,rd=x=>Math.round(av(x)*10)/10;
   let reg=T.map[k];
-  if(!reg){reg={nome:NOME[k],tipo:tipoAtual(),id:Date.now()+T.i,alg:1,aus:false};T.map[k]=reg;ranking.push(reg);T.regs.push(reg)}
-  reg.ms=av(ac.ms);reg.mov=rd(ac.mov);reg.cmp=rd(ac.cmp);reg.rod=ac.ms.length;reg.aus=reg.aus||(busca&&!achou);
+  if(!reg){reg={nome:NOME[k],tipo:tipoAtual(),id:Date.now()+T.i,alg:1,aus:false,conf:cfg.conf&&cfg.conf.k,confTxt:cfg.conf&&cfg.conf.t};T.map[k]=reg;ranking.push(reg);T.regs.push(reg)}
+  reg.ms=av(ac.ms);reg.mov=rd(ac.mov);reg.cmp=rd(ac.cmp);reg.rod=ac.ms.length;reg.rounds=ac.ms.map((m,i)=>({ms:m,mov:ac.mov[i],cmp:ac.cmp[i]}));reg.aus=reg.aus||(busca&&!achou);
   guarda();renderRank();$('#cron').textContent=fmt(A.n*PASSO_MS);
   T.play=A.play;T.i++;
   const esp=+$('#vel').value>=10?500:1400;

@@ -3,7 +3,7 @@
 const IDLE=180000;let idleT=null;
 function atividade(){
  clearTimeout(idleT);
- if($('#feira').checked&&$('#sandbox').classList.contains('ativa')&&!auto&&!emTorneio())idleT=setTimeout(()=>$('#btnVoltar').click(),IDLE);
+ if($('#feira').checked&&$('#sandbox').classList.contains('ativa')&&!auto&&!emTorneio())idleT=setTimeout(()=>{saidaForcada=true;$('#btnVoltar').click()},IDLE);
 }
 ['pointerdown','pointermove','keydown'].forEach(t=>document.addEventListener(t,atividade));
 $('#feira').onchange=atividade;

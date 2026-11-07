@@ -12,6 +12,13 @@
 #rankLista li{display:flex;justify-content:space-between;gap:8px;padding:7px 10px;border-radius:8px;background:var(--well);font-size:15px;flex:none;flex-wrap:wrap}
 #rankLista span{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 #rankLista small{flex-basis:100%;font-size:13px;color:var(--x3)}
+#rankConf{margin:0;font-size:13px;line-height:1.35}
+#rank #rankTodos{font-size:13px;padding:7px 8px}
+#nomeAviso{width:100%;margin:0;text-align:left;font-size:14px}
+#sai{position:absolute;inset:0;z-index:6000;display:grid;place-items:center;padding:14px;background:rgba(var(--dk2),.7);backdrop-filter:blur(10px)}
+#saiBox{display:flex;flex-direction:column;gap:12px;width:min(380px,100%);padding:24px 26px;border-radius:18px;
+ background:linear-gradient(160deg,rgba(var(--dk),.96),rgba(var(--dk2),.98));border:1px solid rgba(var(--ln),.25)}
+#saiBox h2{font-size:22px;color:var(--h)}#saiBox p{margin:0;font-size:16px;line-height:1.45;color:var(--x2)}#saiBox button{font-size:16px;padding:12px 14px}
 #ov{position:absolute;inset:0 250px 0 0;z-index:4000;display:grid;place-items:center;background:rgba(var(--dk2),.6);backdrop-filter:blur(12px)}
 #ovBox{display:flex;flex-direction:column;gap:14px;align-items:center;width:min(380px,90%);padding:28px 30px;border-radius:18px;
  background:linear-gradient(160deg,rgba(var(--dk),.94),rgba(var(--dk2),.96));border:1px solid rgba(var(--ln),.25)}

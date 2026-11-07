@@ -272,6 +272,7 @@
  <div id="ov" hidden>
   <div id="ovBox"><h2>Quem vai jogar?</h2>
    <input id="nome" type="text" maxlength="24" placeholder="Nome" aria-label="Nome do competidor">
+   <div id="nomeAviso" class="aviso" role="alert" hidden></div>
    <button id="btnComecar">Começar</button></div>
   <div id="ovCount" hidden></div>
  </div>
@@ -283,16 +284,27 @@
   </div>
   <div id="rankDet">
    <h3 id="rankTitulo">Ranking</h3>
+   <p id="rankConf" class="dica"></p>
    <div class="crit" role="group" aria-label="Critério do ranking">
     <button class="sec on" data-c="ms">Tempo</button>
     <button class="sec" data-c="mov" id="critMov">Movimentos</button>
     <button class="sec" data-c="cmp">Comparações</button>
    </div>
    <ol id="rankLista"></ol>
+   <button class="sec" id="rankTodos">Ver todas as configurações</button>
    <button class="sec" id="btnCsv">Exportar CSV</button>
    <button class="sec" id="btnLimpaRank">Limpar ranking</button>
   </div>
  </aside>
+ <div id="sai" role="dialog" aria-modal="true" aria-labelledby="saiTit" hidden>
+  <div id="saiBox">
+   <h2 id="saiTit">Sair no meio das rodadas?</h2>
+   <p id="saiTxt"></p>
+   <button id="saiSalva">Salvar média parcial</button>
+   <button class="sec" id="saiDescarta">Descartar</button>
+   <button class="sec" id="saiVolta">Continuar jogando</button>
+  </div>
+ </div>
 </section>
 
 <div id="sp" role="dialog" aria-label="Som" hidden>

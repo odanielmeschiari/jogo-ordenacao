@@ -2,6 +2,17 @@
 /* ===== Gerenciador ===== */
 let ausOk=false;
 const MAXROD=20,rodadasComp=()=>$('#comp').checked?Math.max(1,Math.min(MAXROD,parseInt($('#crod').value)||1)):1;
+function confDe(o){ // descreve a configuração da competição: só resultados comparáveis dividem o mesmo ranking
+ const ord={emb:'embaralhado',asc:'ordenado',atual:'ordem digitada'}[o.ordem],man=o.vals?o.vals.slice().sort((x,y)=>x-y):null;
+ const base=o.gera?`${o.n} peças sorteadas (${o.gera.min} a ${o.gera.max})`:man.length<=8?`lista ${man.join(', ')}`:`${o.n} peças manuais`;
+ const t=[base,o.dir>0?'crescente':'decrescente',...(ord?[ord]:[]),...(o.busca&&o.alvo!==''?['alvo '+o.alvo]:[]),o.rod>1?o.rod+' rodadas':'1 rodada'].join(' · ');
+ return{k:t+(man?'|'+man.join(','):''),t}; // lista manual diferente = ranking diferente, mesmo com o texto igual
+}
+function confTorn(g,rod){
+ const f={emb:'embaralhada',quase:'quase ordenada',inv:'invertida',rep:'com repetidos'}[g.forma];
+ const t=['torneio',`${g.n} peças`,...(g.tipo==='ordenar'&&f?[f]:[]),DIR>0?'crescente':'decrescente',...(g.alvo!==''?['alvo '+g.alvo]:[]),rod>1?rod+' rodadas':'1 rodada'].join(' · ');
+ return{k:t,t};
+}
 function mistura(a,d){for(let k=0;k<6;k++){embaralha(a);if(a.some((v,i)=>i&&d*(+a[i-1]-+v)>0))break}return a}
 const ausenteNaLista=t=>t!==''&&!isNaN(+t)&&!valores.includes(String(parseInt(t,10)));
 function desenhaLista(){
@@ -52,12 +63,13 @@ $('#btnIniciar').onclick=()=>{
   const mn=parseInt($('#fmin').value),mx=parseInt($('#fmax').value),q=parseInt($('#fqtd').value);
   const bad=[['#fmin',mn],['#fmax',mx],['#fqtd',q]].find(([,v])=>isNaN(v));
   if(bad||mx<=mn){$(bad?bad[0]:'#fmax').focus();return}
-  inicia({vals:[],busca,alvo:'',comp:$('#comp').checked,gera:{min:mn,max:mx,qtd:Math.max(2,Math.min(MAXG,q)),ordem:o},zera:$('#comp').checked&&$('#zera').checked,rod:rodadasComp()});return}
+  const gera={min:mn,max:mx,qtd:Math.max(2,Math.min(MAXG,q)),ordem:o},rod=rodadasComp();
+  inicia({vals:[],busca,alvo:'',comp:$('#comp').checked,gera,zera:$('#comp').checked&&$('#zera').checked,rod,conf:confDe({n:gera.qtd,dir:d,rod,busca,ordem:o,gera,alvo:''})});return}
  if(busca&&(alvo===''||isNaN(+alvo))){$('#alvo').focus();return}
  if(busca&&ausenteNaLista(alvo)&&!ausOk){ // avisa e pede confirmação antes de começar
   ausOk=true;atualizaManager();const av=$('#alvoAviso');av.classList.remove('pulsa');void av.offsetWidth;av.classList.add('pulsa');return}
  const rod=rodadasComp(); // lista manual embaralhada: a sequência de listas é fixa, para todos os competidores jogarem as mesmas
- inicia({vals:a,busca,alvo:busca?String(parseInt(alvo,10)):'',comp:$('#comp').checked,zera:$('#comp').checked&&$('#zera').checked,rod,listas:o==='emb'&&rod>1?Array.from({length:rod},(_,k)=>k?mistura(valores.slice(),d):a):null});
+ inicia({vals:a,busca,alvo:busca?String(parseInt(alvo,10)):'',comp:$('#comp').checked,zera:$('#comp').checked&&$('#zera').checked,rod,conf:confDe({n:a.length,dir:d,rod,busca,ordem:o,vals:a,alvo:busca?String(parseInt(alvo,10)):''}),listas:o==='emb'&&rod>1?Array.from({length:rod},(_,k)=>k?mistura(valores.slice(),d):a):null});
 };
 
 /* --- Simulador --- */
@@ -107,12 +119,13 @@ $('#btnGerar').onclick=()=>{
  const at=$('#galvo').value.trim();
  const g={n,tipo:busca?'buscar':'ordenar',forma:busca?'emb':radio('gforma'),emb:busca&&!torn&&algos[0]==='linear'&&$('#gemb').checked,alvo:busca&&at!==''&&!isNaN(+at)?parseInt(at,10):''};
  const c={...novoConjunto(g),busca,algo:algos[0],gerA:g,barras:!busca&&radio('gvis')==='linhas',desafio:!torn&&$('#gdesafio').checked,degrade:!busca&&radio('gvis')==='linhas'&&$('#gdegrade').checked};
- if(torn){c.comp=true;c.zera=$('#tzera').checked;c.torneio={lista:algos,i:0,r:0,rod:Math.max(1,Math.min(10,parseInt($('#trod').value)||1)),play:true,fim:false,regs:[],map:{},acc:{},tm:null}}
+ if(torn){c.comp=true;c.zera=$('#tzera').checked;c.torneio={lista:algos,i:0,r:0,rod:Math.max(1,Math.min(10,parseInt($('#trod').value)||1)),play:true,fim:false,regs:[],map:{},acc:{},tm:null};c.conf=confTorn(g,c.torneio.rod)}
  inicia(c);
 };
-function inicia(c){setTimeout(atividade,0);c.dir=dirAtual();DIR=c.dir;
+function inicia(c){verTodos=false;setTimeout(atividade,0);c.dir=dirAtual();DIR=c.dir;
  if(c.comp&&c.zera){ranking=ranking.filter(r=>r.tipo!==(c.busca?'buscar':'ordenar'));guarda()}
  cfg=c;mostra('sandbox');montaMesa()}
 function mostra(id){document.querySelectorAll('.tela').forEach(t=>t.classList.toggle('ativa',t.id===id))}
-$('#btnVoltar').onclick=()=>{stopAuto();cancelaComp();$('#ap').hidden=true;$('#sp').hidden=true;mostra('gerenciador')};
-$('#btnReiniciar').onclick=()=>montaMesa();
+function sai(){stopAuto();cancelaComp();$('#ap').hidden=true;$('#sp').hidden=true;mostra('gerenciador')}
+$('#btnVoltar').onclick=()=>confirmaSaida(sai); // no meio das rodadas de um competidor, pergunta antes (competicao.js)
+$('#btnReiniciar').onclick=()=>confirmaSaida(()=>montaMesa());

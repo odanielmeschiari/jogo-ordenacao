@@ -38,6 +38,12 @@ function montaAjuda(){
   <li><b>Espaço</b>: pausa e continua. <b>→</b>: avança um passo. <b>←</b>: volta um passo.</li>
   <li><b>+</b> e <b>−</b>: aumentam e diminuem a velocidade.</li></ul>
  <p class="nota">O texto no alto da tela explica cada passo. Voltar passo funciona enquanto o algoritmo roda e guarda os últimos 15 mil passos. Nas linhas verticais, o botão “Cores” liga e desliga o degradê por valor.</p>
+ <h2>Competição e ranking</h2><ul>
+  <li>As abas da tela inicial são <b>Jogo</b> (você monta ou sorteia as peças) e <b>Simulador</b> (o jogo roda sozinho). No Jogo, marque “Cronômetro e ranking” para cada competidor digitar o nome, jogar e entrar no ranking.</li>
+  <li><b>Rodadas por competidor</b>: ele joga todas as rodadas seguidas e entra no ranking com a média. A linha dele mostra também o resultado de cada rodada.</li>
+  <li>Cada ranking vale para uma configuração (peças, direção, rodadas…). “Ver todas as configurações” mostra tudo junto.</li>
+  <li>Se o mesmo nome jogar de novo, só o melhor resultado fica no ranking.</li>
+  <li>Reiniciar ou Voltar no meio das rodadas pergunta se salva a média parcial; o cronômetro fica parado enquanto você decide.</li></ul>
  <h2>Algoritmos de ordenação</h2>
  <div class="tbl"><table><thead><tr><th>Nome</th><th>Como funciona</th><th>Melhor</th><th>Médio</th><th>Pior</th></tr></thead><tbody>${INFO_ORD.map(tr).join('')}</tbody></table></div>
  <p class="nota">n = quantidade de peças. Counting e Radix não comparam valores: a contagem de comparações fica em zero.</p>
