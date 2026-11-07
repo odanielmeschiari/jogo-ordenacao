@@ -49,6 +49,13 @@
    <div class="corpo">
     <section class="bloco">
      <h2>Peças</h2>
+     <div class="cfg">
+      <span class="rot">Origem das peças</span>
+      <div class="seg">
+       <label><input type="radio" name="origem" value="manual" checked><span>Inserir manualmente</span></label>
+       <label><input type="radio" name="origem" value="aleatorio"><span>Gerar aleatoriamente</span></label>
+      </div>
+     </div>
      <div id="manualBox">
       <p class="sub">Digite um valor e toque em + para criar uma peça.</p>
       <div class="linha">
@@ -58,7 +65,7 @@
       <div class="lista" id="lista"></div>
      </div>
      <div id="gerBox" hidden>
-      <p class="sub">Cada competidor recebe peças e um valor a buscar sorteados nesta faixa. Se a faixa tiver menos números que a quantidade, o jogo usa só os que existem.</p>
+      <p class="sub" id="gerTxt"></p>
       <div class="linha">
        <label class="campo">De<input id="fmin" class="peq" type="number" inputmode="numeric" value="1"></label>
        <label class="campo">Até<input id="fmax" class="peq" type="number" inputmode="numeric" value="99"></label>

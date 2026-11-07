@@ -16,7 +16,7 @@ $('#btnAdd').onclick=adiciona;
 $('#valor').addEventListener('keydown',e=>{if(e.key==='Enter')adiciona()});
 $('#btnLimpar').onclick=()=>{valores=[];desenhaLista()};
 function atualizaManager(){
- const b=radio('modo')==='busca',rand=b&&$('#comp').checked,t=$('#alvo').value.trim();
+ const b=radio('modo')==='busca',rand=radio('origem')==='aleatorio',comp=$('#comp').checked,t=$('#alvo').value.trim();
  const aus=b&&!rand&&valores.length>0&&ausenteNaLista(t);
  if(!aus)ausOk=false;
  $('#alvoAviso').hidden=!aus;
@@ -24,15 +24,19 @@ function atualizaManager(){
  $('#btnIniciar').textContent=b?(aus&&ausOk?'Iniciar mesmo assim':'Iniciar busca'):'Iniciar sandbox';$('#zeraBox').hidden=!$('#comp').checked;
  $('#alvoBox').hidden=!b||rand;$('#gerBox').hidden=!rand;$('#manualBox').hidden=rand;
  $('#btnIniciar').disabled=!rand&&!valores.length;
+ // na geração aleatória a ordem inicial só pode ser "ordenado" ou "embaralhado" (não há ordem prévia a manter)
+ const at=document.querySelector('input[name=ordem][value=atual]');at.closest('label').hidden=rand;
+ if(rand&&at.checked)document.querySelector('input[name=ordem][value=emb]').checked=true;
+ $('#gerTxt').textContent=(comp?'Cada competidor recebe peças':'As peças são sorteadas')+(comp?' sorteadas':'')+' nesta faixa'+(b?(comp?', e um valor a buscar sorteado entre elas':'; o valor a buscar é sorteado entre elas'):'')+'. Se a faixa tiver menos números que a quantidade, o jogo usa só os que existem.'+(comp?' Ao passar para o próximo competidor, a lista é sorteada de novo.':' Em "Reiniciar", a lista é sorteada de novo.');
 }
-document.querySelectorAll('input[name=modo]').forEach(r=>r.onchange=atualizaManager);
+document.querySelectorAll('input[name=modo],input[name=origem]').forEach(r=>r.onchange=atualizaManager);
 $('#alvo').addEventListener('input',()=>{ausOk=false;atualizaManager()});
 $('#comp').onchange=atualizaManager;
 function sorteia(g){
  const n=Math.min(g.qtd,g.max-g.min+1),S=new Set();
  while(S.size<n)S.add(g.min+Math.floor(Math.random()*(g.max-g.min+1)));
  const a=[...S];if(g.ordem==='asc')a.sort((x,y)=>DIR*(x-y));
- cfg.vals=a.map(String);cfg.alvo=cfg.vals[Math.floor(Math.random()*n)];
+ cfg.vals=a.map(String);cfg.alvo=cfg.busca?cfg.vals[Math.floor(Math.random()*n)]:'';
 }
 document.querySelectorAll('.aba').forEach(b=>b.onclick=()=>{
  document.querySelectorAll('.aba').forEach(x=>x.classList.toggle('on',x===b));
@@ -42,11 +46,11 @@ $('#btnIniciar').onclick=()=>{
  if(o==='asc')a.sort((x,y)=>d*(x-y));
  if(o==='emb'){for(let k=0;k<6;k++){embaralha(a);if(a.some((v,i)=>i&&d*(+a[i-1]-+v)>0))break}}
  const busca=radio('modo')==='busca',alvo=$('#alvo').value.trim();
- if(busca&&$('#comp').checked){
+ if(radio('origem')==='aleatorio'){
   const mn=parseInt($('#fmin').value),mx=parseInt($('#fmax').value),q=parseInt($('#fqtd').value);
   const bad=[['#fmin',mn],['#fmax',mx],['#fqtd',q]].find(([,v])=>isNaN(v));
   if(bad||mx<=mn){$(bad?bad[0]:'#fmax').focus();return}
-  inicia({vals:[],busca:true,alvo:'',comp:true,gera:{min:mn,max:mx,qtd:Math.max(2,Math.min(MAXG,q)),ordem:o},zera:$('#zera').checked});return}
+  inicia({vals:[],busca,alvo:'',comp:$('#comp').checked,gera:{min:mn,max:mx,qtd:Math.max(2,Math.min(MAXG,q)),ordem:o},zera:$('#comp').checked&&$('#zera').checked});return}
  if(busca&&(alvo===''||isNaN(+alvo))){$('#alvo').focus();return}
  if(busca&&ausenteNaLista(alvo)&&!ausOk){ // avisa e pede confirmação antes de começar
   ausOk=true;atualizaManager();const av=$('#alvoAviso');av.classList.remove('pulsa');void av.offsetWidth;av.classList.add('pulsa');return}
