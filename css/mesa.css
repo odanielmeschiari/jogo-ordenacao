@@ -4,7 +4,7 @@
 .barra button{font-size:15px;padding:9px 16px}
 #ctrlAuto{display:none;gap:10px;align-items:center;font-size:14px;color:var(--h)}
 #ctrlAuto input{accent-color:var(--b2);width:110px}
-#titulo{margin-left:auto;font-size:15px;color:var(--x4);padding:6px 14px;border-radius:999px;background:rgba(var(--dk2),.6);text-shadow:0 1px 3px rgba(0,0,0,.5)}
+#titulo{margin-left:auto;font-size:15px;color:var(--x4);padding:6px 14px;background:rgba(var(--dk2),.6);text-shadow:0 1px 3px rgba(0,0,0,.5)}
 #titulo:empty{display:none}
 #mesa{position:absolute;inset:0;touch-action:none}
 .vaga{position:absolute;border-radius:14%;background:var(--vaga);box-shadow:inset 0 4px 10px rgba(0,0,0,.5),0 1px 0 rgba(var(--ln),.18);transition:background .12s,box-shadow .12s}
@@ -24,7 +24,7 @@
 .peca.ok{animation:pisca .5s 3}.peca.gira{animation:giro .36s ease}.peca.nao{animation:piscaR .5s 4}
 #flash{position:absolute;inset:0;z-index:3000;pointer-events:none;opacity:0;background:radial-gradient(ellipse at center,rgba(255,40,40,0) 35%,rgba(255,40,40,.55))}
 #flash.on{animation:flashR .5s 3}
-#msg{position:absolute;bottom:26px;left:50%;transform:translate(-50%,20px);opacity:0;padding:10px 36px;border-radius:999px;background:rgba(8,38,18,.9);max-width:92%;text-align:center;
+#msg{position:absolute;bottom:26px;left:50%;transform:translate(-50%,20px);opacity:0;padding:10px 36px;background:rgba(8,38,18,.9);max-width:92%;text-align:center;
  color:#7dffb0;font-size:30px;font-weight:700;border:2px solid #3ddc84;transition:.3s;pointer-events:none}
 #msg.err{background:rgba(60,10,10,.92);color:#ff9a9a;border-color:#ff4d4d}
 #msg.on{opacity:1;transform:translate(-50%,0)}

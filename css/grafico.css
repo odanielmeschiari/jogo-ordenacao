@@ -2,4 +2,4 @@
 #gf{display:grid}#gf .painel{width:min(820px,100%)}
 #gfBox svg{width:100%;height:auto;display:block;margin-top:10px}#gfBox text{fill:var(--x4);font:13px Georgia,serif}
 .gf-leg{display:flex;flex-wrap:wrap;gap:6px 14px;margin-top:10px;font-size:14px;color:var(--x4)}
-.gf-leg i{display:inline-block;width:12px;height:12px;border-radius:50%;margin-right:6px;vertical-align:-1px}
+.gf-leg i{display:inline-block;width:12px;height:12px;margin-right:6px;vertical-align:-1px}

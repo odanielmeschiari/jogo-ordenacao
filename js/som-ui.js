@@ -1,6 +1,6 @@
 /* Painel de som (efeitos liga/desliga e teste) */
 const salvaSons=()=>{try{localStorage.setItem('mesa-som',som?'1':'0');localStorage.setItem('mesa-sons',JSON.stringify(sons))}catch(e){}};
-const atualizaSom=()=>{document.querySelectorAll('.btnSom').forEach(b=>{b.textContent=som?'Som':'Sem som';b.classList.toggle('mudo',!som);b.setAttribute('aria-pressed',som)});
+const atualizaSom=()=>{document.querySelectorAll('.btnSom').forEach(b=>{b.classList.toggle('mudo',!som);b.setAttribute('aria-pressed',som);b.title=som?'Som ligado (abre os ajustes)':'Som desligado (abre os ajustes)'});
  $('#somMestre').checked=som;$('#spLista').classList.toggle('mudo',!som)};
 function montaSom(){
  $('#spLista').innerHTML=EFEITOS.map(([k,n])=>`<div class="srow"><div class="seg"><label><input type="checkbox" data-k="${k}"${sons[k]!==false?' checked':''}><span>${n}</span></label></div><button type="button" class="sec" data-t="${k}" aria-label="Ouvir: ${n}">▶</button></div>`).join('');

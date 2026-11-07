@@ -34,26 +34,27 @@ function atualizaManager(){
  if(!aus)ausOk=false;
  $('#alvoAviso').hidden=!aus;
  if(aus)$('#alvoAviso').textContent=`⚠ O valor ${parseInt(t,10)} não está na lista de peças. Nesta busca ele nunca será encontrado: o jogo só vai avisar que não está presente depois que você virar todas as peças.`;
- $('#btnIniciar').textContent=b?(aus&&ausOk?'Iniciar mesmo assim':'Iniciar busca'):'Iniciar sandbox';$('#zeraBox').hidden=$('#rodBox').hidden=!$('#comp').checked;
+ $('#btnIniciar').textContent=aus&&ausOk?'Iniciar mesmo assim':comp?'Iniciar torneio':b?'Iniciar busca':'Iniciar ordenação';$('#zeraBox').hidden=$('#rodBox').hidden=!comp;
+ $('#rAutoRod').hidden=rodadasComp()<=1;$('#btnLimpar').hidden=rand; // "nova rodada" só faz sentido com mais de uma rodada
  $('#alvoBox').hidden=!b||rand;$('#gerBox').hidden=!rand;$('#manualBox').hidden=rand;
  $('#btnIniciar').disabled=!rand&&!valores.length;
  // na geração aleatória a ordem inicial só pode ser "ordenado" ou "embaralhado" (não há ordem prévia a manter)
  const at=document.querySelector('input[name=ordem][value=atual]');at.closest('label').hidden=rand;
  if(rand&&at.checked)document.querySelector('input[name=ordem][value=emb]').checked=true;
+ limpaBlocos();
  $('#gerTxt').textContent=(comp?'Cada competidor recebe peças':'As peças são sorteadas')+(comp?' sorteadas':'')+' nesta faixa'+(b?(comp?', e um valor a buscar sorteado entre elas':'; o valor a buscar é sorteado entre elas'):'')+'. Se a faixa tiver menos números que a quantidade, o jogo usa só os que existem.'+(comp?' Ao passar para o próximo competidor, a lista é sorteada de novo.':' Em "Reiniciar", a lista é sorteada de novo.');
 }
 document.querySelectorAll('input[name=modo],input[name=origem]').forEach(r=>r.onchange=atualizaManager);
 $('#alvo').addEventListener('input',()=>{ausOk=false;atualizaManager()});
 $('#comp').onchange=atualizaManager;
+$('#crod').addEventListener('input',atualizaManager);
 function sorteia(g){
  const n=Math.min(g.qtd,g.max-g.min+1),S=new Set();
  while(S.size<n)S.add(g.min+Math.floor(Math.random()*(g.max-g.min+1)));
  const a=[...S];if(g.ordem==='asc')a.sort((x,y)=>DIR*(x-y));
  cfg.vals=a.map(String);cfg.alvo=cfg.busca?cfg.vals[Math.floor(Math.random()*n)]:'';
 }
-document.querySelectorAll('.aba').forEach(b=>b.onclick=()=>{
- document.querySelectorAll('.aba').forEach(x=>x.classList.toggle('on',x===b));
- ['p1','p2'].forEach(id=>$('#'+id).hidden=id!==b.dataset.t)});
+const autoRod=()=>radio('autorod')==='auto',autoJog=()=>radio('autojog')==='auto'; // passagem automática de rodada e de competidor (Jogo em torneio)
 $('#btnIniciar').onclick=()=>{
  const d=dirAtual();let a=valores.slice(),o=radio('ordem');
  if(o==='asc')a.sort((x,y)=>d*(x-y));
@@ -64,12 +65,12 @@ $('#btnIniciar').onclick=()=>{
   const bad=[['#fmin',mn],['#fmax',mx],['#fqtd',q]].find(([,v])=>isNaN(v));
   if(bad||mx<=mn){$(bad?bad[0]:'#fmax').focus();return}
   const gera={min:mn,max:mx,qtd:Math.max(2,Math.min(MAXG,q)),ordem:o},rod=rodadasComp();
-  inicia({vals:[],busca,alvo:'',comp:$('#comp').checked,gera,zera:$('#comp').checked&&$('#zera').checked,rod,conf:confDe({n:gera.qtd,dir:d,rod,busca,ordem:o,gera,alvo:''})});return}
+  inicia({vals:[],busca,alvo:'',comp:$('#comp').checked,autoRod:autoRod(),autoJog:autoJog(),gera,zera:$('#comp').checked&&$('#zera').checked,rod,conf:confDe({n:gera.qtd,dir:d,rod,busca,ordem:o,gera,alvo:''})});return}
  if(busca&&(alvo===''||isNaN(+alvo))){$('#alvo').focus();return}
  if(busca&&ausenteNaLista(alvo)&&!ausOk){ // avisa e pede confirmação antes de começar
   ausOk=true;atualizaManager();const av=$('#alvoAviso');av.classList.remove('pulsa');void av.offsetWidth;av.classList.add('pulsa');return}
  const rod=rodadasComp(); // lista manual embaralhada: a sequência de listas é fixa, para todos os competidores jogarem as mesmas
- inicia({vals:a,busca,alvo:busca?String(parseInt(alvo,10)):'',comp:$('#comp').checked,zera:$('#comp').checked&&$('#zera').checked,rod,conf:confDe({n:a.length,dir:d,rod,busca,ordem:o,vals:a,alvo:busca?String(parseInt(alvo,10)):''}),listas:o==='emb'&&rod>1?Array.from({length:rod},(_,k)=>k?mistura(valores.slice(),d):a):null});
+ inicia({vals:a,busca,alvo:busca?String(parseInt(alvo,10)):'',comp:$('#comp').checked,autoRod:autoRod(),autoJog:autoJog(),zera:$('#comp').checked&&$('#zera').checked,rod,conf:confDe({n:a.length,dir:d,rod,busca,ordem:o,vals:a,alvo:busca?String(parseInt(alvo,10)):''}),listas:o==='emb'&&rod>1?Array.from({length:rod},(_,k)=>k?mistura(valores.slice(),d):a):null});
 };
 
 /* --- Simulador --- */
@@ -81,7 +82,8 @@ function preencheAlgo(){
 }
 function atualizaGer(){
  const busca=radio('gtipo')==='buscar',torn=radio('gmodo')==='torneio';
- $('#visBox').hidden=busca;$('#desBox').hidden=torn;$('#umBox').hidden=torn;$('#tornBox').hidden=!torn;$('#gAlvoBox').hidden=!busca;
+ $('#sForma').hidden=$('#sVis').hidden=$('#sCores').hidden=busca;$('#sDes').hidden=torn;$('#umBox').hidden=torn;
+ $('#sQuem').hidden=$('#sZera').hidden=$('#sRod').hidden=!torn;$('#sAutoRod').hidden=!torn||(parseInt($('#trod').value)||1)<=1;$('#gAlvoBox').hidden=!busca;
  $('#gEmbBox').hidden=!(busca&&!torn&&$('#algo').value==='linear');
  $('#btnGerar').textContent=torn?'Iniciar competição':busca?'Gerar e buscar':'Gerar e ordenar';
  let t;
@@ -89,10 +91,11 @@ function atualizaGer(){
  else if(busca)t='Laranja: peça que acabou de ser virada. Peças apagadas já foram descartadas; a faixa iluminada marca o intervalo que ainda resta. Só a busca linear funciona em lista embaralhada; as demais precisam da lista ordenada, então ela é gerada já ordenada no sentido escolhido. Se o valor informado não estiver na lista gerada, a busca termina avisando que ele não está presente.';
  else t=(radio('gvis')==='linhas'?'Cada linha tem altura proporcional ao valor (uma linha 10 é o dobro de uma linha 5). ':'')+'Laranja: peças sendo comparadas. Azul: pivô do Quick sort. Dá para pausar, avançar passo a passo e mudar a velocidade durante a animação. Com muitas peças, aumente a velocidade.';
  if(!busca&&!torn&&$('#algo').value==='bogo')t+=' Bogo sort: só 6 peças, senão a animação nunca acabaria. Ele embaralha tudo e confere; em média precisa de n! tentativas.';
- $('#legGer').textContent=t;
+ $('#legGer').textContent=t;limpaBlocos();
 }
 document.querySelectorAll('input[name=gtipo]').forEach(r=>r.onchange=preencheAlgo);
 document.querySelectorAll('input[name=gmodo],input[name=gvis]').forEach(r=>r.onchange=atualizaGer);
+$('#trod').addEventListener('input',atualizaGer);
 $('#algo').onchange=atualizaGer;
 function novoConjunto(g){
  const vals=embaralha([...Array(Math.max(99,g.n))].map((_,i)=>String(i+1))).slice(0,g.n);
@@ -119,13 +122,13 @@ $('#btnGerar').onclick=()=>{
  const at=$('#galvo').value.trim();
  const g={n,tipo:busca?'buscar':'ordenar',forma:busca?'emb':radio('gforma'),emb:busca&&!torn&&algos[0]==='linear'&&$('#gemb').checked,alvo:busca&&at!==''&&!isNaN(+at)?parseInt(at,10):''};
  const c={...novoConjunto(g),busca,algo:algos[0],gerA:g,barras:!busca&&radio('gvis')==='linhas',desafio:!torn&&$('#gdesafio').checked,degrade:!busca&&radio('gvis')==='linhas'&&$('#gdegrade').checked};
- if(torn){c.comp=true;c.zera=$('#tzera').checked;c.torneio={lista:algos,i:0,r:0,rod:Math.max(1,Math.min(10,parseInt($('#trod').value)||1)),play:true,fim:false,regs:[],map:{},acc:{},tm:null};c.conf=confTorn(g,c.torneio.rod)}
+ if(torn){c.comp=true;c.zera=$('#tzera').checked;c.torneio={lista:algos,i:0,r:0,rod:Math.max(1,Math.min(10,parseInt($('#trod').value)||1)),autoRod:radio('sautorod')==='auto',espera:null,play:true,fim:false,regs:[],map:{},acc:{},tm:null};c.conf=confTorn(g,c.torneio.rod)}
  inicia(c);
 };
 function inicia(c){verTodos=false;setTimeout(atividade,0);c.dir=dirAtual();DIR=c.dir;
  if(c.comp&&c.zera){ranking=ranking.filter(r=>r.tipo!==(c.busca?'buscar':'ordenar'));guarda()}
  cfg=c;mostra('sandbox');montaMesa()}
 function mostra(id){document.querySelectorAll('.tela').forEach(t=>t.classList.toggle('ativa',t.id===id))}
-function sai(){stopAuto();cancelaComp();$('#ap').hidden=true;$('#sp').hidden=true;mostra('gerenciador')}
+function sai(){stopAuto();cancelaComp();$('#ap').hidden=true;$('#sp').hidden=true;$('#det').hidden=true;mostra('gerenciador')}
 $('#btnVoltar').onclick=()=>confirmaSaida(sai); // no meio das rodadas de um competidor, pergunta antes (competicao.js)
 $('#btnReiniciar').onclick=()=>confirmaSaida(()=>montaMesa());

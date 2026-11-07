@@ -1,0 +1,64 @@
+/* Menus da tela inicial (início, modo, etapas), ícones das ferramentas e janela de detalhes do ranking */
+
+/* ---------- Ícones ---------- */
+.ico{width:20px;height:20px;flex:none;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+.ferr button.ib{width:40px;height:40px;padding:0;display:grid;place-items:center}
+.ib .ico{width:22px;height:22px}
+.ib .lbl{display:none}
+.btnSom .off,.btnSom.mudo .on{display:none}
+.btnSom.mudo .off{display:block}
+
+/* ---------- Navegação (voltar + caminho + título) ---------- */
+#nav{flex:none;display:flex;align-items:center;gap:16px;padding:6px 34px 12px;border-bottom:1px solid rgba(var(--ln),.18)}
+#nav button{display:flex;align-items:center;gap:2px;font-size:15px;padding:9px 14px 9px 8px}
+.nav-txt{min-width:0}
+#trilha{font-size:13px;letter-spacing:.05em;text-transform:uppercase;color:var(--x3)}
+#etapaTit{font-size:22px;line-height:1.2;color:var(--h);outline:none}
+
+/* ---------- Cartões de escolha (início e modo) ---------- */
+.cartoes{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px;margin:14px 0 8px}
+button.cartao{display:flex;flex-direction:column;align-items:flex-start;gap:10px;padding:24px 22px;text-align:left;font-weight:400;
+ border:1px solid rgba(var(--ln),.3);box-shadow:none}
+button.cartao:hover{filter:none;background:rgba(var(--ln),.14);border-color:var(--b2)}
+button.cartao:active{transform:none;box-shadow:none}
+button.cartao .ico{width:42px;height:42px;stroke-width:1.6;color:var(--h)}
+button.cartao b{font-size:26px;color:var(--h)}
+button.cartao span{font-size:15px;line-height:1.5;color:var(--x2)}
+
+/* ---------- Blocos montados pelas etapas ---------- */
+.bloco>.cfg:first-of-type{padding-top:4px}
+.bloco>div:not(.cfg)+.cfg{border-top:1px solid rgba(var(--ln),.09)}
+
+/* ---------- Ranking: nomes que abrem os detalhes ---------- */
+#rankLista li.clic,.gr.clic{cursor:pointer}
+#rankLista li.clic:hover,.gr.clic:hover{background:rgba(var(--ln),.16)}
+#rankLista li.clic:focus-visible,.gr.clic:focus-visible{outline:3px solid var(--h);outline-offset:-3px}
+.gr.clic{padding:2px 4px;margin-left:-4px;margin-right:-4px}
+#rankDica{margin:0}
+
+/* ---------- Detalhes de um competidor ---------- */
+#det{position:absolute;inset:0;z-index:6500;display:grid;place-items:center;padding:14px;background:rgba(var(--dk2),.7);backdrop-filter:blur(10px)}
+#detBox{position:relative;width:min(580px,100%);max-height:100%;overflow:auto;padding:26px 30px 28px;color:var(--h);user-select:text;-webkit-user-select:text;
+ background:linear-gradient(160deg,rgba(var(--dk),.97),rgba(var(--dk2),.99));border:1px solid rgba(var(--ln),.3);box-shadow:0 24px 60px rgba(0,0,0,.6)}
+#detX{position:absolute;top:12px;right:12px;width:36px;height:36px;padding:0;font-size:15px}
+#detPos{font-size:13px;letter-spacing:.05em;text-transform:uppercase;color:var(--x3);padding-right:44px}
+#detNome{font-size:30px;line-height:1.15;color:var(--h);overflow-wrap:anywhere;padding-right:44px}
+#detConf{margin:6px 0 0}
+#detRes{display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:8px;margin:16px 0 6px}
+.dado{display:flex;flex-direction:column;gap:2px;padding:10px 12px;background:var(--well);box-shadow:0 0 0 1px rgba(var(--ln),.25)}
+.dado small{font-size:12px;color:var(--x3)}
+.dado b{font-size:21px;color:var(--h);font-variant-numeric:tabular-nums}
+#detRod h3{margin:16px 0 6px;font-size:13px;letter-spacing:.09em;text-transform:uppercase;color:var(--x3)}
+#detRod details{margin-top:6px;background:var(--well);box-shadow:0 0 0 1px rgba(var(--ln),.22)}
+#detRod summary{cursor:pointer;padding:11px 14px;font-size:16px;list-style:none;display:flex;gap:10px;align-items:center}
+#detRod summary::-webkit-details-marker{display:none}
+#detRod summary::before{content:"▸";color:var(--x3);transition:transform .12s}
+#detRod details[open]>summary::before{transform:rotate(90deg)}
+#detRod summary:focus-visible{outline:3px solid var(--h);outline-offset:-3px}
+#detRod .rod{padding:2px 14px 14px;font-size:14px;line-height:1.5;color:var(--x4)}
+#detRod .rod p{margin:5px 0}
+#detRod .rod b{color:var(--h)}
+#detRod .rod p.dica{margin:8px 0 0}
+.jogadas{list-style:none;padding:0;margin:10px 0 0;display:grid;gap:4px}
+.jogadas li{display:flex;gap:12px;padding:3px 0;border-top:1px solid rgba(var(--ln),.1)}
+.jogadas time{flex:none;width:62px;color:var(--x3);font-variant-numeric:tabular-nums}

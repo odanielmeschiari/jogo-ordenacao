@@ -39,7 +39,7 @@ function montaMesa(manter,prox){ // prox: dados do competidor que segue para a p
  else if(cfg.listas)cfg.vals=cfg.listas[prox?prox.r:0];
  const T=cfg.torneio;
  if(!manter)velManual=false;
- if(T&&!manter){T.i=0;T.r=0;T.map={};T.acc={};T.fim=false;T.play=true;T.regs=[];cfg.algo=T.lista[0];
+ if(T&&!manter){T.i=0;T.r=0;T.map={};T.acc={};T.fim=false;T.play=true;T.regs=[];T.espera=null;cfg.algo=T.lista[0];
   if(cfg.zera){ranking=ranking.filter(r=>r.tipo!==tipoAtual());guarda()}}
  mov=0;comps=0;$('#resumo').hidden=true;$('#sandbox').classList.toggle('comp',!!cfg.comp);$('#rank').hidden=!cfg.comp;
  const n=cfg.vals.length;DIG=Math.max(2,...cfg.vals.map(v=>v.length));medidas(n);
@@ -84,6 +84,6 @@ function contador(){const m=mob(); // no celular os rótulos são abreviados par
 const emTorneio=()=>!!(cfg&&cfg.torneio&&!cfg.torneio.fim);
 function barra(){
  contador();
- const ctl=(auto||emTorneio())&&!cfg.desafio;$('#ctrlAuto').style.display=ctl?'flex':'none';$('#sandbox').classList.toggle('com-ctrl',!!ctl);$('#btnCor').hidden=!cfg.barras;$('#btnCor').textContent='Cores: '+(cfg.degrade?'degradê':'desligadas');
+ const ctl=(auto||emTorneio())&&!cfg.desafio&&!(cfg.torneio&&cfg.torneio.espera);$('#ctrlAuto').style.display=ctl?'flex':'none';$('#sandbox').classList.toggle('com-ctrl',!!ctl);$('#btnCor').hidden=!cfg.barras;$('#btnCor').textContent='Cores: '+(cfg.degrade?'degradê':'desligadas');
  if(!auto&&!cfg.torneio)$('#titulo').textContent=cfg.busca?'Toque nas peças para virá-las.':`Arraste as peças e solte sobre uma vaga. Ordem ${nomeDir()}.`;
 }

@@ -1,4 +1,4 @@
-/* Organização das telas: painel inicial (cabeçalho, abas, blocos, rodapé fixo) e barra da mesa */
+/* Organização das telas: painel inicial (cabeçalho, etapas, blocos, rodapé fixo) e barra da mesa */
 
 /* ---------- Painel inicial ---------- */
 .painel.gerente{display:flex;flex-direction:column;overflow:hidden;padding:0}
@@ -8,25 +8,21 @@
 .ferr button{font-size:14px;padding:8px 14px}
 button.sec.mudo{color:var(--dim)}
 
-.painel.gerente .abas{margin:10px 34px 0;gap:6px;flex:none;border-bottom:1px solid rgba(var(--ln),.18);padding-bottom:10px}
-.sentido{display:flex;align-items:center;gap:6px 16px;flex-wrap:wrap;margin:10px 34px 0;flex:none}
 .rot{font-size:15px;color:var(--x2);line-height:1.3}
 
-.aba-corpo{flex:1;min-height:0;display:flex;flex-direction:column}
-.aba-corpo[hidden]{display:none!important}
+.etapa{flex:1;min-height:0;display:flex;flex-direction:column}
+.etapa[hidden]{display:none!important}
 .corpo{flex:1;min-height:0;overflow:auto;padding:4px 34px 12px}
 .rodape{flex:none;display:flex;justify-content:space-between;align-items:center;gap:14px;flex-wrap:wrap;padding:14px 34px 18px;
  border-top:1px solid rgba(var(--ln),.18);background:rgba(var(--dk2),.55)}
-.rodape button:only-child{margin-left:auto}
-#btnGerar{margin-top:0}
+#btnIniciar,#btnGerar,#btnProximo{margin-left:auto;margin-top:0}
 
-.bloco{margin-top:14px;padding:14px 18px 16px;border-radius:14px;background:rgba(0,0,0,.18);border:1px solid rgba(var(--ln),.14)}
+.bloco{margin-top:14px;padding:14px 18px 16px;background:rgba(0,0,0,.18);border:1px solid rgba(var(--ln),.14)}
 .bloco>h2{font-size:13px;letter-spacing:.09em;text-transform:uppercase;color:var(--x3);margin-bottom:6px}
 .bloco .sub{margin:4px 0 12px}
 .cfg{display:grid;grid-template-columns:170px minmax(0,1fr);gap:6px 16px;align-items:center;padding:9px 0}
-.cfg+.cfg,.rows>.cfg:first-child{border-top:1px solid rgba(var(--ln),.09)}
+.cfg+.cfg,.cfg+.aviso+.cfg,.bloco>div+.cfg{border-top:1px solid rgba(var(--ln),.09)}
 .cfg.cheia{grid-template-columns:minmax(0,1fr)}
-.rows{display:contents}
 .dica{margin-top:6px;font-size:13px;color:var(--x3);line-height:1.4}
 .corpo>.sub{margin:10px 0 0}
 .corpo>.legenda{margin:14px 0 4px}

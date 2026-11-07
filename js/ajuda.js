@@ -39,8 +39,10 @@ function montaAjuda(){
   <li><b>+</b> e <b>−</b>: aumentam e diminuem a velocidade.</li></ul>
  <p class="nota">O texto no alto da tela explica cada passo. Voltar passo funciona enquanto o algoritmo roda e guarda os últimos 15 mil passos. Nas linhas verticais, o botão “Cores” liga e desliga o degradê por valor.</p>
  <h2>Competição e ranking</h2><ul>
-  <li>As abas da tela inicial são <b>Jogo</b> (você monta ou sorteia as peças) e <b>Simulador</b> (o jogo roda sozinho). No Jogo, marque “Cronômetro e ranking” para cada competidor digitar o nome, jogar e entrar no ranking.</li>
+  <li>A tela inicial tem <b>Jogo</b> (você monta ou sorteia as peças e joga) e <b>Simulador</b> (o algoritmo roda sozinho). Em cada um você escolhe <b>Rodada única</b> (uma partida livre, sem ranking) ou <b>Torneio</b> (cronômetro e ranking; no Simulador, os algoritmos competem entre si).</li>
   <li><b>Rodadas por competidor</b>: ele joga todas as rodadas seguidas e entra no ranking com a média. A linha dele mostra também o resultado de cada rodada.</li>
+  <li><b>Passagem automática</b>: nas opções do torneio, escolha se a nova rodada e o próximo competidor começam sozinhos (uma contagem regressiva aparece no botão do ranking, e tocar nele adianta) ou só pelo botão.</li>
+  <li><b>Detalhes</b>: toque em um nome do ranking para ver o que ele fez no torneio: tempo e movimentos de cada rodada, a lista usada e as jogadas na ordem em que aconteceram.</li>
   <li>Cada ranking vale para uma configuração (peças, direção, rodadas…). “Ver todas as configurações” mostra tudo junto.</li>
   <li>Se o mesmo nome jogar de novo, só o melhor resultado fica no ranking.</li>
   <li>Reiniciar ou Voltar no meio das rodadas pergunta se salva a média parcial; o cronômetro fica parado enquanto você decide.</li></ul>

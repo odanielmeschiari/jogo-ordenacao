@@ -5,7 +5,7 @@ Jogo didático de ordenação e busca binária (e outros algoritmos). Abra `inde
 ## Estrutura
 
 ```
-index.html          marcação das telas (gerenciador, sandbox, painéis)
+index.html          marcação das telas (menus iniciais, mesa, painéis); as linhas de opção ficam em #estoque
 css/                estilos (carregados em ordem; a ordem importa na cascata)
 js/                 scripts (carregados em ordem, compartilham o escopo global)
 assets/walls/       papéis de parede (antes embutidos em base64 no HTML); para incluir um novo, ponha a imagem aqui e registre em `js/paredes.js` e `js/aparencia.js`
@@ -20,7 +20,7 @@ assets/walls/       papéis de parede (antes embutidos em base64 no HTML); para 
 | `estado.js` | constantes, estado global e utilitários |
 | `som.js` | sons sintetizados (Web Audio) |
 | `aparencia.js` | tema de cor e papel de parede |
-| `gerenciador.js` | tela inicial: jogo, simulador, início |
+| `gerenciador.js` | opções do jogo e do simulador, início da partida |
 | `mesa.js` | medidas, desenho das peças, contadores |
 | `pecas.js` | ordem, sobreposição, encaixe, arraste |
 | `algoritmos.js` | ordenações e buscas (geradores passo a passo) |
@@ -34,6 +34,7 @@ assets/walls/       papéis de parede (antes embutidos em base64 no HTML); para 
 | `desafio.js` | modo desafio |
 | `grafico.js` | gráfico de custo |
 | `atalhos.js` | atalhos de teclado |
+| `menus.js` | menus da tela inicial: Início → Jogo/Simulador → Rodada única/Torneio → opções (move as linhas de `#estoque` para a etapa certa; layouts na tabela `LAYOUT`) |
 | `mobile.js` | celular: menu ⋮ da barra, folha do ranking, medição das áreas fixas |
 | `iniciar.js` | inicialização |
 
@@ -41,7 +42,10 @@ Observação: são scripts clássicos (não ES modules) de propósito — assim 
 
 ### Competição entre jogadores
 
-No **Jogo**, com "Cronômetro e ranking de competidores" marcado:
+No **Jogo → Torneio** (cronômetro e ranking de competidores):
+
+- **Passagem automática**: escolha se a nova rodada e o próximo competidor começam sozinhos (contagem de 3 s e 4 s no botão do ranking; tocar adianta) ou só pelo botão. No Simulador, a competição de algoritmos também pode esperar o botão entre rodadas.
+- **Detalhes**: tocar num nome do ranking abre o resumo e, por rodada, a lista usada e as jogadas (até 100 por rodada) em ordem.
 
 - **Rodadas por competidor** (1 a 20, padrão 1): o competidor joga todas as rodadas seguidas e entra no ranking com a média de tempo e de movimentos (ou viradas). Cada registro guarda também o resultado de cada rodada; o ranking mostra os valores e o CSV traz uma coluna por rodada. Com peças sorteadas, cada rodada tem uma lista nova; com lista manual embaralhada, todos jogam a mesma sequência de listas.
 - **Ranking por configuração**: cada registro guarda a configuração (peças, direção, ordem inicial, alvo, rodadas). O ranking mostra só a configuração em jogo; "Ver todas as configurações" mostra tudo, inclusive registros antigos (sem configuração). "Limpar ranking" apaga o que está à mostra.

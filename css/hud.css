@@ -1,6 +1,6 @@
 /* Valor a buscar, contador e resumo final */
 #alvoGrande{position:absolute;left:50%;top:62px;transform:translateX(-50%);display:flex;align-items:center;gap:18px;white-space:nowrap;
- padding:8px 28px;border-radius:18px;background:rgba(var(--dk2),.72);border:2px solid rgba(var(--ln),.4);box-shadow:0 10px 30px rgba(0,0,0,.5);pointer-events:none}
+ padding:8px 28px;background:rgba(var(--dk2),.72);border:2px solid rgba(var(--ln),.4);box-shadow:0 10px 30px rgba(0,0,0,.5);pointer-events:none}
 #alvoGrande span{font-size:20px;color:var(--x4)}
 #alvoGrande b{font-size:clamp(44px,7vw,64px);line-height:1.1;color:var(--h);text-shadow:0 3px 0 var(--edge),0 6px 16px rgba(0,0,0,.4)}
 #alvoGrande small{font-size:15px;color:var(--x3);min-width:120px}
@@ -10,13 +10,13 @@
 .campo input{flex:none;width:100%}
 #mesa.pq{--sh:inset 0 1px 0 rgba(255,255,255,.5),inset 0 -2px 0 rgba(var(--ein),.35),0 2px 0 var(--edge),0 3px 4px rgba(0,0,0,.4)}
 #mesa.pq .vaga{box-shadow:inset 0 2px 3px rgba(0,0,0,.5)}
-#cont{font-size:16px;color:var(--h);background:rgba(var(--dk),.75);padding:8px 14px;border-radius:10px;border:1px solid rgba(var(--ln),.3);font-variant-numeric:tabular-nums}
+#cont{font-size:16px;color:var(--h);background:rgba(var(--dk),.75);padding:8px 14px;border:1px solid rgba(var(--ln),.3);font-variant-numeric:tabular-nums}
 #mesa.pq .peca.virada{box-shadow:inset 0 1px 0 rgba(255,255,255,.3),inset 0 -2px 0 rgba(var(--vein),.45),0 2px 0 var(--vedge),0 3px 4px rgba(0,0,0,.45)}
-#resumo{position:absolute;bottom:96px;left:50%;transform:translateX(-50%);z-index:4500;min-width:300px;max-width:92%;padding:16px 44px 18px;border-radius:20px;text-align:center;
+#resumo{position:absolute;bottom:96px;left:50%;transform:translateX(-50%);z-index:4500;min-width:300px;max-width:92%;padding:16px 44px 18px;text-align:center;
  background:linear-gradient(160deg,rgba(var(--dk),.94),rgba(var(--dk2),.96));border:2px solid rgba(var(--ln),.45);box-shadow:0 18px 50px rgba(0,0,0,.6)}
 .comp #resumo{left:calc((100% - 250px)/2)}
 #resAlgo{font-size:18px;color:var(--x2)}
 #resNum{display:block;font-size:clamp(52px,9vw,92px);line-height:1.1;color:var(--h);text-shadow:0 3px 0 var(--edge),0 6px 18px rgba(0,0,0,.4);font-variant-numeric:tabular-nums}
 #resNum.nome{font-size:clamp(30px,5vw,52px)}
 #resLab{font-size:20px;color:var(--h)}
-#resumo button{position:absolute;top:8px;right:8px;width:30px;height:30px;padding:0;border-radius:50%;font-size:14px}
+#resumo button{position:absolute;top:8px;right:8px;width:30px;height:30px;padding:0;font-size:14px}

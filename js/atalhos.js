@@ -1,5 +1,5 @@
 /* Atalhos de teclado */
-const sbAtivo=()=>$('#sandbox').classList.contains('ativa')&&$('#aj').hidden&&$('#gf').hidden;
+const sbAtivo=()=>$('#sandbox').classList.contains('ativa')&&$('#aj').hidden&&$('#gf').hidden&&$('#det').hidden;
 document.addEventListener('keydown',e=>{
  if(e.key==='Escape')$('#gf').hidden=true;
  if(!sbAtivo()||e.ctrlKey||e.metaKey||e.altKey)return;

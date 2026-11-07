@@ -40,7 +40,7 @@ function alvoPerto(cx,cy){let b=null,bd=G.size*.9;
  for(let i=0;i<pecas.length;i++){const v=vaga(i),d=Math.hypot(cx-v.x-G.size/2,cy-v.y-G.size/2);if(d<bd){bd=d;b=i}}return b}
 function vira(p){p.el.classList.remove('gira');void p.el.offsetWidth;p.el.classList.add('gira');
  setTimeout(()=>{p.virada=!p.virada;p.el.classList.toggle('virada',p.virada);sVirar();
-  if(!p.virada){mov++;contador();$('#ultima').textContent='Última virada: '+p.val}
+  if(!p.virada){mov++;contador();$('#ultima').textContent='Última virada: '+p.val;regJog([p.val,p.slot==null?-1:p.slot])}
   verificaBusca()},180)}
 
 function ligaArraste(p){
@@ -66,6 +66,7 @@ function ligaArraste(p){
   drag=false;p.el.classList.remove('arrasta');vagasEl.forEach(s=>s.classList.remove('alvo'));
   if(!cfg.busca){mov++;contador();$('#resumo').hidden=true}
   const x=parseFloat(p.el.style.left),y=parseFloat(p.el.style.top),a=alvoPerto(x+G.size/2,y+G.size/2);
+  if(!cfg.busca)regJog([p.val,origem==null?-1:origem,a==null?-1:a,(a!==null&&pecas.find(q=>q!==p&&q.slot===a)||{}).val??null]);
   if(a!==null){
    const o=pecas.find(q=>q!==p&&q.slot===a);
    if(o){if(origem!==null)o.slot=origem;else livre(o,ini.x,ini.y)}

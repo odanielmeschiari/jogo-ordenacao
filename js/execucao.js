@@ -117,18 +117,24 @@ function fimAuto(res){
  $('#resGraf').innerHTML='';$('#resumo').classList.remove('larga');$('#resNum').className='';$('#resNum').textContent=mov.toLocaleString('pt-BR');
  $('#resLab').textContent=un+(cfg.desafio&&D?` · desafio: ${D.ok} de ${D.tot} acertos`:'');$('#resumo').hidden=false;atividade();
  if(T){
-  const k=cfg.algo,ac=T.acc[k]=T.acc[k]||{ms:[],mov:[],cmp:[]};ac.ms.push(A.n*PASSO_MS);ac.mov.push(mov);ac.cmp.push(comps);
+  const k=cfg.algo,ac=T.acc[k]=T.acc[k]||{ms:[],mov:[],cmp:[],det:[]};ac.ms.push(A.n*PASSO_MS);ac.mov.push(mov);ac.cmp.push(comps);
+  ac.det.push({n:cfg.vals.length,vals:cfg.vals.length<=100?cfg.vals.slice():null,alvo:busca?cfg.alvo:''});
   const av=x=>x.reduce((q,y)=>q+y,0)/x.length,rd=x=>Math.round(av(x)*10)/10;
   let reg=T.map[k];
   if(!reg){reg={nome:NOME[k],tipo:tipoAtual(),id:Date.now()+T.i,alg:1,aus:false,conf:cfg.conf&&cfg.conf.k,confTxt:cfg.conf&&cfg.conf.t};T.map[k]=reg;ranking.push(reg);T.regs.push(reg)}
-  reg.ms=av(ac.ms);reg.mov=rd(ac.mov);reg.cmp=rd(ac.cmp);reg.rod=ac.ms.length;reg.rounds=ac.ms.map((m,i)=>({ms:m,mov:ac.mov[i],cmp:ac.cmp[i]}));reg.aus=reg.aus||(busca&&!achou);
+  reg.ms=av(ac.ms);reg.mov=rd(ac.mov);reg.cmp=rd(ac.cmp);reg.rod=ac.ms.length;reg.rounds=ac.ms.map((m,i)=>({ms:m,mov:ac.mov[i],cmp:ac.cmp[i],...ac.det[i]}));reg.aus=reg.aus||(busca&&!achou);
   guarda();renderRank();$('#cron').textContent=fmt(A.n*PASSO_MS);
   T.play=A.play;T.i++;
   const esp=+$('#vel').value>=10?500:1400;
   if(T.i>=T.lista.length){
    if(T.r+1<T.rod){
-    $('#titulo').textContent=`Rodada ${T.r+1} de ${T.rod} concluída. Sorteando nova lista…`;
-    T.tm=setTimeout(()=>{T.r++;T.i=0;if(cfg.gerA)Object.assign(cfg,novoConjunto(cfg.gerA));cfg.algo=T.lista[0];montaMesa(true)},esp)
+    const nova=()=>{T.espera=null;T.r++;T.i=0;if(cfg.gerA)Object.assign(cfg,novoConjunto(cfg.gerA));cfg.algo=T.lista[0];montaMesa(true)};
+    if(T.autoRod===false){ // nova rodada pelo botão: a competição espera
+     T.espera=nova;$('#titulo').textContent=`Rodada ${T.r+1} de ${T.rod} concluída.`;
+     $('#btnProx').textContent=mob()?`Iniciar rodada ${T.r+2}/${T.rod}`:`Iniciar rodada ${T.r+2} de ${T.rod}`;$('#btnProx').hidden=false;barra();
+    }else{
+     $('#titulo').textContent=`Rodada ${T.r+1} de ${T.rod} concluída. Sorteando nova lista…`;
+     T.tm=setTimeout(nova,esp)}
    }else{T.fim=true;torneioFim()}
   }else{$('#titulo').textContent=`Próximo: ${NOME[T.lista[T.i]]}…`;
    T.tm=setTimeout(()=>{cfg.algo=T.lista[T.i];montaMesa(true)},esp)}
@@ -141,6 +147,9 @@ function torneioResumo(){
  $('#resAlgo').textContent=`Competição concluída`+(T.rod>1?` · média de ${T.rod} rodadas`:'')+` · vencedor (por ${por})`;
  $('#resNum').className='nome';$('#resNum').textContent=w.nome;$('#resLab').textContent=vTxt(w);
  $('#resGraf').innerHTML=L.map(r=>`<div class="gr"><span>${r.nome}</span><div><i style="width:${Math.max(2,kv(r,crit)/mx*100)}%"></i></div><b>${vTxt(r)}</b></div>`).join('');
+ $('#resGraf').querySelectorAll('.gr').forEach((g,i)=>{ // tocar numa linha abre os detalhes daquele algoritmo
+  g.classList.add('clic');g.tabIndex=0;g.setAttribute('role','button');g.title='Ver os detalhes';g.onclick=()=>detalhes(L[i]);
+  g.onkeydown=e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();e.stopPropagation();detalhes(L[i])}}});
  $('#resumo').classList.add('larga');$('#resumo').hidden=false;
 }
 function torneioFim(){

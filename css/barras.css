@@ -11,5 +11,5 @@
 @media (prefers-reduced-motion:reduce){.peca.assenta{animation:none}}
 .gr{display:grid;grid-template-columns:130px 1fr 70px;gap:8px;align-items:center;font-size:14px;margin-top:6px;text-align:left;color:var(--h)}
 .gr span{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.gr b{text-align:right;font-weight:400}
-.gr div{height:12px;border-radius:6px;background:var(--well)}.gr i{display:block;height:100%;border-radius:6px;background:linear-gradient(90deg,var(--t3),var(--t1))}
+.gr div{height:12px;background:var(--well)}.gr i{display:block;height:100%;background:linear-gradient(90deg,var(--t3),var(--t1))}
 #resumo.larga{width:min(540px,92%)}
