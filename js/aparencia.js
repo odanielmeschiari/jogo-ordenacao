@@ -40,18 +40,25 @@ function marcaAp(){
  document.querySelectorAll('#apTemas .sw').forEach(b=>{const on=b.dataset.id===visual.tema;b.classList.toggle('on',on);b.setAttribute('aria-pressed',on)});
  document.querySelectorAll('#apWalls .wl').forEach(b=>{const on=b.dataset.id===visual.wall;b.classList.toggle('on',on);b.setAttribute('aria-pressed',on)});
 }
+/* Miniaturas só são baixadas quando o painel é aberto (ou com o navegador ocioso), para não disputar banda com o papel de parede principal. */
+let thumbsOk=false;
+function carregaThumbs(){
+ if(thumbsOk||typeof WALL_THUMB==='undefined')return;thumbsOk=true;
+ document.querySelectorAll('#apWalls .wl').forEach(b=>{b.style.backgroundImage=`url("${WALL_THUMB[b.dataset.id]}")`});
+}
+addEventListener('load',()=>setTimeout(carregaThumbs,2500));
 function montaAp(){
  const T=$('#apTemas'),W=$('#apWalls');
  Object.entries(TEMAS).forEach(([id,t])=>{const b=document.createElement('button');b.type='button';b.className='sw';b.dataset.id=id;
   b.innerHTML=`<i style="background:linear-gradient(135deg,${t.v.t1},${t.v.t3})"></i><span>${t.nome}</span>`;
   b.onclick=()=>{visual.tema=id;salvaVisual();aplicaTema();marcaAp()};T.appendChild(b)});
  WALLS.forEach(([id,nome])=>{const b=document.createElement('button');b.type='button';b.className='wl';b.dataset.id=id;b.title=nome;
-  if(typeof WALL_THUMB!=='undefined')b.style.backgroundImage=`url("${WALL_THUMB[id]}")`;
   b.innerHTML=`<span>${nome}</span>`;
   b.onclick=()=>{visual.wall=id;salvaVisual();aplicaWall();marcaAp()};W.appendChild(b)});
  marcaAp();
 }
 function abreAp(btn,ap=$('#ap')){
+ carregaThumbs();
  (ap.id==='ap'?$('#sp'):$('#ap')).hidden=true;
  if(!ap.hidden){ap.hidden=true;return}
  ap.hidden=false;

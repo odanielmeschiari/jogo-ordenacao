@@ -8,7 +8,7 @@ Jogo didático de ordenação e busca binária (e outros algoritmos). Abra `inde
 index.html          marcação das telas (menus iniciais, mesa, painéis); as linhas de opção ficam em #estoque
 css/                estilos (carregados em ordem; a ordem importa na cascata)
 js/                 scripts (carregados em ordem, compartilham o escopo global)
-assets/walls/       papéis de parede em ~2560 px de largura (antes embutidos em base64 no HTML); assets/walls/thumbs/ guarda as miniaturas 400x225 do seletor. Para incluir um novo, ponha a imagem aqui (de preferência com 2560x1440 ou mais, para não perder qualidade em telas grandes), gere a miniatura com o mesmo nome em thumbs/ e registre em `js/paredes.js` e `js/aparencia.js`
+assets/walls/       papéis de parede em WebP, ~2560 px de largura (antes embutidos em base64 no HTML); assets/walls/thumbs/ guarda as miniaturas 400x225 do seletor. Para incluir um novo, ponha a imagem aqui (de preferência com 2560x1440 ou mais, para não perder qualidade em telas grandes), gere a miniatura com o mesmo nome em thumbs/ e registre em `js/paredes.js` e `js/aparencia.js`
 ```
 
 ### JS (ordem de carregamento)
@@ -16,7 +16,7 @@ assets/walls/       papéis de parede em ~2560 px de largura (antes embutidos em
 | arquivo | conteúdo |
 |---|---|
 | `temas.js` | paletas de cor (no `<head>`, para pintar certo no 1º quadro) |
-| `paredes.js` | id → arquivo de cada papel de parede |
+| `paredes.js` | id → arquivo de cada papel de parede (carregado no `<head>`; já pede o papel escolhido ao navegador) |
 | `estado.js` | constantes, estado global e utilitários |
 | `som.js` | sons sintetizados (Web Audio) |
 | `aparencia.js` | tema de cor e papel de parede |
